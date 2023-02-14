@@ -4,7 +4,6 @@ import Link from "next/link";
 import MainContent from "../components/MainContent/MainContent";
 import Sidebar from "../components/Sidebar";
 import SidebarRight from "../components/SidebarRight/SidebarRight";
-import Auth from "../layouts/MainLayout";
 
 import { api } from "../utils/api";
 
