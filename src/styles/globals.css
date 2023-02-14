@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body{
+    @apply bg-gray-200 text-black dark:bg-black dark:text-white
+}
+button{
+    @apply transition-colors duration-150
+}
