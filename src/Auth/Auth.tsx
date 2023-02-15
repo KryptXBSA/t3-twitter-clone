@@ -3,7 +3,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import SignupModal from "../components/SignupModal";
+import SigninModal from "../components/SigninModal";
 import TwitterIcon from "../icons/twitter";
 
 const Auth = ({ children }: { children: ReactNode }) => {
@@ -33,13 +33,13 @@ const Auth = ({ children }: { children: ReactNode }) => {
         </Head>
         <div
           className="flex h-[100vh] justify-between sm:flex-col sm:gap-9"
-          onClick={() => setTheme(theme === "light" ? "dark" : "dark")}
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
           <div className="flex h-full w-[50%] items-center justify-center bg-[#15406A] sm:w-full">
             <TwitterIcon className=" h-full   w-[90%]  fill-[#1d9bf0] p-2 sm:p-8" />
           </div>
           <div className="flex grow items-center justify-center space-x-2 p-5 sm:p-12">
-            <SignUp />
+            <SignIn />
           </div>
         </div>
       </>
@@ -51,7 +51,7 @@ const Auth = ({ children }: { children: ReactNode }) => {
 
 export default Auth;
 
-function SignUp() {
+function SignIn() {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -70,7 +70,7 @@ function SignUp() {
   }
   return (
     <>
-      <SignupModal isOpen={isOpen} closeModal={closeModal} />
+      <SigninModal isOpen={isOpen} closeModal={closeModal} />
       <form
         onSubmit={signup}
         className="flex w-full items-center justify-center"
@@ -82,10 +82,7 @@ function SignUp() {
           </p>
           <p className="text-xl font-semibold"> Join Twitter today.</p>
           <button className="w-full rounded-full bg-blue-500 px-5 py-2.5 text-center text-xl font-semibold text-white hover:bg-opacity-[85%] focus:outline-none  focus:ring-4 sm:w-auto">
-            Sign Up
-          </button>
-          <button className="w-full rounded-full border-blue-900 bg-opacity-100 px-5 py-2.5 text-center text-xl font-semibold text-[#1D9BF0] ring hover:bg-blue-500 hover:bg-opacity-[20%] dark:text-white     sm:w-auto">
-            Login
+            Sign in
           </button>
         </div>
       </form>
