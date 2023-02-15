@@ -15,10 +15,11 @@ const MyApp: AppType = ({
 }: any) => {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
+    // @ts-ignore
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "http://localhost:7019",
+          url: "http://localhost:7019/api/trpc",
           headers() {
             return {
               authorization: Cookies.get("token"),
@@ -31,13 +32,13 @@ const MyApp: AppType = ({
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
-        <Auth>
-          <trpc.Provider client={trpcClient} queryClient={queryClient}>
-            <QueryClientProvider client={queryClient}>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <Auth>
               <Component {...pageProps} />
-            </QueryClientProvider>
-          </trpc.Provider>
-        </Auth>
+            </Auth>
+          </QueryClientProvider>
+        </trpc.Provider>
       </ThemeProvider>
     </SessionProvider>
   );

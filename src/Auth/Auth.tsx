@@ -10,7 +10,6 @@ import { trpc } from "../utils/trpc";
 const Auth = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession();
   const { theme, setTheme } = useTheme();
-  console.log(theme);
 
   if (status === "loading") {
     return (
@@ -24,7 +23,7 @@ const Auth = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  if (status === "unauthenticated") {
+  if (status === "authenticated") {
     return (
       <>
         <Head>
@@ -53,7 +52,8 @@ const Auth = ({ children }: { children: ReactNode }) => {
 export default Auth;
 
 function SignIn() {
-    trpc.user.getUser.useQuery("hi")
+  let user = trpc.user.getUser.useQuery("hi");
+  console.log("datauser", user.data);
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {
     setIsOpen(false);

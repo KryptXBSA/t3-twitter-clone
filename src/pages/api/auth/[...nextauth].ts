@@ -29,10 +29,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     },
     jwt: {
       async encode(params) {
+        // @ts-ignore
         let token = jwt.sign(params.token, params.secret);
         return token;
       },
       async decode(params) {
+        // @ts-ignore
         let decoded = jwt.verify(params.token, params.secret);
         return decoded;
       },
@@ -43,7 +45,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 function getProviders() {
   return [
     GithubProvider({
+      // @ts-ignore
       clientId: process.env.GITHUB_ID,
+      // @ts-ignore
       clientSecret: process.env.GITHUB_SECRET,
     }),
 
@@ -76,9 +80,9 @@ function getProviders() {
               "Content-Type": "application/x-www-form-urlencoded",
               accept: "application/json",
             },
-            body: Object.entries(credentials)
-              .map((e) => e.join("="))
-              .join("&"),
+            // body: Object.entries(credentials)
+            //   .map((e) => e.join("="))
+            //   .join("&"),
           }
         )
           .then((res) => res.json())
