@@ -5,10 +5,8 @@ import MainContent from "../components/MainContent/MainContent";
 import Sidebar from "../components/Sidebar";
 import SidebarRight from "../components/SidebarRight/SidebarRight";
 
-import { api } from "../utils/api";
 
 const Home: NextPage = () => {
-    const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
     return (
         <>

@@ -1,4 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { signIn } from "next-auth/react";
 import { Fragment } from "react";
 import DiscordIcon from "../icons/discord";
 import GithubIcon from "../icons/github";
@@ -52,7 +53,7 @@ export default function SigninModal({
                       {providers.map((p) => (
                         <SigninBtn
                           key={p.provider}
-                          onClick={closeModal}
+                          onClick={()=>signIn("github")}
                           {...p}
                         />
                       ))}

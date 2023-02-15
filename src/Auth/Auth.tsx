@@ -5,6 +5,7 @@ import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import SigninModal from "../components/SigninModal";
 import TwitterIcon from "../icons/twitter";
+import { trpc } from "../utils/trpc";
 
 const Auth = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession();
@@ -50,6 +51,7 @@ const Auth = ({ children }: { children: ReactNode }) => {
 };
 
 export default Auth;
+let test={a:"aaa"}
 
 function SignIn() {
   let [isOpen, setIsOpen] = useState(false);
@@ -58,15 +60,9 @@ function SignIn() {
     setIsOpen(false);
   }
 
-  const [error, setError] = useState("");
-  let usernameInputRef: any = useRef();
-  let passwordInputRef: any = useRef();
   async function signup(e: any) {
     e.preventDefault();
     setIsOpen(!isOpen);
-    // let username = usernameInputRef.current.value;
-    // let password = passwordInputRef.current.value;
-    // let data = { username, password };
   }
   return (
     <>

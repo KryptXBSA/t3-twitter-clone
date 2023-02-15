@@ -20,11 +20,13 @@ export const createContext = async (
 ) => {
   const { req } = opts;
 
-  let decoded;
+  let decoded: any;
   let session = { id: "1" };
   if (!req.headers.authorization) session = { id: "2" };
   try {
     decoded = jwt.verify(req.headers.authorization!, process.env.JWT_SECRET!);
+    console.log(decoded);
+    session = decoded;
   } catch (e) {
     console.log("jwt_decode err", e);
   }
@@ -53,7 +55,7 @@ export const publicProcedure = t.procedure;
  * procedure.
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session ) {
+  if (!ctx.session) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
