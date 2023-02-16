@@ -3,6 +3,7 @@ import superjson from "superjson";
 import { OpenApiMeta } from "trpc-openapi";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import jwt from "jsonwebtoken";
+import { prisma } from "../prisma/prisma";
 
 type CreateContextOptions = {
   session: { id: string };
@@ -11,7 +12,7 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    // prisma,
+    prisma
   };
 };
 

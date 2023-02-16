@@ -1,4 +1,3 @@
-
 import { t } from "../../trpc/trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
@@ -9,8 +8,14 @@ export const userRouter = t.router({
     return { id: req.input, name: "Bilbo" };
   }),
   createUser: t.procedure
-    .input(z.object({ name: z.string().min(5) }))
-    .output(z.string())
+    .input(
+      z.object({
+        name: z.string().min(5),
+        username: z.string(),
+        provider: z.string(),
+      })
+    )
+    .output(z.object({ success: z.boolean(), message: z.string() }))
     .meta({
       openapi: {
         method: "POST",
@@ -21,17 +26,17 @@ export const userRouter = t.router({
         protect: true,
       },
     })
-    .mutation(async (req) => {
-      // use your ORM of choice
-    throw new TRPCError({
-      message: "User not found",
-      code: "UNAUTHORIZED",
-      "cause":{a:"a"}
-    });
-      return "hiii from mutation";
-      // return await UserModel.create({
-      //   data: req.input,
+    .mutation(async ({ ctx, input }) => {
+      let result = await ctx.prisma.user.create({
+        data: {...input},
+      });
+      console.log(result);
+
+      // throw new TRPCError({
+      //   message: "User not found",
+      //   code: "UNAUTHORIZED",
+      //   cause: { a: "a" },
       // });
+      return { success: true, message: "hi" };
     }),
 });
-

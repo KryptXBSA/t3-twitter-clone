@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Example {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String    @unique @default(uuid())
+  username  String    @unique
+  name      String
+  email     String?
+  provider  String
+  password  String?
+  imageUrl  String?
+  createdAt DateTime  @default(now())
+  tweets    Tweet[]
+  likes     Like[]
+  retweets  Retweet[]
+  replies   Reply[]
+  views     View[]
+}
+
+model Tweet {
+  id            String    @unique @default(uuid())
+  body          String
+  images        String[]
+  likesCount    Int       @default(0)
+  retweetsCount Int       @default(0)
+  repliesCount  Int       @default(0)
+  viewsCount    Int       @default(0)
+  createdAt     DateTime  @default(now())
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  likes         Like[]
+  retweets      Retweet[]
+  replies       Reply[]
+  views         View[]
+}
+
+model Like {
+  id        String   @unique @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  tweet     Tweet    @relation(fields: [tweetId], references: [id])
+  tweetId   String
+  createdAt DateTime @default(now())
+}
+
+model Retweet {
+  id        String   @unique @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  tweet     Tweet    @relation(fields: [tweetId], references: [id])
+  tweetId   String
+  createdAt DateTime @default(now())
+}
+
+model Reply {
+  id        String   @unique @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  tweet     Tweet    @relation(fields: [tweetId], references: [id])
+  tweetId   String
+  body      String
+  images    String[]
+  createdAt DateTime @default(now())
+}
+
+model View {
+  id        String   @unique @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  tweet     Tweet    @relation(fields: [tweetId], references: [id])
+  tweetId   String
+  createdAt DateTime @default(now())
+}

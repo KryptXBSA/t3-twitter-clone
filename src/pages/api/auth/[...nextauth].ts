@@ -3,6 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
+import { prisma } from "../../../../server/src/prisma/prisma";
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const providers = getProviders();
@@ -23,7 +24,13 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       async session({ session, token }) {
         return session;
       },
-      async signIn(props) {
+      async signIn({ user, account, profile, email, credentials }) {
+
+        // let p: any = account?.provider;
+        // let result = await prisma.user.create({
+        //   data: { name: user.name!, username: user.name!, provider: p },
+        // });
+        // console.log(result);
         return true;
       },
     },
