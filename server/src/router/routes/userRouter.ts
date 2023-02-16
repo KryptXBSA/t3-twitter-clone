@@ -77,7 +77,6 @@ export const userRouter = t.router({
       //     message: "Invalid request",
       //     code: "BAD_REQUEST",
       //   });
-
       let existingUser = await ctx.prisma.user.findFirst({
         where: {
           OR: [{ email: input.email }, { username: input.username }],
