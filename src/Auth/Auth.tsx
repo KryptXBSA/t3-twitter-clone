@@ -23,7 +23,7 @@ const Auth = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  if (status === "authenticated") {
+  if (status === "unauthenticated") {
     return (
       <>
         <Head>

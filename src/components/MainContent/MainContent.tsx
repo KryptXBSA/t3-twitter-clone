@@ -2,7 +2,7 @@ import React from "react";
 
 export default function MainContent() {
     return (
-        <div className="h-screen w-full sm:w-[700px]">
+        <div className="h-screen sm:w-[700px]">
             {/* Header */}
             <div className="sticky top-0 flex items-center justify-between border-b border-l border-r border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-dim-900">
                 {/* Title */}

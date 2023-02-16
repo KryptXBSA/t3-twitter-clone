@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function SidebarRight() {
   return (
-          <div className="hidden h-screen w-290 md:block lg:w-350">
-            <div className="fixed flex h-screen w-290 flex-col overflow-y-auto lg:w-350">
+          <div className="hidden h-screen w-[290px] lg:block lg:w-[350px]">
+            <div className="fixed flex h-screen w-[290px] flex-col overflow-y-auto lg:w-[350px]">
               {/* Search */}
               <div className="relative m-2">
                 <div className="absolute flex h-full cursor-pointer items-center pl-4 text-gray-600">
