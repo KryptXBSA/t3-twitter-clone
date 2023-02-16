@@ -1,6 +1,9 @@
 import { t } from "../../trpc/trpc";
+import bcrypt from "bcrypt";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+
+const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
 export const userRouter = t.router({
   getUser: t.procedure.input(z.string()).query((req) => {
@@ -9,34 +12,137 @@ export const userRouter = t.router({
   }),
   createUser: t.procedure
     .input(
+      z
+        .object({
+          name: z.string().min(3),
+          username: z.string(),
+          password: z.string().nullish(),
+          provider: Provider,
+          email: z.string().nullish(),
+        })
+        .refine((data) => {
+          // error if not credentials and there is no email
+          if (data.provider !== "credentials" && !data.email) {
+            throw new z.ZodError([
+              {
+                path: ["email"],
+                message: 'Email should be provided if !=="credentials"',
+                code: "custom",
+              },
+            ]);
+          }
+          // Throw an error if email is provided and provider is "credentials"
+          if (data.provider === "credentials" && data.email) {
+            throw new z.ZodError([
+              {
+                path: ["email"],
+                message: 'Email should be null for provider "credentials"',
+                code: "custom",
+              },
+            ]);
+          }
+          if (data.provider === "credentials" && !data.password) {
+            throw new z.ZodError([
+              {
+                path: ["password"],
+                message: "Password should be provided",
+                code: "custom",
+              },
+            ]);
+          }
+          return true;
+        })
+    )
+    .output(
       z.object({
-        name: z.string().min(5),
-        username: z.string(),
-        provider: z.string(),
+        success: z.boolean(),
+        message: z.string(),
+        token: z.string().nullish(),
+        code: z.number().nullish(),
       })
     )
-    .output(z.object({ success: z.boolean(), message: z.string() }))
     .meta({
       openapi: {
         method: "POST",
         path: "/auth/login",
         tags: ["auth"],
-        summary: "Login as an existing user",
-        description: "*fashfoihihfohasfhhhasfihffihasifhahaiifhasshf",
-        protect: true,
+        summary: "Login or Signup",
+        description: "If there is no account sign  up",
       },
     })
     .mutation(async ({ ctx, input }) => {
-      let result = await ctx.prisma.user.create({
-        data: {...input},
-      });
-      console.log(result);
+      // credentials are only username and password
+      // if (input.provider === "credentials" && input.email)
+      //   throw new TRPCError({
+      //     message: "Invalid request",
+      //     code: "BAD_REQUEST",
+      //   });
 
-      // throw new TRPCError({
-      //   message: "User not found",
-      //   code: "UNAUTHORIZED",
-      //   cause: { a: "a" },
-      // });
-      return { success: true, message: "hi" };
+      let existingUser = await ctx.prisma.user.findFirst({
+        where: {
+          OR: [{ email: input.email }, { username: input.username }],
+        },
+      });
+
+      // if no user and it's not credentials just sign up via provider
+      if (input.provider !== "credentials" && !existingUser) {
+        let user = await ctx.prisma.user.create({
+          data: {
+            ...input,
+          },
+        });
+        return {
+          success: true,
+          message: "New user via" + input.provider,
+          token: JSON.stringify(user),
+        };
+      }
+
+      // if no user and provider is credentials just sign up
+      if (!existingUser && input.provider === "credentials") {
+        // Create a new user
+        let user = await ctx.prisma.user.create({
+          data: {
+            ...input,
+            password: bcrypt.hashSync(input.password!, 10), // hash the password
+          },
+        });
+
+        // Create a new session for the user
+        // let session = await createSession(user, ctx);
+
+        return {
+          success: true,
+          message: "signup",
+          token: JSON.stringify(user),
+        };
+      }
+      if (existingUser) {
+        // if it's via email just login
+        if (input.provider !== "credentials") {
+          return {
+            success: true,
+            message: "login via " + input.provider,
+          };
+        }
+        if (
+          existingUser.password &&
+          input.password &&
+          bcrypt.compareSync(input.password, existingUser.password)
+        ) {
+          // Create a new session for the user
+          // let session = await createSession(existingUser, ctx);
+          // return { success: true, message: JSON.stringify(session) };
+          return {
+            success: true,
+            message: "login",
+            token: JSON.stringify(existingUser),
+          };
+        } else {
+          return { success: false, message: "Invalid password" };
+        }
+      }
+
+      return { success: true, message: "no" };
     }),
 });

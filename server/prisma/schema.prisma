@@ -17,7 +17,7 @@ model User {
   id        String    @unique @default(uuid())
   username  String    @unique
   name      String
-  email     String?
+  email     String? @unique
   provider  String
   password  String?
   imageUrl  String?
