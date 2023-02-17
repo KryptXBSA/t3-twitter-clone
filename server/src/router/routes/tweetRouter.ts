@@ -148,7 +148,7 @@ export const tweetRouter = t.router({
       });
       return { success: true, data: JSON.stringify(retweet) };
     }),
-  createTweet: protectedProcedure
+  newTweet: protectedProcedure
     .input(
       z.object({
         body: z.string().min(1),
@@ -171,6 +171,7 @@ export const tweetRouter = t.router({
       },
     })
     .mutation(async ({ ctx, input }) => {
+        console.log("new tweet")
       let newTweet: any = await ctx.prisma.tweet.create({
         data: {
           body: input.body,

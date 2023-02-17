@@ -15,7 +15,7 @@ export function PostTweet({ onPost }: { onPost: any }) {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-  let newTweet = trpc.tweet.createTweet.useMutation();
+  let newTweet = trpc.tweet.newTweet.useMutation();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     // setTimeout(() => {
     // reset();

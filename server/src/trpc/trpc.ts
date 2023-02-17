@@ -51,6 +51,7 @@ export const createContext = async (
   } catch (e) {
     // console.log("jwt_decode err", e);
   }
+  console.log("context", session!);
 
   return createInnerTRPCContext({
     session: session!,
@@ -76,6 +77,7 @@ export const publicProcedure = t.procedure;
  * procedure.
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  console.log("via middleware", ctx);
   if (!ctx.session || !ctx.session?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
