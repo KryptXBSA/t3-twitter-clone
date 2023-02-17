@@ -65,8 +65,6 @@ export const userRouter = t.router({
         method: "POST",
         path: "/auth/login",
         tags: ["auth"],
-        summary: "Login or Signup",
-        description: "If there is no account sign  up",
       },
     })
     .mutation(async ({ ctx, input }) => {
@@ -91,8 +89,7 @@ export const userRouter = t.router({
         });
         return {
           success: true,
-          data: "New user via" + input.provider,
-          token: JSON.stringify(user),
+          data: JSON.stringify(user),
         };
       }
 
@@ -111,8 +108,7 @@ export const userRouter = t.router({
 
         return {
           success: true,
-          data: "signup",
-          token: JSON.stringify(user),
+          data: JSON.stringify(user),
         };
       }
       if (existingUser) {
@@ -120,7 +116,7 @@ export const userRouter = t.router({
         if (input.provider !== "credentials") {
           return {
             success: true,
-            data: "login via " + input.provider,
+            data: JSON.stringify(existingUser),
           };
         }
         if (
@@ -133,8 +129,7 @@ export const userRouter = t.router({
           // return { success: true, data: JSON.stringify(session) };
           return {
             success: true,
-            data: "login",
-            token: JSON.stringify(existingUser),
+            data: JSON.stringify(existingUser),
           };
         } else {
           return { success: false, data: "Invalid password" };

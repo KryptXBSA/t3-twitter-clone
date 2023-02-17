@@ -6,6 +6,12 @@ import GithubIcon from "../icons/github";
 import GoogleIcon from "../icons/google";
 import TwitterIcon from "../icons/twitter";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+  username: string;
+  password: string;
+};
 export default function SigninModal({
   isOpen,
   closeModal,
@@ -13,6 +19,19 @@ export default function SigninModal({
   isOpen: boolean;
   closeModal: any;
 }) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log("cred data", data);
+    signIn("credentials", { ...data });
+    reset();
+  };
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -65,8 +84,12 @@ export default function SigninModal({
                       </legend>
                     </fieldset>
 
-                    <div className=" flex flex-col gap-2">
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      className=" flex flex-col gap-2"
+                    >
                       <input
+                        {...register("username", { required: true })}
                         type="text"
                         className="block w-full rounded border border-solid border-gray-300 bg-transparent p-3 text-lg font-normal text-black focus:border-blue-500   
                                     focus:outline-none dark:border-gray-700 dark:text-white dark:focus:border-blue-500"
@@ -74,14 +97,15 @@ export default function SigninModal({
                       />
 
                       <input
-                        type="text"
+                        type="password"
+                        {...register("password", { required: true })}
                         className="block w-full rounded border border-solid border-gray-300 bg-transparent p-3 text-lg font-normal text-black focus:border-blue-500   
                                     focus:outline-none dark:border-gray-700 dark:text-white dark:focus:border-blue-500"
                         placeholder="Password"
                       />
 
                       <button
-                        type="button"
+                        type="submit"
                         className="text-md inline-flex w-full justify-center rounded-full border border-transparent bg-blue-100 px-4 py-2 font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         onClick={closeModal}
                       >
@@ -94,7 +118,7 @@ export default function SigninModal({
                           one for you.
                         </p>
                       </div>
-                    </div>
+                    </form>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

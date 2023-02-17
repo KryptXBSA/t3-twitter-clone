@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import MainContent from "../components/MainContent/MainContent";
 import SidebarLeft from "../components/SidebarLeft";
 import SidebarRight from "../components/SidebarRight/SidebarRight";
