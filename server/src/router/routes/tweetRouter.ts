@@ -1,5 +1,5 @@
 import { protectedProcedure, publicProcedure, t } from "../../trpc/trpc";
-import {  z } from "zod";
+import { z } from "zod";
 
 export const tweetRouter = t.router({
   getTweet: publicProcedure
@@ -25,6 +25,28 @@ export const tweetRouter = t.router({
       });
       return { success: true, data: JSON.stringify(tweet) };
     }),
+  getAllTweets: publicProcedure
+    .input(z.object({ id: z.string() }))
+    // .meta({
+    //   openapi: {
+    //     method: "GET",
+    //     path: "/tweet/getAll",
+    //     tags: ["tweet"],
+    //   },
+    // })
+    .query(async ({ ctx, input }) => {
+      let tweet = await ctx.prisma.tweet.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+          user: { select: { name: true, username: true } },
+          likes: true,
+          views: true,
+          replies: true,
+          retweets: true,
+        },
+      });
+      return { success: true, tweets: tweet };
+    }),
   likeTweet: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
     .output(
@@ -45,7 +67,7 @@ export const tweetRouter = t.router({
     .mutation(async ({ ctx, input }) => {
       const like = await ctx.prisma.like.create({
         data: {
-          user: { connect: { id: "1asds" } },
+          user: { connect: { id: ctx.session.id } },
           tweet: { connect: { id: input.id } },
         },
       });
@@ -106,7 +128,7 @@ export const tweetRouter = t.router({
       const reply = await ctx.prisma.reply.create({
         data: {
           body: input.body,
-          user: { connect: { id: "1asds" } },
+          user: { connect: { id: ctx.session.id } },
           tweet: { connect: { id: input.id } },
         },
       });
@@ -151,7 +173,7 @@ export const tweetRouter = t.router({
   newTweet: protectedProcedure
     .input(
       z.object({
-        body: z.number().min(1),
+        body: z.string().min(1),
       })
     )
     .output(
@@ -171,10 +193,9 @@ export const tweetRouter = t.router({
       },
     })
     .mutation(async ({ ctx, input }) => {
-        console.log("new tweet")
       let newTweet: any = await ctx.prisma.tweet.create({
         data: {
-          body: input.body.toString(),
+          body: input.body,
           userId: ctx.session.id,
         },
       });
