@@ -1,0 +1,9 @@
+
+> with-express@1.0.0 dev
+> NODE_ENV=development ./node_modules/.bin/nodemon --exec './node_modules/.bin/ts-node' src/server.ts
+
+[33m[nodemon] 2.0.20[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: ts,json[39m
+[32m[nodemon] starting `./node_modules/.bin/ts-node src/server.ts`[39m

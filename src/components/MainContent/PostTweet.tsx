@@ -21,7 +21,7 @@ export function PostTweet({ onPost }: { onPost: any }) {
     // reset();
     // }, 1000);
     onPost(data.body);
-    let result=newTweet.mutate({ body: data.body });
+    let result=newTweet.mutate({ body: 999 });
     console.log(result);
   };
   return (

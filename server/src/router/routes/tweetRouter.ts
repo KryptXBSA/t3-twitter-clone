@@ -151,7 +151,7 @@ export const tweetRouter = t.router({
   newTweet: protectedProcedure
     .input(
       z.object({
-        body: z.string().min(1),
+        body: z.number().min(1),
       })
     )
     .output(
@@ -174,7 +174,7 @@ export const tweetRouter = t.router({
         console.log("new tweet")
       let newTweet: any = await ctx.prisma.tweet.create({
         data: {
-          body: input.body,
+          body: input.body.toString(),
           userId: ctx.session.id,
         },
       });

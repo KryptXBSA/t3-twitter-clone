@@ -35,6 +35,7 @@ export const createContext = async (
   opts: trpcExpress.CreateExpressContextOptions
 ) => {
   const { req } = opts;
+  console.log("context000000000");
 
   let session: Token;
   // if (!req.headers.authorization) session = { id: "2" };
@@ -77,7 +78,7 @@ export const publicProcedure = t.procedure;
  * procedure.
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  console.log("via middleware", ctx);
+  console.log("middleware");
   if (!ctx.session || !ctx.session?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
