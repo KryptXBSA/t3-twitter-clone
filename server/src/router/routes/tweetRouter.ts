@@ -1,8 +1,8 @@
-import { t } from "../../trpc/trpc";
+import { protectedProcedure, publicProcedure, t } from "../../trpc/trpc";
 import {  z } from "zod";
 
 export const tweetRouter = t.router({
-  getTweet: t.procedure
+  getTweet: publicProcedure
     .input(z.object({ id: z.string().uuid() }))
     .output(
       z.object({
@@ -25,7 +25,7 @@ export const tweetRouter = t.router({
       });
       return { success: true, data: JSON.stringify(tweet) };
     }),
-  likeTweet: t.procedure
+  likeTweet: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
     .output(
       z.object({
@@ -55,7 +55,7 @@ export const tweetRouter = t.router({
       });
       return { success: true, data: JSON.stringify(like) };
     }),
-  viewTweet: t.procedure
+  viewTweet: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
     .output(
       z.object({
@@ -85,7 +85,7 @@ export const tweetRouter = t.router({
       });
       return { success: true, data: JSON.stringify(view) };
     }),
-  replyTweet: t.procedure
+  replyTweet: protectedProcedure
     .input(z.object({ id: z.string().uuid(), body: z.string().min(1) }))
     .output(
       z.object({
@@ -117,7 +117,7 @@ export const tweetRouter = t.router({
       return { success: true, data: JSON.stringify(reply) };
     }),
 
-  reTweet: t.procedure
+  reTweet: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
     .output(
       z.object({
@@ -148,7 +148,7 @@ export const tweetRouter = t.router({
       });
       return { success: true, data: JSON.stringify(retweet) };
     }),
-  createTweet: t.procedure
+  createTweet: protectedProcedure
     .input(
       z.object({
         body: z.string().min(1),

@@ -5,14 +5,29 @@ import * as trpcExpress from "@trpc/server/adapters/express";
 import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/prisma";
 
+type UserData = {
+  id: string;
+  username: string;
+  name: string;
+  email: string;
+  provider: string;
+  password: string;
+  imageUrl: string;
+  createdAt: string;
+};
+type Token = {
+  iat: number;
+  sub: string;
+} & UserData;
+
 type CreateContextOptions = {
-  session: { id: string };
+  session: Token;
 };
 
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    prisma
+    prisma,
   };
 };
 
@@ -21,20 +36,24 @@ export const createContext = async (
 ) => {
   const { req } = opts;
 
-  let decoded: any;
-  let session = { id: "1" };
-  if (!req.headers.authorization) session = { id: "2" };
+  let session: Token;
+  // if (!req.headers.authorization) session = { id: "2" };
   try {
-        // console.log("secc",process.env.JWT_SECRET)
-    decoded = jwt.verify(req.headers.authorization!, process.env.JWT_SECRET!);
-    // console.log(decoded);
-    session = decoded;
+    let decoded: any = jwt.verify(
+      req.headers.authorization!,
+      process.env.JWT_SECRET!
+    );
+    session = {
+      iat: decoded.iat,
+      sub: decoded.sub,
+      ...decoded.userData,
+    };
   } catch (e) {
     // console.log("jwt_decode err", e);
   }
 
   return createInnerTRPCContext({
-    session,
+    session: session!,
   });
 };
 
@@ -57,7 +76,7 @@ export const publicProcedure = t.procedure;
  * procedure.
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session) {
+  if (!ctx.session || !ctx.session?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

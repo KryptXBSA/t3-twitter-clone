@@ -1,12 +1,13 @@
 import React from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { trpc } from "../../utils/trpc";
 
 type Inputs = {
   body: string;
 };
 
-export function PostTweet({onPost}:{onPost:any}) {
+export function PostTweet({ onPost }: { onPost: any }) {
   const {
     register,
     handleSubmit,
@@ -14,12 +15,14 @@ export function PostTweet({onPost}:{onPost:any}) {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
+  let newTweet = trpc.tweet.createTweet.useMutation();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     // setTimeout(() => {
-       // reset();
+    // reset();
     // }, 1000);
-        onPost(data.body)
-    console.log(data);
+    onPost(data.body);
+    let result=newTweet.mutate({ body: data.body });
+    console.log(result);
   };
   return (
     <form
