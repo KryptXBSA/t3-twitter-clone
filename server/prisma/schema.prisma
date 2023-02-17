@@ -16,7 +16,7 @@ model Example {
 model User {
   id        String    @unique @default(uuid())
   username  String    @unique
-  name      String
+  name      String?
   email     String? @unique
   provider  String
   password  String?

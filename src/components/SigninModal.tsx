@@ -53,7 +53,7 @@ export default function SigninModal({
                       {providers.map((p) => (
                         <SigninBtn
                           key={p.provider}
-                          onClick={()=>signIn("github")}
+                          onClick={(p: string) => signIn(p)}
                           {...p}
                         />
                       ))}
@@ -106,27 +106,41 @@ export default function SigninModal({
   );
 }
 let providers = [
-  { provider: "Github", icon: <GithubIcon className="w-7" /> },
-  { provider: "Google", icon: <GoogleIcon className="w-7" /> },
-  { provider: "Discord", icon: <DiscordIcon className="w-7" /> },
+  {
+    provider: "github",
+    providerText: "Github",
+    icon: <GithubIcon className="w-7" />,
+  },
+  {
+    provider: "google",
+    providerText: "Google",
+    icon: <GoogleIcon className="w-7" />,
+  },
+  {
+    provider: "discord",
+    providerText: "Discord",
+    icon: <DiscordIcon className="w-7" />,
+  },
 ];
 
 function SigninBtn({
   icon,
   onClick,
   provider,
+  providerText,
 }: {
   onClick: any;
   provider: string;
+  providerText: string;
   icon: React.ReactNode;
 }) {
   return (
     <button
       type="button"
       className="text-md inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-blue-100 px-4 py-2 font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-      onClick={onClick}
+      onClick={() => onClick(provider)}
     >
-      {icon} Sign in with {provider}
+      {icon} Sign in with {providerText}
     </button>
   );
 }

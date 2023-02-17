@@ -25,12 +25,12 @@ export const createContext = async (
   let session = { id: "1" };
   if (!req.headers.authorization) session = { id: "2" };
   try {
-        console.log("secc",process.env.JWT_SECRET)
+        // console.log("secc",process.env.JWT_SECRET)
     decoded = jwt.verify(req.headers.authorization!, process.env.JWT_SECRET!);
-    console.log(decoded);
+    // console.log(decoded);
     session = decoded;
   } catch (e) {
-    console.log("jwt_decode err", e);
+    // console.log("jwt_decode err", e);
   }
 
   return createInnerTRPCContext({

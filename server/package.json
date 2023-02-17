@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV = 'development' ts-node-dev --respawn --transpile-only --exit-child ./src/server.ts",
-    "start": " NODE_ENV = 'production' bun run ./src/server.ts"
+    "dev": " ts-node-dev --respawn --transpile-only --exit-child ./src/server.ts",
+    "start": " bun run ./src/server.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.10.1",

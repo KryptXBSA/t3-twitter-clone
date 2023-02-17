@@ -1,7 +1,6 @@
 import { t } from "../../trpc/trpc";
 import bcrypt from "bcrypt";
 import { z } from "zod";
-import { TRPCError } from "@trpc/server";
 
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
@@ -14,7 +13,7 @@ export const userRouter = t.router({
     .input(
       z
         .object({
-          name: z.string().min(3),
+          name: z.string().min(3).nullish(),
           username: z.string(),
           password: z.string().nullish(),
           provider: Provider,
@@ -56,7 +55,7 @@ export const userRouter = t.router({
     .output(
       z.object({
         success: z.boolean(),
-        message: z.string(),
+        data: z.string(),
         token: z.string().nullish(),
         code: z.number().nullish(),
       })
@@ -74,7 +73,7 @@ export const userRouter = t.router({
       // credentials are only username and password
       // if (input.provider === "credentials" && input.email)
       //   throw new TRPCError({
-      //     message: "Invalid request",
+      //     data: "Invalid request",
       //     code: "BAD_REQUEST",
       //   });
       let existingUser = await ctx.prisma.user.findFirst({
@@ -92,7 +91,7 @@ export const userRouter = t.router({
         });
         return {
           success: true,
-          message: "New user via" + input.provider,
+          data: "New user via" + input.provider,
           token: JSON.stringify(user),
         };
       }
@@ -112,7 +111,7 @@ export const userRouter = t.router({
 
         return {
           success: true,
-          message: "signup",
+          data: "signup",
           token: JSON.stringify(user),
         };
       }
@@ -121,7 +120,7 @@ export const userRouter = t.router({
         if (input.provider !== "credentials") {
           return {
             success: true,
-            message: "login via " + input.provider,
+            data: "login via " + input.provider,
           };
         }
         if (
@@ -131,17 +130,17 @@ export const userRouter = t.router({
         ) {
           // Create a new session for the user
           // let session = await createSession(existingUser, ctx);
-          // return { success: true, message: JSON.stringify(session) };
+          // return { success: true, data: JSON.stringify(session) };
           return {
             success: true,
-            message: "login",
+            data: "login",
             token: JSON.stringify(existingUser),
           };
         } else {
-          return { success: false, message: "Invalid password" };
+          return { success: false, data: "Invalid password" };
         }
       }
 
-      return { success: true, message: "no" };
+      return { success: true, data: "no" };
     }),
 });

@@ -1,19 +1,36 @@
 import { t } from "../../trpc/trpc";
-import bcrypt from "bcrypt";
-import { quotelessJson, z } from "zod";
-import { TRPCError } from "@trpc/server";
+import {  z } from "zod";
 
 export const tweetRouter = t.router({
-  getTweet: t.procedure.input(z.string()).query((req) => {
-    req.input; // string
-    return { id: req.input, name: "Bilbo" };
-  }),
+  getTweet: t.procedure
+    .input(z.object({ id: z.string().uuid() }))
+    .output(
+      z.object({
+        success: z.boolean(),
+        data: z.string(),
+        token: z.string().nullish(),
+        code: z.number().nullish(),
+      })
+    )
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/tweet/get",
+        tags: ["tweet"],
+      },
+    })
+    .query(async ({ ctx, input }) => {
+      let tweet = await ctx.prisma.tweet.findUnique({
+        where: { id: input.id },
+      });
+      return { success: true, data: JSON.stringify(tweet) };
+    }),
   likeTweet: t.procedure
     .input(z.object({ id: z.string().uuid() }))
     .output(
       z.object({
         success: z.boolean(),
-        message: z.string(),
+        data: z.string(),
         token: z.string().nullish(),
         code: z.number().nullish(),
       })
@@ -36,14 +53,14 @@ export const tweetRouter = t.router({
         where: { id: input.id },
         data: { likeCount: { increment: 1 } },
       });
-      return { success: true, message: JSON.stringify(like) };
+      return { success: true, data: JSON.stringify(like) };
     }),
   viewTweet: t.procedure
     .input(z.object({ id: z.string().uuid() }))
     .output(
       z.object({
         success: z.boolean(),
-        message: z.string(),
+        data: z.string(),
         token: z.string().nullish(),
         code: z.number().nullish(),
       })
@@ -66,14 +83,14 @@ export const tweetRouter = t.router({
         where: { id: input.id },
         data: { viewCount: { increment: 1 } },
       });
-      return { success: true, message: JSON.stringify(view) };
+      return { success: true, data: JSON.stringify(view) };
     }),
   replyTweet: t.procedure
     .input(z.object({ id: z.string().uuid(), body: z.string().min(1) }))
     .output(
       z.object({
         success: z.boolean(),
-        message: z.string(),
+        data: z.string(),
         token: z.string().nullish(),
         code: z.number().nullish(),
       })
@@ -97,7 +114,7 @@ export const tweetRouter = t.router({
         where: { id: input.id },
         data: { replyCount: { increment: 1 } },
       });
-      return { success: true, message: JSON.stringify(reply) };
+      return { success: true, data: JSON.stringify(reply) };
     }),
 
   reTweet: t.procedure
@@ -105,7 +122,7 @@ export const tweetRouter = t.router({
     .output(
       z.object({
         success: z.boolean(),
-        message: z.string(),
+        data: z.string(),
         token: z.string().nullish(),
         code: z.number().nullish(),
       })
@@ -129,7 +146,7 @@ export const tweetRouter = t.router({
         where: { id: input.id },
         data: { retweetCount: { increment: 1 } },
       });
-      return { success: true, message: JSON.stringify(retweet) };
+      return { success: true, data: JSON.stringify(retweet) };
     }),
   createTweet: t.procedure
     .input(
@@ -140,7 +157,7 @@ export const tweetRouter = t.router({
     .output(
       z.object({
         success: z.boolean(),
-        message: z.string(),
+        data: z.string(),
         token: z.string().nullish(),
         code: z.number().nullish(),
       })
@@ -160,6 +177,6 @@ export const tweetRouter = t.router({
           userId: ctx.session.id,
         },
       });
-      return { success: true, message: JSON.stringify(newTweet) };
+      return { success: true, data: JSON.stringify(newTweet) };
     }),
 });

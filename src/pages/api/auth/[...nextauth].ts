@@ -1,10 +1,32 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
-import { prisma } from "../../../../server/src/prisma/prisma";
+import axios from "axios";
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      username: string;
+      name: string;
+      email: string;
+      provider: string;
+      password: string;
+      imageUrl: string;
+      createdAt: string;
+    };
+  }
+}
+
+declare module "next-auth/jwt" {
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+  interface JWT {
+    userId?: string;
+  }
+}
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const providers = getProviders();
   return await NextAuth(req, res, {
@@ -24,25 +46,53 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       async session({ session, token }) {
         return session;
       },
-      async signIn({ user, account, profile, email, credentials }) {
-
-        // let p: any = account?.provider;
-        // let result = await prisma.user.create({
-        //   data: { name: user.name!, username: user.name!, provider: p },
-        // });
-        // console.log(result);
-        return true;
+      async signIn(p) {
+        console.log("signin from", p);
+        let body = {};
+        if (!p.credentials) {
+          let provider = p.account?.provider;
+          let username = p.user.name;
+          let email = p.user.email;
+          body = {
+            provider,
+            username,
+            email,
+          };
+        } else {
+          body = {
+            provider: "credentials",
+            username: p.credentials.username,
+            password: p.credentials.password,
+          };
+        }
+        console.log("bodyyyy", body);
+        try {
+          const { data } = await axios.post(
+            process.env.API_URL + "/auth/login",
+            body
+            // {
+            //   headers: {
+            //     "Content-Type": "application/x-www-form-urlencoded",
+            //   },
+            // }
+          );
+          console.log("success", data);
+        } catch (e: any) {
+          console.log("error", e);
+        }
+        return false;
       },
     },
     jwt: {
-      async encode(params) {
+      async encode(p) {
         // @ts-ignore
-        let token = jwt.sign(params.token, params.secret);
+        let token = jwt.sign(p.token, p.secret);
+
         return token;
       },
-      async decode(params) {
+      async decode(p) {
         // @ts-ignore
-        let decoded = jwt.verify(params.token, params.secret);
+        let decoded = jwt.verify(p.token, p.secret);
         return decoded;
       },
     },
@@ -57,7 +107,12 @@ function getProviders() {
       // @ts-ignore
       clientSecret: process.env.GITHUB_SECRET,
     }),
-
+    GoogleProvider({
+      // @ts-ignore
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      // @ts-ignore
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       id: "credentials",
