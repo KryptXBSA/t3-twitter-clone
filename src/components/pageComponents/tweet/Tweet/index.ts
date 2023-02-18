@@ -1,2 +1,2 @@
-import { Tweet } from "./Tweet";
-export { Tweet };
+import { TweetDetails } from "./TweetDetails";
+export { TweetDetails  };

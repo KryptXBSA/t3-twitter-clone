@@ -12,6 +12,8 @@ import Link from "next/link";
 import { Avatar } from "./Avatar";
 import { useSession } from "next-auth/react";
 import NextLink from "@components/NextLink";
+import ReactTextareaAutosize from "react-textarea-autosize";
+import { TweetReply } from "@components/TweetReply";
 
 export const variants: Variants = {
   initial: { opacity: 0 },
@@ -24,7 +26,7 @@ export type TweetProps = Tweet & {
   retweets: Retweet[];
   replies: Reply[];
 };
-export function Tweet({
+export function TweetDetails({
   reply,
   tweet,
 }: {
@@ -32,7 +34,7 @@ export function Tweet({
   tweet: TweetProps;
 }) {
   return (
-    <div className="fade-in flex cursor-pointer   flex-col transition-all  ease-in-out">
+    <div className="fade-in flex cursor-pointer flex-col   transition-all  ease-in-out">
       <div className="flex   space-x-2   ">
         <div className=" flex min-h-full flex-col items-center ">
           <Avatar avatarImage={tweet.user.imageUrl!} />
@@ -48,23 +50,42 @@ export function Tweet({
       </div>
 
       <Body {...tweet} />
-      <Body {...tweet} />
-      <div className="mt-2 flex">
-        {reply ? (
-          <p className="text-secondary  cursor-text">
-            Replying to
-            <Link
-              className="text-main-accent ml-1"
-              href={`/${tweet.user.username}`}
-            >
-              @{tweet.user.username}
-            </Link>
-          </p>
-        ) : (
-          <div className="w-full">
-            <TweetActions {...tweet} />
+
+      <div className="my-2 flex  flex-col space-y-4  ">
+        <p className="">{`10:58 PM · Feb 17, 2023
+·
+19.6K
+ Views`}</p>
+        <p className="">{`20
+ Retweets
+2
+ Quote Tweets
+334
+ Likes`}</p>
+        <div className="w-full">
+          <TweetActions {...tweet} />
+        </div>
+
+        <div className="main-border flex items-center gap-6 border-b">
+          <div className="">
+            <Avatar avatarImage="" />
           </div>
-        )}
+
+          <ReactTextareaAutosize
+            maxRows={9}
+            rows={4}
+            placeholder="Tweet your reply"
+            className="flex h-20 w-full resize-none items-center justify-center border-0 bg-transparent text-gray-900 placeholder-gray-400  focus:outline-none dark:text-white"
+          />
+
+          <button
+            type="submit"
+            className="ml-auto mr-1 rounded-full bg-blue-500 py-1 px-4 text-white hover:bg-blue-500"
+          >
+            <span className="text-sm font-semibold">Reply</span>
+          </button>
+        </div>
+        <TweetReply tweet={tweet} />
       </div>
     </div>
   );

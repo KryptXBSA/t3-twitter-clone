@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "@components/Spinner";
-import { Tweet } from "./Tweet";
+import { TweetDetails } from "./Tweet";
 import { trpc } from "@utils/trpc";
 import { PageHead } from "@components/PageHead";
 
@@ -16,11 +16,11 @@ export default function TweetContent({ tweetId }: { tweetId: string }) {
   // }, [allTweets.data]);
   //
   return (
-    <div className="main-border h-screen border-b border-l border-r sm:w-[700px]">
+    <div className="main-border h-screen border-b border-l border-r sm:w-[600px]">
       <PageHead backBtn name="Tweet" />
       {data?.tweet ? (
         <div className="">
-          <Tweet tweet={data?.tweet!} />
+          <TweetDetails tweet={data?.tweet!} />
         </div>
       ) : (
         <Spinner />

@@ -15,7 +15,7 @@ export const tweetRouter = t.router({
           retweets: true,
         },
       });
-      return { success: true,  tweet };
+      return { success: true, tweet };
     }),
   getAllTweets: publicProcedure
     .input(z.object({ id: z.string() }))
@@ -185,13 +185,18 @@ export const tweetRouter = t.router({
       },
     })
     .mutation(async ({ ctx, input }) => {
-        console.log("input",input)
+      console.log("input", input);
       let newTweet: any = await ctx.prisma.tweet.create({
         data: {
-          body: input.body,
+          body: limitTextLines(input.body),
           userId: ctx.session.id,
         },
       });
       return { success: true, data: JSON.stringify(newTweet) };
     }),
 });
+
+function limitTextLines(text: string) {
+const newText = text.replace(/(\n{3,})/g, "\n\n");
+  return newText;
+}
