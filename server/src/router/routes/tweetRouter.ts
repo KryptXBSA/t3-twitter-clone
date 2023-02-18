@@ -7,6 +7,13 @@ export const tweetRouter = t.router({
     .query(async ({ ctx, input }) => {
       let tweet = await ctx.prisma.tweet.findUnique({
         where: { id: input.id },
+        include: {
+          user: true,
+          likes: true,
+          // views: true,
+          replies: true,
+          retweets: true,
+        },
       });
       return { success: true,  tweet };
     }),
@@ -178,6 +185,7 @@ export const tweetRouter = t.router({
       },
     })
     .mutation(async ({ ctx, input }) => {
+        console.log("input",input)
       let newTweet: any = await ctx.prisma.tweet.create({
         data: {
           body: input.body,
