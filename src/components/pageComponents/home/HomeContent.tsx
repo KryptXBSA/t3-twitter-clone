@@ -24,7 +24,7 @@ export default function HomeContent() {
     // setTweets([newTweet, ...tweets]);
   }
   return (
-    <div className="h-screen sm:w-[700px]">
+    <div className="main-content">
       <div className="main-border h-full border-b border-l border-r sm:w-[700px]">
         <PageHead name="Home" />
         <TweetInput onPost={onPost} />

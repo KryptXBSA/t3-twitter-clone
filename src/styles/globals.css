@@ -45,3 +45,6 @@ button {
 .text-tweet {
   @apply text-slate-900 dark:text-slate-300;
 }
+.main-content {
+  @apply h-screen sm:w-[700px];
+}
