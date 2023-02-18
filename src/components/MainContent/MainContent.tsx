@@ -5,7 +5,7 @@ import { NewTweets } from "./NewTweets";
 import { PostTweet } from "./PostTweet";
 import { Spinner } from "./Spinner";
 import { TimelineNotification } from "./TimelineNotification";
-import { Tweet } from "./Tweet";
+import { Tweet } from "@components/Tweet/Tweet";
 import { trpc } from "../../utils/trpc";
 
 export default function MainContent() {
@@ -36,11 +36,11 @@ export default function MainContent() {
             <PostTweet onPost={onPost} />
             <NewTweets />
 
-            <AnimatePresence initial={true}>
                 {tweets?.map((t) => (
-                    <Tweet key={t.id} {...t} />
+                <div className="border border-t-0 border-gray-500">
+                    <Tweet key={t.id} tweet={t} />
+                </div>
                 ))}
-            </AnimatePresence>
             <TimelineNotification />
             <Spinner />
         </div>

@@ -3,8 +3,8 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import SigninModal from "../components/SigninModal";
-import TwitterIcon from "../icons/twitter";
+import SigninModal from "@components/modals/SigninModal";
+import TwitterIcon from "@icons/social/twitter";
 import { trpc } from "../utils/trpc";
 
 const Auth = ({ children }: { children: ReactNode }) => {

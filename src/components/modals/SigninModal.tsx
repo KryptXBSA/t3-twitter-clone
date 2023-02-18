@@ -1,10 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { signIn } from "next-auth/react";
 import { Fragment } from "react";
-import DiscordIcon from "../icons/discord";
-import GithubIcon from "../icons/github";
-import GoogleIcon from "../icons/google";
-import TwitterIcon from "../icons/twitter";
+import DiscordIcon from "@icons/social/discord";
+import GithubIcon from "@icons/social/github";
+import GoogleIcon from "@icons/social/google";
+import TwitterIcon from "@icons/social/twitter";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 

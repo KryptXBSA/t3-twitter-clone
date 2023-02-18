@@ -19,6 +19,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
+    "baseUrl": "src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@icons/*": ["icons/*"],
+      "@utils/*": ["./utils/*"],
+    },
     "incremental": true
   },
   "include": [
