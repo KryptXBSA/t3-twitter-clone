@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { CustomTimeline } from "./CustomTimeline";
 import { NewTweets } from "./NewTweets";
-import { PostTweet } from "./PostTweet";
+import { TweetInput } from "@components/inputs/TweetInput";
 import { Spinner } from "./Spinner";
 import { TimelineNotification } from "./TimelineNotification";
 import { Tweet } from "@components/Tweet/Tweet";
@@ -33,11 +33,11 @@ export default function MainContent() {
                 </h2>
                 <CustomTimeline />
             </div>
-            <PostTweet onPost={onPost} />
+            <TweetInput onPost={onPost} />
             <NewTweets />
 
                 {tweets?.map((t) => (
-                <div className="border border-t-0 border-gray-500">
+                <div className="border p-4 border-t-0 border-gray-500">
                     <Tweet key={t.id} tweet={t} />
                 </div>
                 ))}

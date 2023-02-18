@@ -2,12 +2,14 @@ import React from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { trpc } from "../../utils/trpc";
+import { Avatar } from "@components/Tweet/Avatar";
+import { useSession } from "next-auth/react";
 
 type Inputs = {
     body: string;
 };
 
-export function PostTweet({ onPost }: { onPost: any }) {
+export function TweetInput({ onPost }: { onPost: any }) {
     const {
         register,
         handleSubmit,
@@ -15,6 +17,7 @@ export function PostTweet({ onPost }: { onPost: any }) {
         reset,
         formState: { errors },
     } = useForm<Inputs>();
+    let { data } = useSession();
     let newTweet = trpc.tweet.newTweet.useMutation();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         onPost(data.body);
@@ -25,16 +28,10 @@ export function PostTweet({ onPost }: { onPost: any }) {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="border-b border-l border-r border-gray-200 pb-4 dark:border-dim-200"
+            className="dark:border-dim-200 border-b border-l border-r border-gray-200 pb-4"
         >
             <div className="flex flex-shrink-0 p-4 pb-0">
-                <div className="items-top flex w-12">
-                    <img
-                        className="inline-block h-10 w-10 rounded-full"
-                        src="https://pbs.twimg.com/profile_images/1308769664240160770/AfgzWVE7_normal.jpg"
-                        alt=""
-                    />
-                </div>
+                <Avatar avatarImage={data?.userData.imageUrl!} />
                 <div className="w-full p-2">
                     <ReactTextareaAutosize
                         {...register("body", { required: true })}
@@ -45,10 +42,9 @@ export function PostTweet({ onPost }: { onPost: any }) {
                 </div>
             </div>
             <div className="items-top flex w-full p-2 pl-14 text-white">
-                <OtherIcons />
                 <a
                     href="#"
-                    className="rounded-full p-2 text-blue-400 hover:bg-blue-50 dark:hover:bg-dim-800"
+                    className="dark:hover:bg-dim-800 rounded-full p-2 text-blue-400 hover:bg-blue-50"
                 >
                     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                         <g>
@@ -57,6 +53,7 @@ export function PostTweet({ onPost }: { onPost: any }) {
                         </g>
                     </svg>
                 </a>
+                <OtherIcons />
                 <button
                     type="submit"
                     className="ml-auto mr-1 rounded-full bg-blue-400 py-1 px-4 text-white hover:bg-blue-500"
@@ -73,7 +70,7 @@ function OtherIcons() {
         <>
             <a
                 href="#"
-                className="rounded-full p-2 text-blue-400 hover:bg-blue-50 dark:hover:bg-dim-800"
+                className="dark:hover:bg-dim-800 rounded-full p-2 text-blue-400 hover:bg-blue-50"
             >
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                     <g>
@@ -84,7 +81,7 @@ function OtherIcons() {
             </a>
             <a
                 href="#"
-                className="rounded-full p-2 text-blue-400 hover:bg-blue-50 dark:hover:bg-dim-800"
+                className="dark:hover:bg-dim-800 rounded-full p-2 text-blue-400 hover:bg-blue-50"
             >
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                     <g>
@@ -94,7 +91,7 @@ function OtherIcons() {
             </a>
             <a
                 href="#"
-                className="rounded-full p-2 text-blue-400 hover:bg-blue-50 dark:hover:bg-dim-800"
+                className="dark:hover:bg-dim-800 rounded-full p-2 text-blue-400 hover:bg-blue-50"
             >
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                     <g>
@@ -107,7 +104,7 @@ function OtherIcons() {
             </a>
             <a
                 href="#"
-                className="rounded-full p-2 text-blue-400 hover:bg-blue-50 dark:hover:bg-dim-800"
+                className="dark:hover:bg-dim-800 rounded-full p-2 text-blue-400 hover:bg-blue-50"
             >
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                     <g>

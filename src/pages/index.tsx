@@ -15,7 +15,7 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="mx-auto ">
-                <div className="flex flex-row justify-center">
+                <div className="flex  flex-row justify-center">
                     <SidebarLeft />
                     <MainContent />
                     <SidebarRight />

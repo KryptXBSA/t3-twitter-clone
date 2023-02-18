@@ -9,6 +9,8 @@ import { TweetMetadata } from "./TweetMetadata";
 import { Body } from "./Body";
 import { TweetActions } from "./TweetActions";
 import Link from "next/link";
+import { Avatar } from "./Avatar";
+import { useSession } from "next-auth/react";
 
 export const variants: Variants = {
     initial: { opacity: 0 },
@@ -29,17 +31,15 @@ export function Tweet({
     tweet: TweetProps;
 }) {
     return (
-        <motion.article
-            {...(true ? { ...variants, layout: "position" } : {})}
-            animate={{
-                ...variants.animate,
-            }}
-            className="dark:hover:bg-dim-300 flex cursor-pointer flex-col pb-4 transition-all  ease-in-out"
-        >
-            <div className="p-4 pb-0">
-                <TweetMetadata {...tweet} />
+        <div className="flex cursor-pointer space-x-2  transition-all  ease-in-out">
+            <div className=" flex min-h-full flex-col items-center ">
+                <Avatar avatarImage={tweet.user.imageUrl!} />
+                {reply && (
+                    <div className="hover-animation  w-0.5 h-[80%]  bg-light-line-reply dark:bg-dark-line-reply"></div>
+                )}
             </div>
-            <div style={{ paddingTop: -10 }} className="pl-20 ">
+            <div className="flex flex-col">
+                <TweetMetadata {...tweet} />
                 <Body {...tweet} />
                 <div className="flex">
                     {reply ? (
@@ -59,6 +59,6 @@ export function Tweet({
                     )}
                 </div>
             </div>
-        </motion.article>
+        </div>
     );
 }

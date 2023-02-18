@@ -5,17 +5,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import axios from "axios";
+import { UserData } from "@types";
 
-type UserData = {
-  id: string;
-  username: string;
-  name: string;
-  email: string;
-  provider: string;
-  password: string;
-  imageUrl: string;
-  createdAt: string;
-};
 
 declare module "next-auth" {
   interface Session {
