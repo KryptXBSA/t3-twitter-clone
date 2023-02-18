@@ -28,7 +28,7 @@ export function TweetInput({ onPost }: { onPost: any }) {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="dark:border-dim-200 border-b border-l border-r border-gray-200 pb-4"
+            className="order-b border-l border-r main-border pb-4"
         >
             <div className="flex flex-shrink-0 p-4 pb-0">
                 <Avatar avatarImage={data?.userData.imageUrl!} />

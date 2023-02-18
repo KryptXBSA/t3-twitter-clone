@@ -2,7 +2,7 @@ import React from "react";
 
 export function Spinner() {
     return (
-        <div className="flex items-center justify-center border-b border-l border-r border-gray-200 p-4 dark:border-gray-700">
+        <div className="flex items-center justify-center p-4 ">
             <svg className="h-8 w-8 animate-spin-fast">
                 <circle
                     cx={16}

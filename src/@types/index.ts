@@ -9,3 +9,4 @@ export type UserData = {
   imageUrl: string;
   createdAt: string;
 };
+

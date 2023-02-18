@@ -153,7 +153,7 @@ export default function SidebarLeft() {
                         <span className="text-md hidden font-bold xl:block">Tweet</span>
                     </a>
                 </nav>
-                <div className="duration-350 dark:hover:bg-dim-800 mx-auto mt-auto mb-5 mb-2 flex w-14 cursor-pointer flex-row justify-between rounded-full p-2 transition ease-in-out hover:bg-blue-50 xl:w-full">
+                <div className="duration-350 mx-auto mt-auto mb-5 flex w-14 cursor-pointer flex-row justify-between rounded-full p-2 transition ease-in-out hover:bg-blue-50 xl:w-full">
                     <div className="flex flex-row">
                         <Avatar avatarImage={session.imageUrl} />
                         <div className="ml-2 hidden xl:block">

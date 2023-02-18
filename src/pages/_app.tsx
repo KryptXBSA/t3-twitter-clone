@@ -4,7 +4,7 @@ import Auth from "../Auth/Auth";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import "../styles/globals.scss";
+import "../styles/globals.css";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import Cookies from "js-cookie";

@@ -48,7 +48,7 @@ export default function ReplyModal({
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed  inset-0 bg-black bg-opacity-25" />
+                        <div className="fixed  inset-0 bg-gray-500 bg-opacity-25" />
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
@@ -62,7 +62,7 @@ export default function ReplyModal({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="flex  max-w-xl transform flex-col  content-center items-center justify-center gap-9 overflow-hidden rounded-2xl bg-white p-6 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white">
+                                <Dialog.Panel className="flex  w-full max-w-[600px] transform flex-col  justify-center gap-9 overflow-hidden rounded-2xl bg-white p-6 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white">
                                     <div className="flex flex-col">
                                         <Tweet reply={true} tweet={tweet} />
                                         <div className="flex  ">

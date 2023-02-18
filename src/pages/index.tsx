@@ -1,10 +1,9 @@
+import HomeContent from "@components/pages/Home";
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import MainContent from "../components/MainContent/MainContent";
 import SidebarLeft from "../components/SidebarLeft";
 import SidebarRight from "../components/SidebarRight/SidebarRight";
-import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
     return (
@@ -15,9 +14,9 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="mx-auto ">
-                <div className="flex  flex-row justify-center">
+                <div className="flex bg-r  flex-row justify-center">
                     <SidebarLeft />
-                    <MainContent />
+                    <HomeContent />
                     <SidebarRight />
                 </div>
             </div>

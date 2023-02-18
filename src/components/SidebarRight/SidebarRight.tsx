@@ -23,18 +23,18 @@ export default function SidebarRight() {
                   </svg>
                 </div>
                 <input
-                  className="flex h-9 w-full items-center rounded-full border border-gray-200 bg-gray-200 pl-12 text-sm font-normal text-gray-100 shadow focus:border focus:border-blue-200 focus:bg-gray-100 focus:outline-none dark:border-dim-400 dark:bg-dim-400 dark:focus:bg-dim-900"
+                  className="flex h-9 w-full items-center rounded-full border border-gray-200 pl-12 text-sm font-normal text-gray-100 shadow focus:border focus:border-blue-200 focus:bg-gray-100 focus:outline-none dark:border-dim-400 "
                   placeholder="Search Twitter"
                 />
               </div>
               {/* /Search */}
               {/* What’s happening */}
-              <div className="m-2 rounded-2xl bg-gray-50 dark:bg-dim-700">
+              <div className="m-2 rounded-2xl bg-main-background ">
                 <h1 className="text-md border-b border-gray-200 p-3 font-bold text-gray-900 dark:border-dim-200 dark:text-white">
                   What’s happening
                 </h1>
                 {/* Trending Topic */}
-                <div className="duration-350 cursor-pointer border-b border-gray-200 p-3 text-sm font-normal text-blue-400 transition ease-in-out hover:bg-gray-100 dark:border-dim-200 dark:hover:bg-dim-300">
+                <div className="duration-350 cursor-pointer border-b border-gray-200 p-3 text-sm font-normal text-blue-400 transition ease-in-out hover:bg-gray-100 dark:border-dim-200 ">
                   <h2 className="text-md font-bold text-gray-800 dark:text-white">
                     #FreePS5Monday
                   </h2>
@@ -42,7 +42,7 @@ export default function SidebarRight() {
                 </div>
                 {/* /Trending Topic */}
                 {/* Trending Topic */}
-                <div className="duration-350 cursor-pointer border-b border-gray-200 p-3 text-sm font-normal text-blue-400 transition ease-in-out hover:bg-gray-100 dark:border-dim-200 dark:hover:bg-dim-300">
+                <div className="duration-350 cursor-pointer border-b border-gray-200 p-3 text-sm font-normal text-blue-400 transition ease-in-out hover:bg-gray-100 dark:border-dim-200 ">
                   <h2 className="text-md font-bold text-gray-800 dark:text-white">
                     #BTSonGMA
                   </h2>
@@ -63,7 +63,7 @@ export default function SidebarRight() {
               </div>
               {/* /What’s happening */}
               {/* Who to follow */}
-              <div className="m-2 rounded-2xl bg-gray-50 dark:bg-dim-700">
+              <div className="m-2 rounded-2xl ">
                 <h1 className="text-md border-b border-gray-200 p-3 font-bold text-gray-900 dark:border-dim-200 dark:text-white">
                   Who to follow
                 </h1>

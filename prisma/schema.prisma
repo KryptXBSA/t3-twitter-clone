@@ -8,47 +8,48 @@ datasource db {
 }
 
 model User {
-  id        String    @unique @default(uuid())
-  username  String    @unique
-  name      String?
-  email     String? @unique
-  provider  String
-  password  String?
-  imageUrl  String?
-  createdAt DateTime  @default(now())
-  tweets    Tweet[]
-  likes     Like[]
-  retweets  Retweet[]
-  replies   Reply[]
-  views     View[]
+  id           String    @unique @default(uuid())
+  username     String    @unique
+  name         String?
+  email        String?   @unique
+  provider     String
+  verified     Boolean   @default(false)
+  verifiedDate DateTime?
+  password     String?
+  imageUrl     String?
+  createdAt    DateTime  @default(now())
+  tweets       Tweet[]
+  likes        Like[]
+  retweets     Retweet[]
+  replies      Reply[]
+  views        View[]
 }
 
 model Tweet {
-  id            String    @unique @default(uuid())
-  userId        String
-  body          String
-  images        String[]
+  id           String    @unique @default(uuid())
+  userId       String
+  body         String @db.Text
+  images       String[]
   likeCount    Int       @default(0)
   retweetCount Int       @default(0)
-  replyCount  Int       @default(0)
+  replyCount   Int       @default(0)
   viewCount    Int       @default(0)
-  createdAt     DateTime  @default(now())
-  user          User      @relation(fields: [userId], references: [id])
-  likes         Like[]
-  retweets      Retweet[]
-  replies       Reply[]
-  views         View[]
+  createdAt    DateTime  @default(now())
+  user         User      @relation(fields: [userId], references: [id])
+  likes        Like[]
+  retweets     Retweet[]
+  replies      Reply[]
+  views        View[]
 }
 
 model Retweet {
-  id        String  @unique @default(uuid())
-  tweetId   String
-  userId    String
+  id          String   @unique @default(uuid())
+  tweetId     String
+  userId      String
   retweetDate DateTime @default(now())
-  tweet     Tweet   @relation(fields: [tweetId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  tweet       Tweet    @relation(fields: [tweetId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 }
-
 
 model Like {
   id        String   @unique @default(uuid())
@@ -59,14 +60,13 @@ model Like {
   createdAt DateTime @default(now())
 }
 
-
 model Reply {
   id        String   @unique @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   tweet     Tweet    @relation(fields: [tweetId], references: [id])
   tweetId   String
-  body      String
+  body      String @db.Text
   images    String[]
   createdAt DateTime @default(now())
 }

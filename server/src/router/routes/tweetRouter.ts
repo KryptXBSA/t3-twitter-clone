@@ -4,26 +4,11 @@ import { z } from "zod";
 export const tweetRouter = t.router({
   getTweet: publicProcedure
     .input(z.object({ id: z.string().uuid() }))
-    .output(
-      z.object({
-        success: z.boolean(),
-        data: z.string(),
-        token: z.string().nullish(),
-        code: z.number().nullish(),
-      })
-    )
-    .meta({
-      openapi: {
-        method: "GET",
-        path: "/tweet/get",
-        tags: ["tweet"],
-      },
-    })
     .query(async ({ ctx, input }) => {
       let tweet = await ctx.prisma.tweet.findUnique({
         where: { id: input.id },
       });
-      return { success: true, data: JSON.stringify(tweet) };
+      return { success: true,  tweet };
     }),
   getAllTweets: publicProcedure
     .input(z.object({ id: z.string() }))
@@ -38,9 +23,9 @@ export const tweetRouter = t.router({
       let tweet = await ctx.prisma.tweet.findMany({
         orderBy: { createdAt: "desc" },
         include: {
-          user: { select: { name: true, username: true } },
+          user: true,
           likes: true,
-          views: true,
+          // views: true,
           replies: true,
           retweets: true,
         },

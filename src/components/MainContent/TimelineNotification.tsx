@@ -2,8 +2,8 @@ import React from "react";
 
 export function TimelineNotification() {
     return (
-        <div className="border-b border-l border-r border-gray-200 bg-gray-50 py-2 dark:border-dim-200 dark:bg-dim-300">
-            <div className="duration-350 flex cursor-pointer flex-col items-center justify-center border-b border-t border-gray-200 bg-white p-6 text-center text-sm text-blue-400 transition ease-in-out hover:bg-gray-50 dark:border-dim-200 dark:bg-dim-900 dark:hover:bg-dim-300">
+        <div className="border-b border-l border-r  py-2 main-border ">
+            <div className="duration-350 flex cursor-pointer flex-col items-center justify-center border-b border-t main-border  p-6 text-center text-sm text-blue-400 transition ease-in-out    ">
                 <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
                     Customize your view
                 </h1>

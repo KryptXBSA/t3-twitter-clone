@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
-import { CustomTimeline } from "./CustomTimeline";
-import { NewTweets } from "@components/NewTweets";
 import { TweetInput } from "@components/inputs/TweetInput";
-import { Spinner } from "@components/Spinner";
-import { TimelineNotification } from "./TimelineNotification";
 import { Tweet } from "@components/Tweet/Tweet";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "@utils/trpc";
+import { Spinner } from "@components/Spinner";
+import { NewTweets } from "@components/NewTweets";
 
-export default function MainContent() {
+export default function HomeContent() {
     let allTweets = trpc.tweet.getAllTweets.useQuery({ id: "anysddssdss" });
     const [tweets, setTweets] = useState(allTweets.data?.tweets);
     console.log("tweetssss",tweets,allTweets.data)
@@ -26,23 +23,22 @@ export default function MainContent() {
         // setTweets([newTweet, ...tweets]);
     }
     return (
-        <div className="h-screen duration-1000 border-b border-l main-border sm:w-[700px]">
-            <div className="sticky top-0 flex items-center justify-between border-b border-l border-r main-border px-4 py-3  dark:bg-dim-900">
+        <div className="h-screen sm:w-[700px]">
+        <div className="h-full border-b border-l border-r main-border sm:w-[700px]">
+            <div className="sticky top-0 flex items-center justify-between px-4 py-3  dark:bg-dim-900">
                 <h2 className="font-sm font-bold text-gray-800 dark:text-gray-100">
                     Home
                 </h2>
-                <CustomTimeline />
             </div>
             <TweetInput onPost={onPost} />
-            <NewTweets />
-
+                <NewTweets/>
                 {tweets?.map((t) => (
-                <div className="border tweet-hover p-4 border-t-0 main-border">
+                <div className="tweet-hover border-b main-border p-4 ">
                     <Tweet key={t.id} tweet={t} />
                 </div>
                 ))}
-            <TimelineNotification />
             <Spinner />
+        </div>
         </div>
     );
 }
