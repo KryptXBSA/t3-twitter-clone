@@ -36,6 +36,9 @@ button {
 .text-main-accent {
   @apply text-[#1d9bf0] dark:text-[#1d9bf0];
 }
+.text-primary {
+  @apply text-black  dark:text-white;
+}
 .text-secondary {
   @apply text-[#536471] dark:text-[#71767B];
 }

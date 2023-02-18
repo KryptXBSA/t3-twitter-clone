@@ -2,16 +2,16 @@ import { SEO } from "@components/SEO";
 import { type NextPage } from "next";
 import SidebarLeft from "@components/SidebarLeft";
 import SidebarRight from "@components/SidebarRight/SidebarRight";
-import HomeContent from "@components/pageComponents/home/HomeContent";
+import { ProfileContent } from "@components/pageComponents/profile/ProfileContent";
 
-const Home: NextPage = () => {
+const ProfilePage: NextPage = () => {
   return (
     <>
       <SEO title="Home" />
       <div className="mx-auto ">
-        <div className=" flex  flex-row justify-center">
+        <div className="flex  flex-row justify-center">
           <SidebarLeft />
-          <HomeContent />
+          <ProfileContent />
           <SidebarRight />
         </div>
       </div>
@@ -19,4 +19,5 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default ProfilePage;
+

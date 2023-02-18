@@ -11,6 +11,7 @@ model User {
   id           String    @unique @default(uuid())
   username     String    @unique
   name         String?
+  bio         String? @db.Text
   email        String?   @unique
   provider     String
   verified     Boolean   @default(false)

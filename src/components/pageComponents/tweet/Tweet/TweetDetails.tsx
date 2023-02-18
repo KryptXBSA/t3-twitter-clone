@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import NextLink from "@components/NextLink";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { TweetReply } from "@components/TweetReply";
+import MainButton from "@components/MainButton";
 
 export const variants: Variants = {
   initial: { opacity: 0 },
@@ -35,19 +36,7 @@ export function TweetDetails({
 }) {
   return (
     <div className="fade-in flex cursor-pointer flex-col   transition-all  ease-in-out">
-      <div className="flex   space-x-2   ">
-        <div className=" flex min-h-full flex-col items-center ">
-          <Avatar avatarImage={tweet.user.imageUrl!} />
-          {reply && (
-            <div className="hover-animation  bg-line-reply dark:bg-dark-line-reply  h-[80%] w-0.5"></div>
-          )}
-        </div>
-        <div className="flex w-full flex-col">
-          <NextLink href={`/${tweet.user.username}`}>
-            <TweetMetadata {...tweet} />
-          </NextLink>
-        </div>
-      </div>
+      <TweetDetailsMetaData tweet={tweet} reply={reply!} />
 
       <Body {...tweet} />
 
@@ -78,14 +67,33 @@ export function TweetDetails({
             className="flex h-20 w-full resize-none items-center justify-center border-0 bg-transparent text-gray-900 placeholder-gray-400  focus:outline-none dark:text-white"
           />
 
-          <button
-            type="submit"
-            className="ml-auto mr-1 rounded-full bg-blue-500 py-1 px-4 text-white hover:bg-blue-500"
-          >
-            <span className="text-sm font-semibold">Reply</span>
-          </button>
+          <MainButton text="Reply" type="submit" />
         </div>
         <TweetReply tweet={tweet} />
+      </div>
+    </div>
+  );
+}
+
+export function TweetDetailsMetaData({
+  tweet,
+  reply,
+}: {
+  tweet: TweetProps;
+  reply: boolean;
+}) {
+  return (
+    <div className="flex   space-x-2   ">
+      <div className=" flex min-h-full flex-col items-center ">
+        <Avatar avatarImage={tweet.user.imageUrl!} />
+        {reply && (
+          <div className="hover-animation  bg-line-reply dark:bg-dark-line-reply  h-[80%] w-0.5"></div>
+        )}
+      </div>
+      <div className="flex w-full flex-col">
+        <NextLink href={`/${tweet.user.username}`}>
+          <TweetMetadata {...tweet} />
+        </NextLink>
       </div>
     </div>
   );
