@@ -31,7 +31,6 @@ export function TweetReply({
   reply?: boolean;
   tweet: TweetProps;
 }) {
-    console.log("bddyy",tweet.body)
   return (
     <div className="fade-in flex   cursor-pointer space-x-2  transition-all  ease-in-out">
       <div className=" flex min-h-full flex-col items-center ">

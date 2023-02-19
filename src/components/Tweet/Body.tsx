@@ -9,7 +9,7 @@ export function Body(props: TweetProps) {
 </p>
             {props.images[0] && (
                 <div className="my-3 mr-2 flex rounded-2xl ">
-                    <img className="rounded-2xl" src={props.images[0]} alt="" />
+                    <img className="rounded-2xl max-h-[560px] " src={props.images[0]} alt="" />
                 </div>
             )}
         </>

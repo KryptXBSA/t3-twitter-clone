@@ -35,7 +35,6 @@ export const createContext = async (
   opts: trpcExpress.CreateExpressContextOptions
 ) => {
   const { req } = opts;
-  console.log("context000000000");
 
   let session: Token;
   // if (!req.headers.authorization) session = { id: "2" };
@@ -52,7 +51,6 @@ export const createContext = async (
   } catch (e) {
     // console.log("jwt_decode err", e);
   }
-  console.log("context", session!);
 
   return createInnerTRPCContext({
     session: session!,

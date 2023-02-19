@@ -17,6 +17,7 @@ const app = express();
 
 // Setup CORS
 app.use(cors());
+app.use(express.json({ "limit": '1mb' }));
 
 // Handle incoming tRPC requests
 app.use(

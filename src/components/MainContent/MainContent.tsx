@@ -16,14 +16,15 @@ export default function MainContent() {
         setTweets(allTweets.data?.tweets)
     }, [allTweets.data])
 
-    function onPost(body: string) {
+    function onPost(body: string,image:string) {
         const newTweet = {
             username: "new",
             body,
+            image,
             name: "Test test",
             id: Date.now(),
         };
-        // setTweets([newTweet, ...tweets]);
+        setTweets([newTweet, ...tweets]);
     }
     return (
         <div className="h-screen duration-1000 border-b border-l main-border sm:w-[700px]">

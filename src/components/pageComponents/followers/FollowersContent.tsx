@@ -18,8 +18,8 @@ export default function FollowersContent() {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
               <div key={i} className=" flex flex-col -space-y-2.5">
                 <div key={i} className=" flex ">
-                  <TweetDetailsMetaData tweet={tweet.data?.tweet} />
-                  <MainButton className="ml-auto w-24 h-8" text="Follow" />
+                  <TweetDetailsMetaData tweet={tweet.data?.tweet!} />
+                  <MainButton className="ml-auto h-8 w-24" text="Follow" />
                 </div>
                 <p className="text-tweet ml-[65px] break-words">
                   {tweet.data?.tweet?.body}
