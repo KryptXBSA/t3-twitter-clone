@@ -1,30 +1,22 @@
 import React from "react";
-import cn from "clsx";
 import type { Tweet, User, Like, Retweet, Reply } from "@prisma/client";
 
-import { AnimatePresence, motion } from "framer-motion";
 
 import type { Variants } from "framer-motion";
 import { TweetMetadata } from "./TweetMetadata";
 import { Body } from "./Body";
 import { TweetActions } from "./TweetActions";
 import Link from "next/link";
-import { Avatar } from "./Avatar";
-import { useSession } from "next-auth/react";
 import NextLink from "@components/NextLink";
+import Avatar from "@components/Avatar";
+import { TweetProps } from "@types";
 
 export const variants: Variants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.8 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },
 };
-export type TweetProps = Tweet & {
-  user: User;
-  likes: Like[];
-  retweets: Retweet[];
-  replies: Reply[];
-};
-export function Tweet({
+export function MainTweet({
   reply,
   tweet,
 }: {

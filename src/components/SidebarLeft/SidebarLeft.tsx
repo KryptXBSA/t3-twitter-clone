@@ -1,10 +1,10 @@
 import { getUserSession } from "@hooks/getUserSession";
 import React, { useState } from "react";
-import { Avatar } from "@components/Tweet/Avatar";
+import Avatar from "@components/Avatar";
 import { NavItem } from "./NavItem";
 import { navItems } from "./navItems";
 
-export default function SidebarLeft({ active  }: { active: number }) {
+export default function SidebarLeft({ active }: { active?: number }) {
   let session = getUserSession();
   return (
     <div className="hidden h-screen xs:w-[88px] lg:block xl:w-[275px]">

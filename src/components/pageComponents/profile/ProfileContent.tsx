@@ -13,7 +13,7 @@ export const ProfileContent: NextPage = () => {
   return (
     <>
       <>
-        <section className="main-content">
+        <section className="mcz">
           <PageHead backBtn profile username={username} name="CoinDesk" />
           {/* User card*/}
           <div>

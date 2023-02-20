@@ -15,7 +15,7 @@ export function PageHead({
 }) {
   let router = useRouter();
   return (
-    <div className="bg-main z-50 main-border sticky top-0 mb-2 flex items-center justify-between border-b px-4  py-3">
+    <div className="bg-main z-40 main-border sticky top-0 mb-2 flex items-center justify-between border-b px-4  py-3">
       <div className=" font-sm flex items-center justify-center gap-4 ">
         {backBtn && (
           <div

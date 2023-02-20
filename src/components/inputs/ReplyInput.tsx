@@ -2,7 +2,7 @@ import React from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { trpc } from "@utils/trpc";
-import { Avatar } from "@components/Tweet/Avatar";
+import  Avatar  from "@components/Avatar";
 
 type Inputs = {
     body: string;
@@ -36,7 +36,7 @@ export function ReplyInput({ onPost, hideAvatar, minH = 80 }: InputProps) {
                 ) : (
                     <div className="min-w-fit">
                         {" "}
-                        <Avatar size={avatarSize} />
+                        <Avatar avatarImage="" size={avatarSize} />
                     </div>
                 )}
                 <div style={{ minHeight: minH }} className="  mt-2 w-full ">

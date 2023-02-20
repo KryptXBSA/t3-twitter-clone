@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import { CustomTimeline } from "./CustomTimeline";
 import { NewTweets } from "@components/NewTweets";
 import { TweetInput } from "@components/inputs/TweetInput";
 import { Spinner } from "@components/Spinner";
 import { TimelineNotification } from "./TimelineNotification";
-import { Tweet } from "@components/Tweet/Tweet";
 import { trpc } from "../../utils/trpc";
 
 export default function MainContent() {

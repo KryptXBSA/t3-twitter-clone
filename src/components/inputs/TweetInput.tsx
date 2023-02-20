@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { trpc } from "../../utils/trpc";
-import { Avatar } from "@components/Tweet/Avatar";
+import  Avatar  from "@components/Avatar";
 import { useSession } from "next-auth/react";
 import { compress } from "image-conversion";
 

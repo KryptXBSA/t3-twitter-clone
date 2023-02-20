@@ -16,7 +16,7 @@ const Tweet: NextPage = () => {
       <SEO title="Tweet" />
       <div className="mx-auto ">
         <div className="bg-r flex  flex-row justify-center">
-          <SidebarLeft />
+          <SidebarLeft  />
           <TweetContent tweetId={tweetId} />
           <SidebarRight />
         </div>

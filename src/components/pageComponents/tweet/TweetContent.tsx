@@ -16,7 +16,7 @@ export default function TweetContent({ tweetId }: { tweetId: string }) {
   // }, [allTweets.data]);
   //
   return (
-    <div className="main-border h-screen border-b border-l border-r sm:w-[600px]">
+    <div className="main-border border-b border-l border-r mcz">
       <PageHead backBtn name="Tweet" />
       {data?.tweet ? (
         <div className="">

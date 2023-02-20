@@ -1,13 +1,13 @@
 import { ReplyInput } from "@components/inputs/ReplyInput";
 import { TweetInput } from "@components/inputs/TweetInput";
-import { Avatar } from "@components/Tweet/Avatar";
-import { Tweet, TweetProps } from "@components/Tweet/Tweet";
-import { TweetMetadata } from "@components/Tweet/TweetMetadata";
+import  Avatar  from "@components/Avatar";
 import { Dialog, Transition } from "@headlessui/react";
 import { signIn } from "next-auth/react";
 import { Fragment } from "react";
 
 import { useForm, SubmitHandler } from "react-hook-form";
+import { TweetProps } from "@types";
+import MainTweet from "@components/MainTweet";
 
 type Inputs = {
     username: string;
@@ -38,7 +38,7 @@ export default function ReplyModal({
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                <Dialog as="div" className="relative z-50" onClose={closeModal}>
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -51,8 +51,8 @@ export default function ReplyModal({
                         <div className="fixed  inset-0 bg-gray-500 bg-opacity-25" />
                     </Transition.Child>
 
-                    <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex min-h-full items-start justify-center p-4 text-center">
+                    <div className="fixed inset-0 z-[99] overflow-y-auto">
+                        <div className="flex min-h-full z-[99] items-start justify-center p-4 text-center">
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -62,9 +62,9 @@ export default function ReplyModal({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="flex  w-full max-w-[600px] transform flex-col  justify-center gap-9 overflow-hidden rounded-2xl bg-white p-6 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white">
+                                <Dialog.Panel className="flex z-50 w-full max-w-[600px] transform flex-col  justify-center gap-9 overflow-hidden rounded-2xl bg-white p-6 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white">
                                     <div className="flex flex-col">
-                                        <Tweet reply={true} tweet={tweet} />
+                                        <MainTweet reply={true} tweet={tweet} />
                                         <div className="flex  ">
                                             <div className="grow pt-2">
                                             <ReplyInput  onPost={() => console.log("reply")} />
