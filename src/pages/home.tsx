@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       <SEO title="Home" />
       <div className="mx-auto ">
         <div className="bg-r flex  flex-row justify-center">
-          <SidebarLeft />
+          <SidebarLeft active={0} />
           <HomeContent />
           <SidebarRight />
         </div>

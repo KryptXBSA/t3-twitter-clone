@@ -1,7 +1,7 @@
 import { SEO } from "@components/SEO";
 import { type NextPage } from "next";
 import SidebarLeft from "@components/SidebarLeft";
-import SidebarRight from "@components/SidebarRight/SidebarRight";
+import SidebarRight from "@components/SidebarRight";
 import HomeContent from "@components/pageComponents/home/HomeContent";
 
 const Home: NextPage = () => {
@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       <SEO title="Home" />
       <div className="mx-auto ">
         <div className=" flex  flex-row justify-center">
-          <SidebarLeft />
+          <SidebarLeft active={0} />
           <HomeContent />
           <SidebarRight />
         </div>

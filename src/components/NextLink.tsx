@@ -5,12 +5,17 @@ export default function NextLink({
   href,
   disabled,
   children,
+  ...props
 }: {
   href: string;
   disabled?: boolean;
   children: React.ReactNode;
-}){
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   if (disabled) return <>{children}</>;
 
-  return <Link href={href}>{children}</Link>;
+  return (
+    <Link {...props} href={href}>
+      {children}
+    </Link>
+  );
 }

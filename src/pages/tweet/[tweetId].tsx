@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import SidebarLeft from "@components/SidebarLeft";
-import SidebarRight from "@components/SidebarRight/SidebarRight";
+import SidebarRight from "@components/SidebarRight";
 import { trpc } from "@utils/trpc";
 import { SEO } from "@components/SEO";
 import TweetContent from "@components/pageComponents/tweet/TweetContent";
