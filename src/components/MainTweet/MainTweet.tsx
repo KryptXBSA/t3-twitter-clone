@@ -10,6 +10,7 @@ import NextLink from "@components/NextLink";
 import Avatar from "@components/Avatar";
 import { TweetProps } from "@types";
 import TweetOptions from "@components/TweetOptions";
+import { registerListener } from "@hooks/registerListener";
 
 export const variants: Variants = {
   initial: { opacity: 0 },
@@ -24,39 +25,39 @@ export function MainTweet({
   tweet: TweetProps;
 }) {
   return (
-        <NextLink disabled={reply} href={`/tweet/${tweet.id}`}>
-    <div className="fade-in flex   cursor-pointer space-x-2  transition-all  ease-in-out">
-      <div className=" flex min-h-full flex-col items-center ">
-        <Avatar avatarImage={tweet.user.imageUrl!} />
-        {reply && (
-          <div className="hover-animation  bg-line-reply dark:bg-dark-line-reply  h-[80%] w-0.5"></div>
-        )}
-      </div>
-      <div className="flex w-full grow flex-col">
-        <NextLink href={`/${tweet.user.username}`}>
-          <TweetMetadata {...tweet} />
-        </NextLink>
-          <Body {...tweet} />
-        <div className="mt-2 flex">
-          {reply ? (
-            <p className="text-secondary  cursor-text">
-              Replying to
-              <Link
-                className="text-main-accent ml-1"
-                href={`/${tweet.user.username}`}
-              >
-                @{tweet.user.username}
-              </Link>
-            </p>
-          ) : (
-            <div className="w-full">
-              <TweetActions {...tweet} />
-            </div>
+    <NextLink disabled={reply} href={`/tweet/${tweet.id}`}>
+      <div className="fade-in flex   cursor-pointer space-x-2  transition-all  ease-in-out">
+        <div className=" flex min-h-full flex-col items-center ">
+          <Avatar avatarImage={tweet.user.imageUrl!} />
+          {reply && (
+            <div className="hover-animation  bg-line-reply dark:bg-dark-line-reply  h-[80%] w-0.5"></div>
           )}
         </div>
+        <div className="flex w-full grow flex-col">
+          <NextLink href={`/${tweet.user.username}`}>
+            <TweetMetadata {...tweet} />
+          </NextLink>
+          <Body {...tweet} />
+          <div className="mt-2 flex">
+            {reply ? (
+              <p className="text-secondary  cursor-text">
+                Replying to
+                <Link
+                  className="text-main-accent ml-1"
+                  href={`/${tweet.user.username}`}
+                >
+                  @{tweet.user.username}
+                </Link>
+              </p>
+            ) : (
+              <div className="w-full">
+                <TweetActions {...tweet} />
+              </div>
+            )}
+          </div>
+        </div>
+        <TweetOptions />
       </div>
-      <TweetOptions />
-    </div>
-        </NextLink>
+    </NextLink>
   );
 }

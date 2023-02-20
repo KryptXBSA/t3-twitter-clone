@@ -3,6 +3,7 @@ import { Spinner } from "@components/Spinner";
 import { TweetDetails } from "./Tweet";
 import { trpc } from "@utils/trpc";
 import { PageHead } from "@components/PageHead";
+import { useEventContext } from "@context/EventContext";
 
 export default function TweetContent({ tweetId }: { tweetId: string }) {
   let { data } = trpc.tweet.getTweet.useQuery({ id: tweetId });
@@ -16,7 +17,7 @@ export default function TweetContent({ tweetId }: { tweetId: string }) {
   // }, [allTweets.data]);
   //
   return (
-    <div className="main-border border-b border-l border-r mcz">
+    <div className="main-border mcz border-b border-l border-r">
       <PageHead backBtn name="Tweet" />
       {data?.tweet ? (
         <div className="">

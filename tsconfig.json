@@ -24,6 +24,7 @@
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
       "@icons/*": ["icons/*"],
+      "@context/*": ["context/*"],
       "@utils/*": ["./utils/*"],
     },
     "incremental": true

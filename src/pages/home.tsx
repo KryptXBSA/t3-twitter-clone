@@ -9,7 +9,7 @@ const Home: NextPage = () => {
     <>
       <SEO title="Home" />
       <div className="mx-auto ">
-        <div className="bg-r flex  flex-row justify-center">
+        <div className="flex space-x-4 flex-row justify-center">
           <SidebarLeft active={0} />
           <HomeContent />
           <SidebarRight />
