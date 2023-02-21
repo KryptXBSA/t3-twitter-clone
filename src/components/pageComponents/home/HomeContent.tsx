@@ -30,9 +30,7 @@ export default function HomeContent() {
         <TweetInput onPost={onPost} />
         <NewTweets />
         {tweets?.map((t) => (
-          <div className="tweet-hover main-border border-b p-4 ">
             <MainTweet key={t.id} tweet={t} />
-          </div>
         ))}
         <Spinner />
       </div>

@@ -4,18 +4,20 @@ import Auth from "../Auth/Auth";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import "../styles/globals.css";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import Cookies from "js-cookie";
 import superjson from "superjson";
 import { EventProvider } from "@context/EventContext";
+import { Toaster } from "react-hot-toast";
+import "../styles/globals.css";
 
 const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
 }: any) => {
   const [queryClient] = useState(() => new QueryClient());
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       transformer: superjson,
@@ -39,6 +41,7 @@ const MyApp: AppType = ({
             <EventProvider>
               <Auth>
                 <Component {...pageProps} />
+                <Toaster />
               </Auth>
             </EventProvider>
           </QueryClientProvider>

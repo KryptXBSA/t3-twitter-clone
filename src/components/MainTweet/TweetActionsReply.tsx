@@ -1,5 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
-import cn from "clsx";
+import React, { useEffect, useState } from "react";
 import { trpc } from "@utils/trpc";
 import { useSession } from "next-auth/react";
 import ReplyModal from "@components/modals/ReplyModal";
@@ -8,7 +7,6 @@ import ReplyIcon from "@icons/tweet/ReplyIcon";
 import RetweetIcon from "@icons/tweet/RetweetIcon";
 import LikeIcon from "@icons/tweet/LikeIcon";
 import ShareIcon from "@icons/tweet/ShareIcon";
-import NextLink from "@components/NextLink";
 
 export function TweetActions(props: TweetProps) {
   let [isOpen, setIsOpen] = useState(false);
@@ -27,7 +25,7 @@ export function TweetActions(props: TweetProps) {
   function reply() {
     setIsOpen(!isOpen);
     // let result = replyTweet.mutate({ id: props.id, body: "test" });
-    console.log("open", isOpen);
+    // console.log("reply", result);
   }
   function reTweet() {
     let result = reTweet0.mutate({ id: props.id });
@@ -53,54 +51,38 @@ export function TweetActions(props: TweetProps) {
       replied: isReplied,
     });
   }, []);
-  let buttons: ActionButtonProps[] = [
-    { icon: <ReplyIcon />, count: props.replyCount, onClick: reply },
-    {
-      icon: <RetweetIcon />,
-      count: props.retweetCount,
-      className: "dark:hover:text-green-400",
-      onClick: reTweet,
-    },
-    {
-      icon: <LikeIcon />,
-      count: props.likeCount,
-      className: "dark:hover:text-red-600",
-      onClick: like,
-    },
-    { icon: <ShareIcon /> },
-  ];
   return (
     <>
-
-      <NextLink href="">
       <ReplyModal tweet={props} isOpen={isOpen} closeModal={closeModal} />
-        <div className="my-1 flex  w-full justify-around">
-          {buttons.map((p) => (
-            <ActionButton {...p} />
-          ))}
-        </div>
-      </NextLink>
+      <div
+        onClick={reply}
+        className={`duration-350 flex flex-1 items-center text-xs ${
+          interactionState.replied
+            ? "text-blue-400 dark:text-blue-400"
+            : "text-gray-800  dark:text-white "
+        } 
+transition ease-in-out hover:text-blue-400 dark:hover:text-blue-400`}
+      >
+        <ReplyIcon />
+        {props.replyCount}
+      </div>
+      <div
+        onClick={reTweet}
+        className="duration-350 flex flex-1 items-center text-xs text-gray-800  transition ease-in-out hover:text-green-400 dark:text-white dark:hover:text-green-400"
+      >
+        <RetweetIcon />
+        {props.retweetCount}
+      </div>
+      <div
+        onClick={like}
+        className="duration-350 flex flex-1 items-center text-xs text-gray-800 transition ease-in-out hover:text-red-600 dark:text-white dark:hover:text-red-600"
+      >
+        <LikeIcon />
+        {props.likeCount}
+      </div>
+      <div className="duration-350 flex flex-1 items-center text-xs text-gray-800  transition ease-in-out hover:text-blue-400 dark:text-white dark:hover:text-blue-400">
+        <ShareIcon />
+      </div>
     </>
   );
 }
-function ActionButton({ icon, count, className,onClick }: ActionButtonProps) {
-  return (
-    <div
-            onClick={onClick}
-      className={cn(
-        "duration-350 flex grow items-center justify-center p-3 text-xs text-gray-800  transition ease-in-out hover:text-blue-400 dark:text-white dark:hover:text-blue-400",
-        className
-      )}
-    >
-      {icon}
-      {count}
-    </div>
-  );
-}
-type ActionButtonProps = {
-  onClick?: () => any;
-  text?: string;
-  count?: number;
-  icon: ReactNode;
-  className?: string;
-};

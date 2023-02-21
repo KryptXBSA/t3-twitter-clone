@@ -23,10 +23,10 @@ button {
   @apply bg-slate-200 text-black dark:bg-black dark:text-white;
 }
 .bg-secondary {
-  @apply bg-slate-400 text-black dark:bg-slate-900    dark:text-white;
+  @apply bg-slate-400 text-black dark:bg-slate-800    dark:text-white;
 }
 .bg-secondary-hover {
-  @apply hover:bg-slate-300  dark:hover:bg-slate-800 ;
+  @apply hover:bg-slate-300  dark:hover:bg-slate-700 ;
 }
 .main-border {
   @apply border-[#262A2D];
