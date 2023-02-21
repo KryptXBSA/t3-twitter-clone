@@ -37,19 +37,7 @@ export function MainTweet({
               <TweetMetadata {...tweet} />
             </NextLink>
             <Body {...tweet} />
-            {reply ? (
-              <p className="text-secondary  cursor-text">
-                Replying to
-                <Link
-                  className="text-main-accent ml-1"
-                  href={`/${tweet.user.username}`}
-                >
-                  @{tweet.user.username}
-                </Link>
-              </p>
-            ) : (
-              <TweetActions {...tweet} />
-            )}
+            <TweetActions {...tweet} />
           </div>
           <TweetOptions id={tweet.id} />
         </div>

@@ -16,10 +16,12 @@ type Inputs = {
 export default function ReplyModal({
     isOpen,
     closeModal,
+    onReply,
     tweet,
 }: {
     isOpen: boolean;
     closeModal: any;
+    onReply: any;
     tweet: TweetProps;
 }) {
     const {
@@ -67,7 +69,7 @@ export default function ReplyModal({
                                         <MainTweet reply={true} tweet={tweet} />
                                         <div className="flex  ">
                                             <div className="grow pt-2">
-                                            <ReplyInput  onPost={() => console.log("reply")} />
+                                            <ReplyInput  onReply={onReply} />
                                             </div>
                                         </div>
                                     </div>

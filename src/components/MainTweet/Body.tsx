@@ -1,11 +1,11 @@
 import TweetBody from "@components/TweetBody";
+import { TweetProps } from "@types";
 import React from "react";
-import { TweetProps } from "./MainTweet";
 
 export function Body(props: TweetProps) {
   return (
     <>
-      <p className="text-tweet whitespace-pre-line break-words">
+      <p className="text-tweet whitespace-pre-line mb-2 break-words">
         <TweetBody body={props.body} />
       </p>
       {props.images[0] && (

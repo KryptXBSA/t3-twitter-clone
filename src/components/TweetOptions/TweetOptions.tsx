@@ -11,7 +11,7 @@ export default function TweetOptions({ id }: { id: string }) {
     id;
   }
   return (
-    <NextLink href="">
+    <NextLink href="" className="h-fit">
       <div className="top-16 z-50 text-right">
         <Menu as="div" className="relative inline-block text-left">
           <Menu.Button

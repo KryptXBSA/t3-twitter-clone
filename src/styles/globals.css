@@ -26,7 +26,7 @@ button {
   @apply bg-slate-400 text-black dark:bg-slate-800    dark:text-white;
 }
 .bg-secondary-hover {
-  @apply hover:bg-slate-300  dark:hover:bg-slate-700 ;
+  @apply hover:bg-slate-300  dark:hover:bg-slate-700;
 }
 .main-border {
   @apply border-[#262A2D];
@@ -59,5 +59,12 @@ button {
 }
 /* main-content-size */
 .mcz {
-  @apply h-full mx-4 sm:w-[600px];
+  @apply mx-4 h-full sm:w-[600px];
+}
+.input {
+  text-align: center;
+  color: #fff;
+  transition-property: transform, opacity;
+  text-transform: linear;
+  transition-duration: 0.25s;
 }

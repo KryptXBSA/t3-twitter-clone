@@ -5,6 +5,7 @@ import { Spinner } from "@components/Spinner";
 import { NewTweets } from "@components/NewTweets";
 import { PageHead } from "@components/PageHead";
 import MainTweet from "@components/MainTweet";
+import { registerListener } from "@hooks/registerListener";
 
 export default function HomeContent() {
   let allTweets = trpc.tweet.getAllTweets.useQuery({ id: "anysddssdss" });
@@ -25,12 +26,12 @@ export default function HomeContent() {
   }
   return (
     <div className="main-content ">
-      <div className="main-border border-b border-l border-r mcz ">
+      <div className="main-border mcz border-b border-l border-r ">
         <PageHead name="Home" />
         <TweetInput onPost={onPost} />
         <NewTweets />
         {tweets?.map((t) => (
-            <MainTweet key={t.id} tweet={t} />
+          <MainTweet key={t.id} tweet={t} />
         ))}
         <Spinner />
       </div>
