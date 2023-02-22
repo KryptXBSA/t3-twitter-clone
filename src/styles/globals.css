@@ -35,6 +35,9 @@ button {
 .tweet-hover {
   @apply transition-colors duration-150 hover:bg-slate-300 dark:hover:bg-slate-900;
 }
+.sidebar-hover {
+  @apply transition-colors duration-150 hover:bg-slate-300 dark:hover:bg-slate-900;
+}
 .hover-main {
   @apply cursor-pointer transition-colors duration-150 hover:bg-slate-300 dark:hover:bg-slate-900;
 }
@@ -67,4 +70,7 @@ button {
   transition-property: transform, opacity;
   text-transform: linear;
   transition-duration: 0.25s;
+}
+.sidebar-bg{
+@apply bg-[#16181C]
 }
