@@ -10,8 +10,9 @@ import MainTweet from "@components/MainTweet";
 import { trpc } from "@utils/trpc";
 import { useEffect, useState } from "react";
 import { EditProfileBtn } from "./EditProfileBtn";
+import EditProfileModal from "@components/modals/EditProfileModal";
 
-let profile = false;
+let profile = true;
 export const ProfileContent: NextPage = () => {
   const router = useRouter();
   const { username } = router.query as { username: string };
@@ -20,9 +21,16 @@ export const ProfileContent: NextPage = () => {
   useEffect(() => {
     setTweets(allTweets.data?.tweets);
   }, [allTweets.data]);
+    let [isOpen, setIsOpen] = useState(false);
+    function toggleModal() {
+        setIsOpen(!isOpen);
+    }
+    function saveChanges() {
+        
+    }
   return (
     <>
-      <>
+
         <section className="mcz">
           <PageHead backBtn profile username={username} name="CoinDesk" />
           {/* User card*/}
@@ -33,7 +41,7 @@ export const ProfileContent: NextPage = () => {
                 <div style={{ marginTop: "-5rem" }}>
                   <Avatar size={130} />
                 </div>
-                {profile ? <EditProfileBtn /> : <FollowBtn />}
+                {profile ? <EditProfileBtn onClick={toggleModal} /> : <FollowBtn />}
               </div>
               <div className="mt-3 ml-3 w-full justify-center space-y-1">
                 <div>
@@ -67,8 +75,8 @@ export const ProfileContent: NextPage = () => {
             ))}
           </ul>
         </section>
+                <EditProfileModal isOpen={isOpen} closeModal={toggleModal} onSave={saveChanges}/>
       </>
-    </>
   );
 };
 
