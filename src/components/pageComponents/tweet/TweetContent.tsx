@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "@components/Spinner";
-import { TweetDetails } from "./Tweet";
 import { trpc } from "@utils/trpc";
 import { PageHead } from "@components/PageHead";
 import { useEventContext } from "@context/EventContext";
+import { TweetDetails } from "@components/TweetDetails";
 
 export default function TweetContent({ tweetId }: { tweetId: string }) {
   let { data } = trpc.tweet.getTweet.useQuery({ id: tweetId });
@@ -17,12 +17,10 @@ export default function TweetContent({ tweetId }: { tweetId: string }) {
   // }, [allTweets.data]);
   //
   return (
-    <div className="main-border mcz border-b border-l border-r">
+    <div className="main-border mcz h-screen border-b border-l border-r">
       <PageHead backBtn name="Tweet" />
       {data?.tweet ? (
-        <div className="">
           <TweetDetails tweet={data?.tweet!} />
-        </div>
       ) : (
         <Spinner />
       )}

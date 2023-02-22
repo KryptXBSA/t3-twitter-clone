@@ -38,7 +38,6 @@ export function TweetActions(props: TweetProps) {
     },
     {
       id: "like",
-      icon: <LikeIcon />,
       count: props.likeCount,
       active: interactionState.like,
       activeClassName: "text-red-600",
@@ -127,6 +126,7 @@ function ActionButton({
   count,
   className,
   onClick,
+  id,
   disabled,
   active,
   activeClassName,
@@ -143,7 +143,15 @@ function ActionButton({
         active && activeClassName
       )}
     >
-      {icon}
+      {id === "like" ? (
+        active ? (
+          <LikeIcon className={"fill-red-600"} />
+        ) : (
+          <LikeIcon />
+        )
+      ) : (
+        icon
+      )}
 
       <Counter num={count!} />
     </div>
@@ -157,6 +165,6 @@ type ActionButtonProps = {
   count?: number;
   disabled?: boolean;
   active?: boolean;
-  icon: ReactNode;
+  icon?: ReactNode;
   className?: string;
 };

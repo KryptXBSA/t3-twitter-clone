@@ -59,7 +59,7 @@ button {
 }
 /* main-content-size */
 .mcz {
-  @apply mx-4 h-full sm:w-[600px];
+  @apply mx-4 h-screen sm:w-[600px];
 }
 .input {
   text-align: center;

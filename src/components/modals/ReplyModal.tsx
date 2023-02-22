@@ -8,6 +8,7 @@ import { Fragment } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TweetProps } from "@types";
 import MainTweet from "@components/MainTweet";
+import { TweetReply } from "@components/TweetReply";
 
 type Inputs = {
     username: string;
@@ -66,7 +67,7 @@ export default function ReplyModal({
                             >
                                 <Dialog.Panel className="flex z-50 w-full max-w-[600px] transform flex-col  justify-center gap-9 overflow-hidden rounded-2xl bg-white p-6 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white">
                                     <div className="flex flex-col">
-                                        <MainTweet reply={true} tweet={tweet} />
+                                        <TweetReply reply={true} tweet={tweet} />
                                         <div className="flex  ">
                                             <div className="grow pt-2">
                                             <ReplyInput  onReply={onReply} />

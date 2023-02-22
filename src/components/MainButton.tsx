@@ -9,7 +9,7 @@ export default function MainButton({
     <button
       {...props}
       className={cn(
-        "h-8 w-24 rounded-3xl bg-blue-500 text-white hover:opacity-75 transition-opacity ",
+        "h-8 w-28 rounded-3xl bg-blue-500 text-white hover:opacity-75 transition-opacity ",
         props.className
       )}
     >
