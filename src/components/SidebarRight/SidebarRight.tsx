@@ -1,4 +1,6 @@
 import Avatar from "@components/Avatar";
+import MainButton from "@components/MainButton";
+import NextLink from "@components/NextLink";
 import React from "react";
 
 export default function SidebarRight() {
@@ -40,7 +42,13 @@ function SearchBar() {
   );
 }
 
-const TrendingTopic = ({ hashtag, tweets }: {hashtag:string,tweets:string}) => {
+const TrendingTopic = ({
+  hashtag,
+  tweets,
+}: {
+  hashtag: string;
+  tweets: string;
+}) => {
   return (
     <div
       className={`main-border sidebar-hover dark:border-dim-200 cursor-pointer p-3 text-sm font-normal text-blue-400 transition ease-in-out`}
@@ -53,33 +61,40 @@ const TrendingTopic = ({ hashtag, tweets }: {hashtag:string,tweets:string}) => {
   );
 };
 
-const TwitterAccount = ({ name, username, imgUrl }: {name:string,username:string,imgUrl:string}) => {
+const TwitterAccount = ({
+  name,
+  username,
+  imgUrl,
+}: {
+  name: string;
+  username: string;
+  imgUrl: string;
+}) => {
   return (
-    <div
-      className={`main-border sidebar-hover dark:border-dim-200 cursor-pointer p-3 text-sm font-normal text-blue-400 transition ease-in-out`}
-    >
-      <div className="flex flex-row justify-between p-2">
-        <div className="flex flex-row">
-          <Avatar size={48} />
-          <div className="ml-2 flex flex-col">
-            <h1 className="text-sm font-bold text-gray-900 dark:text-white">
-              {name}
-            </h1>
-            <p className="text-sm text-gray-400">@{username}</p>
+    <NextLink href={"/" + username}>
+      <div
+        className={`main-border sidebar-hover dark:border-dim-200 cursor-pointer p-3 text-sm font-normal text-blue-400 transition ease-in-out`}
+      >
+        <div className="flex flex-row justify-between p-2">
+          <div className="flex flex-row">
+            <Avatar size={48} />
+            <div className="ml-2 flex flex-col">
+              <h1 className="text-sm font-bold text-gray-900 dark:text-white">
+                {name}
+              </h1>
+              <p className="text-sm text-gray-400">@{username}</p>
+            </div>
           </div>
-        </div>
-        <div className="">
-          <div className="flex h-full items-center text-gray-800 dark:text-white">
-            <a
-              href="#"
-              className="rounded-full border-2 border-blue-400 px-4 py-1 text-xs font-bold text-blue-400"
-            >
-              Follow
-            </a>
-          </div>
+          <MainButton
+            onClick={(event) => {
+              event.preventDefault();
+            }}
+            className="w-10 bg-slate-700"
+            text="Follow"
+          />
         </div>
       </div>
-    </div>
+    </NextLink>
   );
 };
 

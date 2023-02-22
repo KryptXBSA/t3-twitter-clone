@@ -7,14 +7,14 @@ export default function NextLink({
   children,
   ...props
 }: {
-  href: string;
+  href?: string;
   disabled?: boolean;
   children: React.ReactNode;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-  if (disabled) return <>{children}</>;
+  if (disabled) return <a href="#">{children}</a>;
 
   return (
-    <Link  {...props} href={href}>
+    <Link {...props} href={href||"no_href"}>
       {children}
     </Link>
   );

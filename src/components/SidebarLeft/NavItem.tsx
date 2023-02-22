@@ -19,7 +19,7 @@ export function NavItem({
   return (
     <NextLink
       href={href}
-      className={`duration-350 mb-8 flex items-center justify-center ${
+      className={`duration-350 p-4 sidebar-hover rounded-full   flex items-center justify-center ${
         active === index ? "text-blue-400 " : "text-gray-800 dark:text-white"
       } transition ease-in-out xl:justify-start`}
     >
