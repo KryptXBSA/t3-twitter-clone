@@ -5,7 +5,7 @@ export default function Avatar({
   avatarImage,
 }: {
   size?: number;
-  avatarImage: string;
+  avatarImage?: string;
 }) {
   return (
     <div style={{ width: size, height: size }}>

@@ -5,11 +5,21 @@ import { FollowBtn } from "./FollowBtn";
 import { Url } from "./Url";
 import { Joined } from "./Joined";
 import { FollowStats } from "./FollowStats";
-import { Tweet } from "./Tweet";
+import Avatar from "@components/Avatar";
+import MainTweet from "@components/MainTweet";
+import { trpc } from "@utils/trpc";
+import { useEffect, useState } from "react";
+import { EditProfileBtn } from "./EditProfileBtn";
 
+let profile = false;
 export const ProfileContent: NextPage = () => {
   const router = useRouter();
   const { username } = router.query as { username: string };
+  let allTweets = trpc.tweet.getAllTweets.useQuery({ id: "anysddssdss" });
+  const [tweets, setTweets] = useState(allTweets.data?.tweets);
+  useEffect(() => {
+    setTweets(allTweets.data?.tweets);
+  }, [allTweets.data]);
   return (
     <>
       <>
@@ -17,40 +27,13 @@ export const ProfileContent: NextPage = () => {
           <PageHead backBtn profile username={username} name="CoinDesk" />
           {/* User card*/}
           <div>
-            <div
-              className="w-full bg-cover bg-center bg-no-repeat"
-              style={{
-                height: 200,
-                backgroundImage:
-                  "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
-              }}
-            >
-              <img
-                className="h-full w-full opacity-0"
-                src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
-                alt=""
-              />
-            </div>
+            <BgImg />
             <div className="p-4">
-              <div className="relative flex w-full">
-                {/* Avatar */}
-                <div className="flex flex-1">
-                  <div style={{ marginTop: "-6rem" }}>
-                    <div
-                      style={{ height: "9rem", width: "9rem" }}
-                      className="md avatar relative rounded-full"
-                    >
-                      <img
-                        style={{ height: "9rem", width: "9rem" }}
-                        className="md relative rounded-full border-4 border-gray-900"
-                        src="https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
-                        alt=""
-                      />
-                      <div className="absolute" />
-                    </div>
-                  </div>
+              <div className="relative flex w-full items-center justify-between">
+                <div style={{ marginTop: "-5rem" }}>
+                  <Avatar size={130} />
                 </div>
-                <FollowBtn />
+                {profile ? <EditProfileBtn /> : <FollowBtn />}
               </div>
               <div className="mt-3 ml-3 w-full justify-center space-y-1">
                 <div>
@@ -58,15 +41,13 @@ export const ProfileContent: NextPage = () => {
                     Aland Sleman
                   </h2>
                   <p className="text-sm font-medium leading-5 text-gray-600">
-                    {username}
+                    @{username}
                   </p>
                 </div>
                 <div className="mt-3">
                   <p className="mb-2 leading-tight text-white">
                     Software Engineer / Designer / Entrepreneur <br />
-                    Visit my website to test a working <b>
-                      Twitter Clone.
-                    </b>{" "}
+                    Visit my website to test a working <b>Twitter Clone.</b>
                   </p>
                   <div className="flex text-gray-600">
                     <Url />
@@ -79,10 +60,27 @@ export const ProfileContent: NextPage = () => {
             <hr className="border-gray-800" />
           </div>
           <ul className="list-none">
-            <Tweet />
+            {tweets?.map((t) => (
+              <div className="">
+                <MainTweet key={t.id} tweet={t} />
+              </div>
+            ))}
           </ul>
         </section>
       </>
     </>
   );
 };
+
+function BgImg() {
+  return (
+    <div
+      className="w-full bg-cover bg-center bg-no-repeat"
+      style={{
+        height: 200,
+        backgroundImage:
+          "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
+      }}
+    ></div>
+  );
+}

@@ -32,7 +32,7 @@ export function TweetReply({
   tweet: TweetProps;
 }) {
   return (
-    <div className="fade-in flex   cursor-pointer space-x-2 py-2 border-b main-border  transition-all  ease-in-out">
+    <div className="fade-in flex   cursor-pointer space-x-2 py-2 main-border  transition-all  ease-in-out">
       <div className=" flex min-h-full flex-col items-center ">
         <Avatar avatarImage={tweet.user.imageUrl!} />
         {reply && (

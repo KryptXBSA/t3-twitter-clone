@@ -9,7 +9,7 @@ export function TweetDetailsMetaData({
     tweet, reply,
 }: {
     tweet: TweetProps;
-    reply: boolean;
+    reply?: boolean;
 }) {
     return (
         <div className="flex   space-x-2   ">

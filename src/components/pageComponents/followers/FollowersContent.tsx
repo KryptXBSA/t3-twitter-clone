@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "@components/Spinner";
 import { trpc } from "@utils/trpc";
 import { PageHead } from "@components/PageHead";
-import { TweetDetailsMetaData } from "@components/pageComponents/tweet/Tweet/TweetDetails";
 import MainButton from "@components/MainButton";
+import { TweetDetailsMetaData } from "@components/TweetDetails/TweetDetailsMetaData";
 export default function FollowersContent() {
   let tweet = trpc.tweet.getTweet.useQuery({
     id: "b7415a86-eb32-4899-943b-3b49f2b56bb4",
