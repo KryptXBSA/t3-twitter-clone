@@ -1,4 +1,5 @@
 import React from "react";
+import cn from"clsx"
 
 export default function Avatar({
   size = 56,
@@ -10,7 +11,7 @@ export default function Avatar({
   className?: string;
 }) {
   return (
-    <div className={className} style={{ width: size, height: size }}>
+    <div className={cn("",className)} style={{ width: size, height: size }}>
       <img
         className="h-full w-full rounded-full"
         src={

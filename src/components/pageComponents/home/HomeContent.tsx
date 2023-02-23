@@ -5,7 +5,6 @@ import { Spinner } from "@components/Spinner";
 import { NewTweets } from "@components/NewTweets";
 import { PageHead } from "@components/PageHead";
 import MainTweet from "@components/MainTweet";
-import { registerListener } from "@hooks/registerListener";
 
 export default function HomeContent() {
   let allTweets = trpc.tweet.getAllTweets.useQuery({ id: "anysddssdss" });
