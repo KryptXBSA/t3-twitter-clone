@@ -11,6 +11,7 @@
     "dependencies": {
         "@formkit/auto-animate": "^1.0.0-beta.6",
         "@headlessui/react": "^1.7.10",
+        "@heroicons/react": "^2.0.16",
         "@prisma/client": "^4.10.1",
         "@squoosh/lib": "^0.5.3",
         "@tanstack/react-query": "^4.20.0",

@@ -2,7 +2,7 @@ import React from "react";
 import NextLink from "@components/NextLink";
 
 export type NavItemProps = {
-  href: string;
+  href?: string;
   text: string;
   icon?: React.ReactNode;
   active?: number;

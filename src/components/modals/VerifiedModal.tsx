@@ -1,19 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { signIn } from "next-auth/react";
 import { Fragment } from "react";
-import DiscordIcon from "@icons/social/discord";
-import GithubIcon from "@icons/social/github";
-import GoogleIcon from "@icons/social/google";
-import TwitterIcon from "@icons/social/twitter";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TweetInput } from "@components/inputs/TweetInput";
+import VerifiedDropdown from "./VerifiedDropdown";
 
 type Inputs = {
     username: string;
     password: string;
 };
-export default function TweetModal({
+export default function VerifiedModal({
     isOpen,
     closeModal,
 }: {
@@ -60,8 +57,8 @@ export default function TweetModal({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="flex w-[100%] max-w-xl  transform flex-col content-center items-center justify-center gap-9 overflow-hidden rounded-2xl bg-white p-2 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white md:p-6">
-                                    <TweetInput onPost={() => null} />
+                                <Dialog.Panel className="flex w-[100%] max-w-xl h-96  transform flex-col content-center items-center justify-center gap-9 overflow-hidden rounded-2xl bg-white p-2 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white md:p-6">
+                                    <VerifiedDropdown/>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
