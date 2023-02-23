@@ -5,6 +5,7 @@ import { Fragment } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TweetInput } from "@components/inputs/TweetInput";
 import VerifiedDropdown from "./VerifiedDropdown";
+import MainButton from "@components/MainButton";
 
 type Inputs = {
     username: string;
@@ -57,8 +58,16 @@ export default function VerifiedModal({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="flex w-[100%] max-w-xl h-96  transform flex-col content-center items-center justify-center gap-9 overflow-hidden rounded-2xl bg-white p-2 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white md:p-6">
+                                <Dialog.Panel className="flex w-[100%] max-w-xl transform flex-col content-center items-center  gap-4 overflow-hidden rounded-2xl bg-white p-2 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white md:p-6">
+                                    <Dialog.Title
+                                        className="text-3xl font-semibold leading-6  text-black dark:text-white "
+                                    >
+                                        Get verified, It's free.
+                                    </Dialog.Title>
+                                        <div className="flex items-center gap-2">
                                     <VerifiedDropdown/>
+                                    <MainButton text="Save"/>
+                                    </div>
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

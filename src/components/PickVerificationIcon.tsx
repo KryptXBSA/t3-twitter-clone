@@ -1,0 +1,16 @@
+import React from "react";
+export type ColorType = { color?: "red" | "blue" | "gold" | "gray" };
+import {
+  BlueVerified,
+  GoldVerified,
+  GrayVerified,
+  RedVerified,
+} from "@icons/verified";
+
+export function PickVerificationIcon({ color = "blue" }: ColorType) {
+  if (color === "gold") return <GoldVerified />;
+  if (color === "gray") return <GrayVerified />;
+  if (color === "red") return <RedVerified />;
+  if (color === "blue") return <BlueVerified className="h-5 w-5" />;
+  return <></>;
+}

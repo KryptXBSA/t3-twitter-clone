@@ -1,14 +1,14 @@
 
 import type { Tweet, User, Like, Retweet, Reply } from "@prisma/client";
 export type UserData = {
-  id: string;
-  username: string;
-  name: string;
-  email: string;
-  provider: string;
-  password: string;
-  imageUrl: string;
-  createdAt: string;
+  id?: string;
+  username?: string;
+  name?: string;
+  email?: string;
+  provider?: string;
+  password?: string;
+  imageUrl?: string;
+  createdAt?: Date;
 };
 
 
