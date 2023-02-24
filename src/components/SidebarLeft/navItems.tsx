@@ -30,6 +30,7 @@ export let navItems: NavItemProps[] = [
         ),
     },
     {
+        diabled:true,
         href: "/notifications",
         text: "Notifications",
         icon: (
@@ -72,7 +73,7 @@ export let navItems: NavItemProps[] = [
         ),
     },
     {
-        href: "/bookmarks",
+        href: "/settings",
         text: "Settings",
         icon: (
             <svg
