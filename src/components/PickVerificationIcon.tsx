@@ -7,7 +7,7 @@ import {
   RedVerified,
 } from "@icons/verified";
 
-export function PickVerificationIcon({ color = "blue" }: ColorType) {
+export function PickVerificationIcon({ color  }: ColorType) {
   if (color === "gold") return <GoldVerified />;
   if (color === "gray") return <GrayVerified />;
   if (color === "red") return <RedVerified />;

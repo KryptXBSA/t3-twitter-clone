@@ -19,7 +19,7 @@ const VerifiedDropdown = () => {
   return (
     <Menubar.Root className="MenubarRoot">
       <Menubar.Menu>
-        <Menubar.Trigger tabIndex={1} className="MenubarTrigger">
+        <Menubar.Trigger  className="outline-none">
           <div className="flex items-center gap-2">
               <Avatar />
             <TweetMetadata color={radioSelection!} user={{ ...session }} />

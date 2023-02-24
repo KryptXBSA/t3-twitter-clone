@@ -10,6 +10,7 @@ import { ArrowRightOnRectangleIcon } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
 import NextLink from "@components/NextLink";
 import { BlueVerified } from "@icons/verified";
+import { PickVerificationIcon } from "@components/PickVerificationIcon";
 
 export default function SidebarLeft({ active }: { active?: number }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +62,6 @@ function User() {
     let session = getUserSession();
     function logout() {
         signOut()
-        
     }
     return (
         <div className="duration-150 mx-auto mt-auto mb-5 flex w-14 cursor-pointer flex-row 
@@ -70,14 +70,14 @@ function User() {
             <div className="flex flex-row items-center">
                 <Avatar avatarImage={session.imageUrl} />
                 <div className="ml-2 hidden xl:block">
-                    <h1 className="text-sm font-bold text-gray-800 dark:text-white">
-                        {session.name}
+                    <h1 className="text-sm font-bold flex text-gray-800 dark:text-white">
+                      <span>  {session.name}</span><PickVerificationIcon color="red"/>
                     </h1>
                     <p className="text-sm text-gray-400">@{session.username}</p>
                 </div>
             </div>
             </NextLink>
-            <div className="xl:block">
+            <div>
                 <div onClick={logout} className="flex items-center p-3 rounded-full hover:bg-gray-700 duration-150 text-gray-800 dark:text-white">
                     <ArrowRightOnRectangleIcon className="w-6 h-6"/>
                 </div>

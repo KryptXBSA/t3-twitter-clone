@@ -62,7 +62,7 @@ export default function VerifiedModal({
                                     <Dialog.Title
                                         className="text-3xl font-semibold leading-6  text-black dark:text-white "
                                     >
-                                        Get verified, It's free.
+                                        Choose your badge
                                     </Dialog.Title>
                                         <div className="flex items-center gap-2">
                                     <VerifiedDropdown/>
