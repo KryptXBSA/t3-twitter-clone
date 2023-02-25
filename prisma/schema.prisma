@@ -8,43 +8,68 @@ datasource db {
 }
 
 model User {
-  id           String    @unique @default(uuid())
-  username     String    @unique
-  name         String?
-  bio         String? @db.Text
-  email        String?   @unique
-  provider     String
-  verified     Boolean   @default(false)
-  verifiedDate DateTime?
-  password     String?
-  imageUrl     String?
-  createdAt    DateTime  @default(now())
-  tweets       Tweet[]
-  likes        Like[]
-  retweets     Retweet[]
-  replies      Reply[]
-  views        View[]
+  id               String       @id @default(uuid())
+  username         String       @unique
+  name             String?
+  bio              String?      @db.Text
+  location         String?
+  email            String?      @unique
+  provider         String
+  password         String?
+  imageUrl         String?
+  verifiedColor    String?
+  bgImageUrl       String?
+  createdAt        DateTime     @default(now())
+  tweets           Tweet[]
+  likes            Like[]
+  retweets         Retweet[]
+  replies          Reply[]
+  messagesSent     Message[]    @relation("sender")
+  messagesReceived Message[]    @relation("recipient")
+  bookmarks        Bookmark[]
+  followers        UserFollow[] @relation("follower")
+  following        UserFollow[] @relation("following")
+}
+
+model UserFollow {
+  id          String   @id @default(uuid())
+  follower    User     @relation("follower", fields: [followerId], references: [id])
+  followerId  String
+  following   User     @relation("following", fields: [followingId], references: [id])
+  followingId String
+  createdAt   DateTime @default(now())
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  sender      User     @relation("sender", fields: [senderId], references: [id])
+  senderId    String
+  recipient   User     @relation("recipient", fields: [recipientId], references: [id])
+  recipientId String
+  body        String   @db.Text
+  image       String?
+  createdAt   DateTime @default(now())
 }
 
 model Tweet {
-  id           String    @unique @default(uuid())
+  id           String     @id @default(uuid())
   userId       String
-  body         String @db.Text
+  body         String     @db.Text
   images       String[]
-  likeCount    Int       @default(0)
-  retweetCount Int       @default(0)
-  replyCount   Int       @default(0)
-  viewCount    Int       @default(0)
-  createdAt    DateTime  @default(now())
-  user         User      @relation(fields: [userId], references: [id])
+  likeCount    Int        @default(0)
+  retweetCount Int        @default(0)
+  replyCount   Int        @default(0)
+  viewCount    Int        @default(0)
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id])
   likes        Like[]
   retweets     Retweet[]
   replies      Reply[]
-  views        View[]
+  Bookmark     Bookmark[]
 }
 
 model Retweet {
-  id          String   @unique @default(uuid())
+  id          String   @id @default(uuid())
   tweetId     String
   userId      String
   retweetDate DateTime @default(now())
@@ -53,7 +78,7 @@ model Retweet {
 }
 
 model Like {
-  id        String   @unique @default(uuid())
+  id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   tweet     Tweet    @relation(fields: [tweetId], references: [id])
@@ -62,18 +87,18 @@ model Like {
 }
 
 model Reply {
-  id        String   @unique @default(uuid())
+  id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   tweet     Tweet    @relation(fields: [tweetId], references: [id])
   tweetId   String
-  body      String @db.Text
+  body      String   @db.Text
   images    String[]
   createdAt DateTime @default(now())
 }
 
-model View {
-  id        String   @unique @default(uuid())
+model Bookmark {
+  id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   tweet     Tweet    @relation(fields: [tweetId], references: [id])
