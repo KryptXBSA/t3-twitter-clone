@@ -14,7 +14,7 @@ export default function NextLink({
   if (disabled) return <a href="#">{children}</a>;
 
   return (
-    <Link {...props} href={href||"no_href"}>
+    <Link {...props} href={href||""}>
       {children}
     </Link>
   );

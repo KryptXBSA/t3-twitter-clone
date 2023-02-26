@@ -1,13 +1,16 @@
 import { useFormattedDate } from "@hooks/useFormattedDate";
 import React from "react";
 import { TweetProps, UserData } from "@types";
-import { ColorType, PickVerificationIcon } from "@components/PickVerificationIcon";
+import {
+  ColorType,
+  PickVerificationIcon,
+} from "@components/PickVerificationIcon";
 
 export function TweetMetadata({
   color,
   ...props
-}: { user: UserData } & ColorType) {
-  const formattedDate = useFormattedDate(props.user.createdAt!);
+}: { user: UserData } & ColorType & TweetProps) {
+  const formattedDate = useFormattedDate(props.createdAt);
 
   return (
     <>
@@ -23,5 +26,3 @@ export function TweetMetadata({
     </>
   );
 }
-
-

@@ -11,20 +11,17 @@ import LikeIcon from "@icons/tweet/LikeIcon";
 import ShareIcon from "@icons/tweet/ShareIcon";
 import NextLink from "@components/NextLink";
 import { Counter } from "./Counter";
+import { getUserSession } from "@hooks/getUserSession";
 
 export function TweetActions(props: TweetProps) {
   let [isOpen, setIsOpen] = useState(false);
-  const [interactionState, setInteractionState] = useState({
-    like: false,
-    retweet: false,
-    reply: false,
-  });
+  let session = getUserSession();
   const [buttons, setButtons] = useState<ActionButtonProps[]>([
     {
       id: "reply",
       icon: <ReplyIcon />,
       count: props.replyCount,
-      active: interactionState.reply,
+      active: interactionState(props,session.id).replied,
       onClick: toggleModal,
     },
     {
@@ -32,20 +29,21 @@ export function TweetActions(props: TweetProps) {
       icon: <RetweetIcon />,
       count: props.retweetCount,
       className: "dark:hover:text-green-400",
-      active: interactionState.retweet,
+      active: false,
       activeClassName: "text-green-400",
       onClick: reTweet,
     },
     {
       id: "like",
       count: props.likeCount,
-      active: interactionState.like,
+      active: interactionState(props,session.id).liked,
       activeClassName: "text-red-600",
       className: "dark:hover:text-red-600",
       onClick: like,
     },
     { id: "share", icon: <ShareIcon />, disabled: true },
   ]);
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -65,10 +63,12 @@ export function TweetActions(props: TweetProps) {
     setButtons(newBtns);
   }
   function like() {
-    // let result = likeTweet.mutate({ id: props.id });
+    let result = likeTweet.mutate({ id: props.id });
     let toInteract: ToInteract = "like";
-    let inc = buttons.find((b) => b.id === toInteract)?.active!;
-    interact(toInteract, !inc);
+    console.log("btnsss", buttons);
+    let inc = buttons.find((b) => b.id === "like");
+    console.log("incccc", inc?.active);
+    interact(toInteract, !inc?.active);
     // console.log("like", result);
   }
   function reply() {
@@ -89,36 +89,55 @@ export function TweetActions(props: TweetProps) {
     interact(toInteract, !inc);
   }
 
-  useEffect(() => {
-    const isLiked = props.likes.some((l) => l.userId === data?.userData.id);
-    const isRetweeted = props.retweets.some(
-      (r) => r.userId === data?.userData.id
+  function interactionState(props: any, userId: string) {
+    const liked = props.likes.some((like) => like.userId === userId);
+    const retweeted = props.retweets.some(
+      (retweet) => retweet.userId === userId
     );
-    const isReplied = props.replies.some((r) => r.userId === data?.userData.id);
-    let newState = {
-      like: isLiked,
-      retweet: isRetweeted,
-      reply: isReplied,
-    };
-    console.log("new", newState);
-    setInteractionState(newState);
-  }, []);
+    const replied = props.replies.some((reply) => reply.userId === userId);
+    return { liked, retweeted, replied };
+  }
+  useEffect(() => {
+    // Update interactionState
+    let state = interactionState(props, session.id);
+    setButtons((prevButtons) =>
+      prevButtons.map((button) => {
+        if (button.id === "like") {
+          return {
+            ...button,
+            active: state.liked,
+          };
+        } else if (button.id === "retweet") {
+          return {
+            ...button,
+            active: state.retweeted,
+          };
+        } else if (button.id === "reply") {
+          return {
+            ...button,
+            active: state.replied,
+          };
+        } else {
+          return button;
+        }
+      })
+    );
+  }, [props.likes, props.retweets, props.replies, session.id]);
+  if (buttons[2].active === null) return <>wtf</>;
   return (
-    <>
-      <NextLink href="">
-        <ReplyModal
-          onReply={reply}
-          tweet={props}
-          isOpen={isOpen}
-          closeModal={closeModal}
-        />
-        <div className="my-1 flex  w-full justify-around">
-          {buttons.map((p) => (
-            <ActionButton key={p.id} {...p} />
-          ))}
-        </div>
-      </NextLink>
-    </>
+    <div onClick={(e) => e.preventDefault()}>
+      <ReplyModal
+        onReply={reply}
+        tweet={props}
+        isOpen={isOpen}
+        closeModal={closeModal}
+      />
+      <div className="my-1 flex  w-full justify-around">
+        {buttons.map((p) => (
+          <ActionButton key={p.id} {...p} />
+        ))}
+      </div>
+    </div>
   );
 }
 function ActionButton({
