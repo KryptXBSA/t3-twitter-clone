@@ -17,8 +17,9 @@ model User {
   provider         String
   password         String?
   imageUrl         String?
-  verifiedColor    String?
+  badge    String?
   bgImageUrl       String?
+  profileImageUrl       String?
   createdAt        DateTime     @default(now())
   tweets           Tweet[]
   likes            Like[]
@@ -59,7 +60,6 @@ model Tweet {
   likeCount    Int        @default(0)
   retweetCount Int        @default(0)
   replyCount   Int        @default(0)
-  viewCount    Int        @default(0)
   createdAt    DateTime   @default(now())
   user         User       @relation(fields: [userId], references: [id])
   likes        Like[]

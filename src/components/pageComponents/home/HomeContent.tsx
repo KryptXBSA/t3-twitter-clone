@@ -14,14 +14,9 @@ export default function HomeContent() {
     setTweets(allTweets.data?.tweets);
   }, [allTweets.data]);
 
-  function onPost(body: string) {
-    const newTweet = {
-      username: "new",
-      body,
-      name: "Test test",
-      id: Date.now(),
-    };
-    // setTweets([newTweet, ...tweets]);
+  function onPost(data: any) {
+    console.log("onPostData", data);
+    data && setTweets([data, ...tweets]);
   }
   return (
     <div className="main-content ">
