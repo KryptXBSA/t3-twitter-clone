@@ -44,50 +44,68 @@ export const likeTweet = protectedProcedure
     }
     return { success: true };
   });
+
 export const replyTweet = protectedProcedure
   .input(z.object({ id: z.string().uuid(), body: z.string().min(1) }))
-  .output(
-    z.object({
-      success: z.boolean(),
-      data: z.string(),
-      token: z.string().nullish(),
-      code: z.number().nullish(),
-    })
-  )
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/tweet/reply",
-      tags: ["tweet"],
-    },
-  })
   .mutation(async ({ ctx, input }) => {
-    const reply = await ctx.prisma.reply.create({
-      data: {
-        body: input.body,
-        user: { connect: { id: ctx.session.id } },
-        tweet: { connect: { id: input.id } },
-      },
-    });
-    const tweet = await ctx.prisma.tweet.update({
-      where: { id: input.id },
-      data: { replyCount: { increment: 1 } },
-    });
-    return { success: true, data: JSON.stringify(reply) };
+    const [reply, tweet] = await ctx.prisma.$transaction([
+      ctx.prisma.reply.create({
+        data: {
+          body: input.body,
+          user: { connect: { id: ctx.session.id } },
+          tweet: { connect: { id: input.id } },
+        },
+      }),
+      ctx.prisma.tweet.update({
+        where: { id: input.id },
+        data: { replyCount: { increment: 1 } },
+      }),
+    ]);
+    return { success: true, reply };
   });
+
 export const reTweet = protectedProcedure
   .input(z.object({ id: z.string().uuid() }))
   .mutation(async ({ ctx, input }) => {
-    const retweet = await ctx.prisma.retweet.create({
-      data: {
+    const existingRetweet = await ctx.prisma.retweet.findFirst({
+      where: {
         userId: ctx.session.id,
         tweetId: input.id,
       },
     });
+    let updatedTweet;
 
-    const tweet = await ctx.prisma.tweet.update({
-      where: { id: input.id },
-      data: { retweetCount: { increment: 1 } },
-    });
-    return { success: true, data: JSON.stringify(retweet) };
+    if (!existingRetweet) {
+      updatedTweet = await ctx.prisma.tweet.update({
+        where: { id: input.id },
+        data: {
+          retweetCount: { increment: 1 },
+          retweets: {
+            create: {
+              user: { connect: { id: ctx.session.id } },
+            },
+          },
+        },
+        include: {
+          retweets: true,
+        },
+      });
+    } else {
+      updatedTweet = await ctx.prisma.tweet.update({
+        where: { id: input.id },
+        data: {
+          retweetCount: { decrement: 1 },
+          retweets: {
+            delete: {
+              id: existingRetweet.id,
+            },
+          },
+        },
+        include: {
+          retweets: true,
+        },
+      });
+    }
+
+    return { success: true, data: JSON.stringify(updatedTweet) };
   });

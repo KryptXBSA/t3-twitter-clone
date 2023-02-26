@@ -15,13 +15,13 @@ import { getUserSession } from "@hooks/getUserSession";
 
 export function TweetActions(props: TweetProps) {
   let [isOpen, setIsOpen] = useState(false);
-  let session = getUserSession();
+  let userId = getUserSession().id!
   const [buttons, setButtons] = useState<ActionButtonProps[]>([
     {
       id: "reply",
       icon: <ReplyIcon />,
       count: props.replyCount,
-      active: interactionState(props,session.id).replied,
+      active: interactionState(props,userId).replied,
       onClick: toggleModal,
     },
     {
@@ -29,14 +29,14 @@ export function TweetActions(props: TweetProps) {
       icon: <RetweetIcon />,
       count: props.retweetCount,
       className: "dark:hover:text-green-400",
-      active: false,
+      active: interactionState(props,userId).retweeted,
       activeClassName: "text-green-400",
       onClick: reTweet,
     },
     {
       id: "like",
       count: props.likeCount,
-      active: interactionState(props,session.id).liked,
+      active: interactionState(props,userId).liked,
       activeClassName: "text-red-600",
       className: "dark:hover:text-red-600",
       onClick: like,
@@ -71,12 +71,12 @@ export function TweetActions(props: TweetProps) {
     interact(toInteract, !inc?.active);
     // console.log("like", result);
   }
-  function reply() {
-    console.log("replly");
+  function reply(body:string) {
+    console.log("replly",body);
     let toInteract: ToInteract = "reply";
     interact(toInteract, true);
     toggleModal();
-    // let result = replyTweet.mutate({ id: props.id, body: "test" });
+     replyTweet.mutate({ id: props.id, body });
   }
   function toggleModal() {
     setIsOpen(!isOpen);
@@ -89,7 +89,7 @@ export function TweetActions(props: TweetProps) {
     interact(toInteract, !inc);
   }
 
-  function interactionState(props: any, userId: string) {
+  function interactionState(props: TweetProps, userId: string) {
     const liked = props.likes.some((like) => like.userId === userId);
     const retweeted = props.retweets.some(
       (retweet) => retweet.userId === userId
@@ -99,7 +99,7 @@ export function TweetActions(props: TweetProps) {
   }
   useEffect(() => {
     // Update interactionState
-    let state = interactionState(props, session.id);
+    let state = interactionState(props, userId);
     setButtons((prevButtons) =>
       prevButtons.map((button) => {
         if (button.id === "like") {
@@ -122,7 +122,7 @@ export function TweetActions(props: TweetProps) {
         }
       })
     );
-  }, [props.likes, props.retweets, props.replies, session.id]);
+  }, [props.likes, props.retweets, props.replies, userId]);
   if (buttons[2].active === null) return <>wtf</>;
   return (
     <div onClick={(e) => e.preventDefault()}>

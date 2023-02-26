@@ -25,19 +25,6 @@ export default function ReplyModal({
     onReply: any;
     tweet: TweetProps;
 }) {
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        formState: { errors },
-    } = useForm<Inputs>();
-
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log("cred data", data);
-        signIn("credentials", { ...data });
-        reset();
-    };
     return (
         <>
             <Transition appear show={isOpen} as={Fragment}>
