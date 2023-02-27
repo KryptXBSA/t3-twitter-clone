@@ -1,4 +1,9 @@
-export function Joined() {
+import { useFormattedDate } from "@hooks/useFormattedDate";
+import { formatDate } from "@utils/date";
+
+export function Joined({ date }: { date: Date }) {
+    console.log("joinedd", date)
+    let formattedDate = formatDate(date)
     return (
         <span className="mr-2 flex">
             <svg viewBox="0 0 24 24" className="paint-icon fill-white h-5 w-5">
@@ -14,7 +19,7 @@ export function Joined() {
                     <circle cx={12} cy="17.486" r="1.285" />
                 </g>
             </svg>{" "}
-            <span className="ml-1 leading-5">Joined December, 2019</span>
+            <span className="ml-1 leading-5">Joined {formattedDate}</span>
         </span>
     );
 }

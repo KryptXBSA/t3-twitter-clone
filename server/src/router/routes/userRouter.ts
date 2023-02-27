@@ -1,6 +1,7 @@
 import { protectedProcedure, publicProcedure, t } from "../../trpc/trpc";
 import bcrypt from "bcrypt";
 import { z } from "zod";
+import { followUser } from "./followUser";
 
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
@@ -22,6 +23,8 @@ export const userRouter = t.router({
           OR: [{ id: input.id! }, { username: input.username! }],
         },
         include: {
+          followers: true,
+          following: true,
           tweets: {
             include: {
               user: true,
@@ -163,4 +166,5 @@ export const userRouter = t.router({
 
       return { success: true, data: "no" };
     }),
+  followUser,
 });

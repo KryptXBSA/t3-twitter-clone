@@ -7,7 +7,7 @@ import { ProfileContent } from "@components/pageComponents/profile/ProfileConten
 const ProfilePage: NextPage = () => {
   return (
     <>
-      <SEO title="Home" />
+      <SEO title="Twitter" />
       <div className="mx-auto ">
         <div className="flex  flex-row justify-center">
           <SidebarLeft />

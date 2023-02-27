@@ -1,4 +1,5 @@
-export function Url() {
+export function Url({website}:{website:string}) {
+    if (!website) return <></>
   return (
     <span className="mr-2 flex">
       <svg viewBox="0 0 24 24" fill="white" className="paint-icon h-5 w-5">
@@ -12,7 +13,7 @@ export function Url() {
         target="#"
         className="ml-1 leading-5 text-blue-400"
       >
-        www.RicardoRibeiroDEV.com
+                {website}
       </a>
     </span>
   );

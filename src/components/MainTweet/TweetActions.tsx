@@ -45,7 +45,7 @@ export function TweetActions({
       activeClassName: "text-red-600",
       className: "dark:hover:text-red-600",
       onClick: like,
-      disabled: allDisabled || true,
+      disabled: allDisabled || false,
     },
     { id: "share", icon: <ShareIcon />, disabled: true },
   ]);
