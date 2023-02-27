@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import type { Tweet, User, Like, Retweet, Reply } from "@prisma/client";
-
 import type { Variants } from "framer-motion";
 import { Avatar } from "./Avatar";
 import ReactTextareaAutosize from "react-textarea-autosize";
@@ -11,7 +11,11 @@ import { TweetDetailsMetaData } from "./TweetDetailsMetaData";
 import { TweetMetrics } from "./TweetMetrics";
 import { TweetActions } from "@components/MainTweet/TweetActions";
 import TweetDetailsReply from "./TweetDetailsReply";
+import { trpc } from "@utils/trpc";
 
+type Inputs = {
+  body: string;
+};
 export const variants: Variants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.8 } },
@@ -30,15 +34,25 @@ export function TweetDetails({
   reply?: boolean;
   tweet: TweetProps;
 }) {
+  const { register, handleSubmit, watch, reset } = useForm<Inputs>();
+  let replyTweet = trpc.tweet.replyTweet.useMutation();
+  const [tweetReplies, setTweetReplies] = useState(tweet.replies);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    let res = await replyTweet.mutateAsync({ id: tweet.id, body: data.body });
+    setTweetReplies([res.reply,...tweetReplies]);
+    reset();
+  };
   return (
     <div className="fade-in flex cursor-pointer flex-col px-4   transition-all  ease-in-out">
       <TweetDetailsMetaData tweet={tweet} reply={reply!} />
-
-      <Body {...tweet} />
+      <div className="ml-1 mt-1">
+        <Body {...tweet} />
+      </div>
 
       <div className="my-2 flex  flex-col space-y-4  ">
-        <TweetMetrics />
-        <div className="w-full border-y main-border">
+        <TweetMetrics tweet={tweet} />
+        <div className="main-border w-full border-y">
           <TweetActions {...tweet} />
         </div>
 
@@ -46,23 +60,28 @@ export function TweetDetails({
           <div className="">
             <Avatar avatarImage="" />
           </div>
-          <ReactTextareaAutosize
-            maxRows={9}
-            rows={4}
-            placeholder="Tweet your reply"
-            className="flex h-20 w-full resize-none items-center justify-center  bg-transparent text-secondary text-lg placeholder-gray-400  focus:outline-none "
-          />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex w-full justify-between "
+          >
+            <ReactTextareaAutosize
+              maxRows={9}
+              rows={4}
+              {...register("body", { required: true })}
+              placeholder="Tweet your reply"
+              className="flex h-20 w-full resize-none items-center justify-center  bg-transparent
+                            text-lg text-white placeholder-gray-400  focus:outline-none "
+            />
 
-          <MainButton text="Reply" type="submit" />
+            <MainButton text="Reply" type="submit" />
+          </form>
         </div>
         <div className="flex flex-col ">
-        <TweetDetailsReply tweet={tweet} />
-        <TweetDetailsReply tweet={tweet} />
-        <TweetDetailsReply tweet={tweet} />
+          {tweetReplies.map((t) => (
+            <TweetDetailsReply tweet={t} />
+          ))}
         </div>
       </div>
     </div>
   );
 }
-
-

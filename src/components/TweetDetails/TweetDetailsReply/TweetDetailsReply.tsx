@@ -37,7 +37,7 @@ export function TweetDetailsReply({
               <TweetMetadata {...tweet} />
             </NextLink>
             <Body {...tweet} />
-            <TweetActions {...tweet} />
+            <TweetActions allDisabled {...tweet} />
           </div>
           <TweetOptions id={tweet.id} />
         </div>

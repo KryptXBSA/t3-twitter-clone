@@ -21,12 +21,9 @@ export function ReplyInput({ onReply, hideAvatar, minH = 80 }: InputProps) {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
-  let newTweet = trpc.tweet.newTweet.useMutation();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     onReply(data.body);
-    // let result = newTweet.mutate({ body: data.body });
-    // reset();
-    // console.log("mutate newTweet", result);
+    reset();
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col ">

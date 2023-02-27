@@ -55,6 +55,7 @@ export const replyTweet = protectedProcedure
           user: { connect: { id: ctx.session.id } },
           tweet: { connect: { id: input.id } },
         },
+        include: { user: true },
       }),
       ctx.prisma.tweet.update({
         where: { id: input.id },

@@ -23,7 +23,7 @@ export const getTweet = publicProcedure
       include: {
         user: true,
         likes: true,
-        replies: true,
+        replies: { include: { user: true } },
         retweets: true,
       },
     });

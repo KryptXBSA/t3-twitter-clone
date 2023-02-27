@@ -13,36 +13,54 @@ import NextLink from "@components/NextLink";
 import { Counter } from "./Counter";
 import { getUserSession } from "@hooks/getUserSession";
 
-export function TweetActions(props: TweetProps) {
+export function TweetActions({
+  allDisabled,
+  ...props
+}: TweetProps & { allDisabled?: boolean }) {
   let [isOpen, setIsOpen] = useState(false);
-  let userId = getUserSession().id!
+  let userId = getUserSession().id!;
   const [buttons, setButtons] = useState<ActionButtonProps[]>([
     {
       id: "reply",
       icon: <ReplyIcon />,
-      count: props.replyCount,
-      active: interactionState(props,userId).replied,
+      count: allDisabled ? 0 : props.replyCount,
+      active: allDisabled ? false : interactionState(props, userId).replied,
       onClick: toggleModal,
+      disabled: allDisabled || false,
     },
     {
       id: "retweet",
       icon: <RetweetIcon />,
-      count: props.retweetCount,
+      count: allDisabled ? 0 : props.retweetCount,
       className: "dark:hover:text-green-400",
-      active: interactionState(props,userId).retweeted,
+      active: allDisabled ? false : interactionState(props, userId).retweeted,
       activeClassName: "text-green-400",
       onClick: reTweet,
+      disabled: allDisabled || false,
     },
     {
       id: "like",
-      count: props.likeCount,
-      active: interactionState(props,userId).liked,
+      count: allDisabled ? 0 : props.likeCount,
+      active: allDisabled ? false : interactionState(props, userId).liked,
       activeClassName: "text-red-600",
       className: "dark:hover:text-red-600",
       onClick: like,
+      disabled: allDisabled || true,
     },
     { id: "share", icon: <ShareIcon />, disabled: true },
   ]);
+
+  if (allDisabled)
+    return (
+      <div
+        onClick={(e) => e.preventDefault()}
+        className="my-1 flex  w-full justify-around"
+      >
+        {buttons.map((p) => (
+          <ActionButton key={p.id} {...p} />
+        ))}
+      </div>
+    );
 
   function closeModal() {
     setIsOpen(false);
@@ -71,12 +89,12 @@ export function TweetActions(props: TweetProps) {
     interact(toInteract, !inc?.active);
     // console.log("like", result);
   }
-  function reply(body:string) {
-    console.log("replly",body);
+  function reply(body: string) {
+    console.log("replly", body);
     let toInteract: ToInteract = "reply";
     interact(toInteract, true);
     toggleModal();
-     replyTweet.mutate({ id: props.id, body });
+    replyTweet.mutate({ id: props.id, body });
   }
   function toggleModal() {
     setIsOpen(!isOpen);
@@ -105,16 +123,19 @@ export function TweetActions(props: TweetProps) {
         if (button.id === "like") {
           return {
             ...button,
+            count: props.likeCount,
             active: state.liked,
           };
         } else if (button.id === "retweet") {
           return {
             ...button,
+            count: props.retweetCount,
             active: state.retweeted,
           };
         } else if (button.id === "reply") {
           return {
             ...button,
+            count: props.replyCount,
             active: state.replied,
           };
         } else {
@@ -123,7 +144,7 @@ export function TweetActions(props: TweetProps) {
       })
     );
   }, [props.likes, props.retweets, props.replies, userId]);
-  if (buttons[2].active === null) return <>wtf</>;
+  if (buttons[2].active === null) return <></>;
   return (
     <div onClick={(e) => e.preventDefault()}>
       <ReplyModal
@@ -152,7 +173,7 @@ function ActionButton({
 }: ActionButtonProps) {
   return (
     <div
-      onClick={onClick}
+      onClick={disabled ? () => null : onClick}
       className={cn(
         "duration-350 flex grow items-center justify-center p-2 text-xs transition ease-in-out   ",
         disabled
