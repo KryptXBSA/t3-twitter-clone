@@ -14,6 +14,7 @@ import { Spinner } from "@components/Spinner";
 import { SEO } from "@components/SEO";
 import { getUserSession } from "@hooks/getUserSession";
 import MainButton from "@components/MainButton";
+import { User } from "@prisma/client";
 
 export const ProfileContent: NextPage = () => {
   const router = useRouter();
@@ -28,13 +29,15 @@ export const ProfileContent: NextPage = () => {
   useEffect(() => {
     setUser(getUser.data?.user);
     setIsFollowing(user?.followers.some((f) => f.followingId === session.id));
-  }, [getUser.data,user]);
+  }, [getUser.data, user]);
   let [isOpen, setIsOpen] = useState(false);
   function toggleModal() {
     setIsOpen(!isOpen);
   }
-  console.log("fffffffffff", user?.followers,session.id);
-  function editProfile() {}
+  console.log("fffffffffff", user?.followers, session.id);
+  function editProfile(data: User) {
+    setUser({ ...user, ...data });
+  }
   async function follow() {
     setIsFollowing(!isFollowing);
     let res = await followUser.mutateAsync({ id: user?.id! });
@@ -50,7 +53,7 @@ export const ProfileContent: NextPage = () => {
           name={user?.name || username}
         />
         <SEO title={user?.name || username} />
-        {getUser.data ? (
+        {user ? (
           <>
             <div>
               <BgImg src={user?.bgImageUrl!} />
@@ -59,7 +62,7 @@ export const ProfileContent: NextPage = () => {
                   <div style={{ marginTop: "-5rem" }}>
                     <Avatar size={130} />
                   </div>
-                  {username !== user?.username ? (
+                  {username === user?.username ? (
                     <EditProfileBtn onClick={toggleModal} />
                   ) : (
                     <MainButton
@@ -78,7 +81,9 @@ export const ProfileContent: NextPage = () => {
                     </p>
                   </div>
                   <div className="mt-3">
-                    <p className="mb-2 leading-tight text-white">{user?.bio}</p>
+                    <p className="mb-2 max-w-full leading-tight text-white">
+                      {user?.bio}
+                    </p>
                     <div className="flex text-gray-600">
                       <Url website={user?.website!} />
                       <Joined date={user?.createdAt!} />
@@ -100,6 +105,12 @@ export const ProfileContent: NextPage = () => {
                 </div>
               ))}
             </ul>
+            <EditProfileModal
+              user={user}
+              isOpen={isOpen}
+              closeModal={toggleModal}
+              onSave={editProfile}
+            />
           </>
         ) : (
           <>
@@ -107,11 +118,6 @@ export const ProfileContent: NextPage = () => {
           </>
         )}
       </section>
-      <EditProfileModal
-        isOpen={isOpen}
-        closeModal={toggleModal}
-        onSave={editProfile}
-      />
     </>
   );
 };

@@ -6,6 +6,36 @@ import { followUser } from "./followUser";
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
 export const userRouter = t.router({
+  updateUser: protectedProcedure
+    .input(
+      z
+        .object({
+          username: z.string(),
+          name: z.string().nullish(),
+          bio: z.string().nullish(),
+          website: z.string().nullish(),
+          password: z.string().nullish(),
+          bgImage: z.string().nullish(),
+          profileImage: z.string().nullish(),
+        })
+        .refine((obj) => {
+          if (
+            Object.values(obj).some((val) => val === null && val === undefined)
+          ) {
+            throw new Error("At least one value has to be defined");
+          }
+          return true;
+        })
+    )
+    .mutation(async ({ input, ctx }) => {
+      let user = await ctx.prisma.user.update({
+        where: { id: ctx.session.id },
+        data: {
+          ...input,
+        },
+      });
+      return { success: true, user };
+    }),
   getUser: protectedProcedure
     .input(
       z
@@ -35,7 +65,7 @@ export const userRouter = t.router({
           },
         },
       });
-        console.log("returned user",user)
+      console.log("returned user", user);
       return { success: true, user };
     }),
   createUser: publicProcedure

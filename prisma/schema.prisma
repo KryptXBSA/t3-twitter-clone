@@ -16,10 +16,9 @@ model User {
   email            String?      @unique
   provider         String
   password         String?
-  imageUrl         String?
   badge    String?
-  bgImageUrl       String?
-  profileImageUrl       String?
+  bgImage       String?
+  profileImage      String?
   createdAt        DateTime     @default(now())
   followersCount    Int        @default(0)
   followingCount    Int        @default(0)
