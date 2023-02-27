@@ -12,7 +12,7 @@ model User {
   username         String       @unique
   name             String?
   bio              String?      @db.Text
-  location         String?
+  website         String?
   email            String?      @unique
   provider         String
   password         String?
@@ -21,13 +21,16 @@ model User {
   bgImageUrl       String?
   profileImageUrl       String?
   createdAt        DateTime     @default(now())
+  followersCount    Int        @default(0)
+  followingCount    Int        @default(0)
+  likeCount    Int        @default(0)
   tweets           Tweet[]
   likes            Like[]
   retweets         Retweet[]
   replies          Reply[]
+  bookmarks        Bookmark[]
   messagesSent     Message[]    @relation("sender")
   messagesReceived Message[]    @relation("recipient")
-  bookmarks        Bookmark[]
   followers        UserFollow[] @relation("follower")
   following        UserFollow[] @relation("following")
 }

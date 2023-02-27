@@ -1,32 +1,40 @@
-import { publicProcedure, t } from "../../trpc/trpc";
+import { protectedProcedure, publicProcedure, t } from "../../trpc/trpc";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
 export const userRouter = t.router({
-  greeting: publicProcedure
-    // This is the input schema of your procedure
-    // 💡 Tip: Try changing this and see type errors on the client straight away
+  getUser: protectedProcedure
     .input(
       z
-        .object({
-          name: z.string().nullish(),
+        .object({ id: z.string().nullish(), username: z.string().nullish() })
+        .refine((obj) => {
+          if (!obj.id && !obj.username) {
+            throw new Error("At least one of id or username must be defined");
+          }
+          return true;
         })
-        .nullish()
     )
-    .query(({ input }) => {
-      // This is what you're returning to your client
-      return {
-        text: `hello ${input?.name ?? "world"}`,
-        // 💡 Tip: Try adding a new property here and see it propagate to the client straight-away
-      };
+    .query(async ({ input, ctx }) => {
+      let user = await ctx.prisma.user.findFirst({
+        where: {
+          OR: [{ id: input.id! }, { username: input.username! }],
+        },
+        include: {
+          tweets: {
+            include: {
+              user: true,
+              likes: true,
+              replies: true,
+              retweets: true,
+            },
+          },
+        },
+      });
+      return { success: true, user };
     }),
-  getUser: t.procedure.input(z.string()).query((req) => {
-    req.input; // string
-    return { id: req.input, name: "Bilbo" };
-  }),
-  createUser: t.procedure
+  createUser: publicProcedure
     .input(
       z
         .object({

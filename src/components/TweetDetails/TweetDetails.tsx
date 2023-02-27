@@ -44,7 +44,7 @@ export function TweetDetails({
     reset();
   };
   return (
-    <div className="fade-in flex cursor-pointer flex-col px-4   transition-all  ease-in-out">
+    <div className="fade-in flex flex-col px-4   transition-all  ease-in-out">
       <TweetDetailsMetaData tweet={tweet} reply={reply!} />
       <div className="ml-1 mt-1">
         <Body {...tweet} />
