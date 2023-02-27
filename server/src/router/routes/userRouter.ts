@@ -35,6 +35,7 @@ export const userRouter = t.router({
           },
         },
       });
+        console.log("returned user",user)
       return { success: true, user };
     }),
   createUser: publicProcedure

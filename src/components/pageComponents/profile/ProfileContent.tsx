@@ -23,17 +23,17 @@ export const ProfileContent: NextPage = () => {
   const [user, setUser] = useState(getUser.data?.user);
   let session = getUserSession();
   const [isFollowing, setIsFollowing] = useState(
-    user?.followers.some((f) => f.followerId === session.id)
+    user?.followers.some((f) => f.followingId === session.id)
   );
   useEffect(() => {
     setUser(getUser.data?.user);
-    setIsFollowing(user?.followers.some((f) => f.followerId === session.id));
-  }, [getUser.data]);
+    setIsFollowing(user?.followers.some((f) => f.followingId === session.id));
+  }, [getUser.data,user]);
   let [isOpen, setIsOpen] = useState(false);
   function toggleModal() {
     setIsOpen(!isOpen);
   }
-  console.log("fffffffffff", user?.followers,user?.followers);
+  console.log("fffffffffff", user?.followers,session.id);
   function editProfile() {}
   async function follow() {
     setIsFollowing(!isFollowing);
