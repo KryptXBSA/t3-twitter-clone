@@ -4,28 +4,47 @@ import { trpc } from "@utils/trpc";
 import { PageHead } from "@components/PageHead";
 import MainButton from "@components/MainButton";
 import { TweetDetailsMetaData } from "@components/TweetDetails/TweetDetailsMetaData";
-export default function FollowersContent() {
-  let tweet = trpc.tweet.getTweet.useQuery({
-    id: "b7415a86-eb32-4899-943b-3b49f2b56bb4",
-  });
+import { UserMetadata } from "@components/UserMetadata/UserMetadata";
+export default function FollowersContent({
+  username,
+  showFollowers,
+}: {
+  username: string;
+  showFollowers: boolean;
+}) {
+  let userFollowers = trpc.user.getUserFollowers.useQuery({ username });
+  const [followers, setFollowers] = useState(
+    userFollowers.data?.userFollowers![
+      showFollowers ? "followers" : "following"
+    ]
+  );
+  console.log("userFollowers", followers);
+  useEffect(() => {
+    setFollowers(
+      userFollowers.data?.userFollowers![
+        showFollowers ? "followers" : "following"
+      ]
+    );
+  }, [userFollowers.data]);
   return (
     <div className="main-border h-screen border-b border-l border-r sm:w-[600px]">
-      <PageHead backBtn name="Followers" />
+      <PageHead backBtn name={showFollowers ? "Followers" : "Following"} />
 
-      {tweet.data?.tweet ? (
+      {userFollowers.data || userFollowers.isLoading ? (
         <>
           <div className="flex flex-col space-y-4 p-2">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-              <div key={i} className=" flex flex-col -space-y-2.5">
-                <div key={i} className=" flex ">
-                  <TweetDetailsMetaData tweet={tweet.data?.tweet!} />
-                  <MainButton className="ml-auto h-8 w-24" text="Follow" />
+            {followers?.map((f) => (
+              <div key={f.id} className=" flex flex-col -space-y-2.5">
+                <div className=" flex ">
+                  <UserMetadata
+                    // {/* @ts-ignore */}
+                    user={{ ...f[showFollowers ? "following" : "follower"] }}
+                  />
+                  <MainButton className="ml-auto h-8 w-24" text="Profile" />
                 </div>
                 <p className="text-tweet ml-[65px] break-words">
-                  {tweet.data?.tweet?.body}
-                  {tweet.data?.tweet?.body}
-                  {tweet.data?.tweet?.body}
-                  {tweet.data?.tweet?.body}
+                  {/* @ts-ignore */}
+                  {f[showFollowers ? "following" : "follower"].bio}
                 </p>
               </div>
             ))}

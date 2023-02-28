@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure } from "../../trpc/trpc";
+import { protectedProcedure } from "../../../trpc/trpc";
 
 export const followUser = protectedProcedure
   .input(z.object({ id: z.string().uuid() }))

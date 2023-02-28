@@ -62,7 +62,7 @@ export const ProfileContent: NextPage = () => {
                   <div style={{ marginTop: "-5rem" }}>
                     <Avatar size={130} />
                   </div>
-                  {username === user?.username ? (
+                  {username === session.username ? (
                     <EditProfileBtn onClick={toggleModal} />
                   ) : (
                     <MainButton

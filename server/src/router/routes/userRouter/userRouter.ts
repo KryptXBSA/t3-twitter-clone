@@ -1,7 +1,8 @@
-import { protectedProcedure, publicProcedure, t } from "../../trpc/trpc";
+import { protectedProcedure, publicProcedure, t } from "../../../trpc/trpc";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { followUser } from "./followUser";
+import { getUserFollowers } from "./getUserFollowers";
 
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
@@ -197,5 +198,5 @@ export const userRouter = t.router({
 
       return { success: true, data: "no" };
     }),
-  followUser,
+  followUser,getUserFollowers
 });

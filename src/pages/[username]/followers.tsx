@@ -10,15 +10,14 @@ import FollowersContent from "@components/pageComponents/followers/FollowersCont
 
 const Tweet: NextPage = () => {
   const router = useRouter();
-  const {  tweetId } = router.query as { tweetId: string };
-
+  const { username } = router.query as { username: string };
   return (
     <>
-      <SEO title="Tweet" />
+      <SEO title="Followers" />
       <div className="mx-auto ">
         <div className="bg-r flex  flex-row justify-center">
-          <SidebarLeft  />
-          <FollowersContent />
+          <SidebarLeft />
+          <FollowersContent showFollowers={true} username={username} />
           <SidebarRight />
         </div>
       </div>
