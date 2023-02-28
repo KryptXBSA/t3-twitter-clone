@@ -3,10 +3,10 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Avatar from "@components/Avatar";
 import { useSession } from "next-auth/react";
-import { compress } from "image-conversion";
 import { trpc } from "@utils/trpc";
 import { OtherIcons } from "./OtherIcons";
 import { FilePreview } from "./FilePreview";
+import { compressFile } from "@utils/comporessImage";
 
 type Inputs = {
   body: string;
@@ -53,17 +53,13 @@ export function TweetInput({ onPost }: { onPost?: any }) {
       fileInputRef.current.click();
     }
   }
-  async function compressImage(file: File, quality: number): Promise<Blob> {
-    let compressed = await compress(file, quality);
-    return compressed;
-  }
   async function handleFileSelection(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
       //compress
-      let compressedFile = await compressImage(selectedFile, 0.7);
+      let compressedFile = await compressFile(selectedFile, 0.7);
       // Read the contents of the selected file
       console.log("imageee", compressedFile);
       const reader = new FileReader();

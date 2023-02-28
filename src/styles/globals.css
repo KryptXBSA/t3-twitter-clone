@@ -7,6 +7,9 @@ body {
 button {
   @apply transition-colors duration-150;
 }
+h2,h1,h3,h4 {
+  @apply truncate text-ellipsis 
+}
 @keyframes fadeIn {
   0% {
     opacity: 0;

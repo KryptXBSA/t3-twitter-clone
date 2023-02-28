@@ -1,11 +1,7 @@
-import { ReplyInput } from "@components/inputs/ReplyInput";
 import { Dialog, Transition } from "@headlessui/react";
-import { signIn, useSession } from "next-auth/react";
-import { Fragment } from "react";
+import { Fragment, useRef, useState } from "react";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import { TweetProps } from "@types";
-import { TweetReply } from "@components/TweetReply";
 import CloseIcon from "@icons/CloseIcon";
 import MainButton from "@components/MainButton";
 import CameraPlusIcon from "@icons/CameraPlusIcon";
@@ -14,6 +10,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import { trpc } from "@utils/trpc";
 import { getUserSession } from "@hooks/getUserSession";
 import { User } from "@prisma/client";
+import { compressFile } from "@utils/comporessImage";
 
 type Inputs = {
   bio: string;
@@ -40,10 +37,64 @@ export default function EditProfileModal({
     formState: { errors },
   } = useForm<Inputs>();
   let session = getUserSession();
+  const [profileImg, setProfileImg] = useState<string | null>();
+  const [bgImg, setBgImg] = useState<string | null>();
+
+  const bgRef = useRef<HTMLInputElement>(null);
+  const profileRef = useRef<HTMLInputElement>(null);
+
+  function handleBgClick() {
+    if (bgRef.current) {
+      bgRef.current.click();
+    }
+  }
+  function handleProfileClick() {
+    if (profileRef.current) {
+      profileRef.current.click();
+    }
+  }
+  async function handleBgSelection(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files && event.target.files.length > 0) {
+      const selectedFile = event.target.files[0];
+      //compress
+      let compressedFile = await compressFile(selectedFile, 0.7);
+      // Read the contents of the selected file
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+
+      // When the file contents are loaded, set the selected file state to the Data URI
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setBgImg(reader.result);
+        }
+      };
+    }
+  }
+  async function handleProfileSelection(
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    if (event.target.files && event.target.files.length > 0) {
+      const selectedFile = event.target.files[0];
+      //compress
+      let compressedFile = await compressFile(selectedFile, 0.7);
+      // Read the contents of the selected file
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+
+      // When the file contents are loaded, set the selected file state to the Data URI
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setProfileImg(reader.result);
+        }
+      };
+    }
+  }
+
   let updateProfile = trpc.user.updateUser.useMutation();
-  const onSubmit: SubmitHandler<Inputs> = async(data) => {
-    console.log("data", data);
-    let res=await updateProfile.mutateAsync({ ...data });
+  let updateProfileImg = trpc.user.updateImg.useMutation();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    let res = await updateProfile.mutateAsync({ ...data });
+    let resImg = await updateProfileImg.mutateAsync({ bgImg, profileImg });
     onSave(res.user);
     closeModal();
   };
@@ -80,21 +131,48 @@ export default function EditProfileModal({
                     className="flex flex-col gap-8"
                   >
                     <Buttons close={closeModal} />
-                    <div className="flex items-center justify-center p-12">
+                    <div
+                      onClick={handleBgClick}
+                      className="flex items-center justify-center p-20"
+                    >
+                      <img
+                        className="absolute  z-10 h-1/3 w-[90%] border-none object-cover  outline-none"
+                        style={{ display: (!bgImg && "none") || "block" }}
+                        src={bgImg!}
+                      />
+                      <input
+                        type="file"
+                        ref={bgRef}
+                        accept="image/*"
+                        onChange={handleBgSelection}
+                        style={{ display: "none" }}
+                      />
                       <div
-                        className="h-fit  w-fit cursor-pointer rounded-full bg-gray-900 
+                        className="z-50 h-fit  w-fit cursor-pointer rounded-full bg-gray-900 
                                             p-2 transition-colors duration-150  dark:hover:bg-gray-800"
                       >
-                        <CameraPlusIcon className="h-6 w-6 fill-gray-300" />
+                        <CameraPlusIcon className="z-50 h-6 w-6 fill-gray-300" />
                       </div>
                     </div>
-                    <div className="flex ">
+                    <div onClick={handleProfileClick} className="flex ">
+                      <img
+                        style={{ width: 56, height: 56 }}
+                        className="absolute z-10 rounded-full border-none object-cover outline-none  "
+                        src={profileImg!}
+                      />
                       <Avatar className="absolute" />
                       <div
                         className="z-50 mt-2 ml-2 h-fit w-fit  cursor-pointer rounded-full bg-gray-900 p-2 
                                             opacity-60 transition-colors duration-150  dark:hover:bg-gray-800"
                       >
                         <CameraPlusIcon className="h-6 w-6 fill-gray-300" />
+                        <input
+                          type="file"
+                          ref={profileRef}
+                          accept="image/*"
+                          onChange={handleProfileSelection}
+                          style={{ display: "none" }}
+                        />
                       </div>
                     </div>
 
@@ -108,7 +186,7 @@ export default function EditProfileModal({
                                     focus:outline-none dark:border-gray-700 dark:text-white dark:focus:border-blue-500"
                       placeholder="Name"
                     />
-                    <input
+                    {/* <input
                       {...register("username", {
                         required: true,
                         value: user.username!,
@@ -117,7 +195,7 @@ export default function EditProfileModal({
                       className="block w-full rounded border border-solid border-gray-300 bg-transparent p-3 text-lg font-normal text-black focus:border-blue-500   
                                     focus:outline-none dark:border-gray-700 dark:text-white dark:focus:border-blue-500"
                       placeholder="Username"
-                    />
+                    />*/}
                     <ReactTextareaAutosize
                       {...register("bio", { required: true, value: user.bio! })}
                       maxRows={9}
@@ -147,7 +225,7 @@ export default function EditProfileModal({
   );
 }
 
-function Buttons({close}:{close:()=>void}) {
+function Buttons({ close }: { close: () => void }) {
   return (
     <div className="flex w-full items-center">
       <div className="cursor-pointer" onClick={close}>
@@ -156,7 +234,7 @@ function Buttons({close}:{close:()=>void}) {
       <p className="ml-8 text-lg font-semibold"> Edit profile</p>
       <MainButton
         type="submit"
-        className="ml-auto w-20 bg-[#d7dbdc] hover:opacity-90 dark:text-black "
+        className="ml-auto w-20 bg-[#d7dbdc] hover:opacity-90 dark:text-white "
         text="Save"
       />
     </div>

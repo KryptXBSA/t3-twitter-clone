@@ -1,2 +1,2 @@
-import SidebarLeft from "./SidebarLeft"
-export default SidebarLeft
+import SidebarLeft from "./SidebarLeft";
+export default SidebarLeft;

@@ -18,7 +18,6 @@ export default function FollowersContent({
       showFollowers ? "followers" : "following"
     ]
   );
-  console.log("userFollowers", followers);
   useEffect(() => {
     setFollowers(
       userFollowers.data?.userFollowers![

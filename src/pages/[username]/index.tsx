@@ -20,4 +20,3 @@ const ProfilePage: NextPage = () => {
 };
 
 export default ProfilePage;
-

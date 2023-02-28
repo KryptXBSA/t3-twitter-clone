@@ -65,8 +65,7 @@ export default function VerifiedModal({
                                         Choose your badge
                                     </Dialog.Title>
                                         <div className="flex items-center gap-2">
-                                    <VerifiedDropdown/>
-                                    <MainButton text="Save"/>
+                                    <VerifiedDropdown closeModal={closeModal}/>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

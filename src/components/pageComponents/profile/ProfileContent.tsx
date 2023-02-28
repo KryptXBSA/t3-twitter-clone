@@ -15,6 +15,7 @@ import { SEO } from "@components/SEO";
 import { getUserSession } from "@hooks/getUserSession";
 import MainButton from "@components/MainButton";
 import { User } from "@prisma/client";
+import { PickVerificationIcon } from "@components/PickVerificationIcon";
 
 export const ProfileContent: NextPage = () => {
   const router = useRouter();
@@ -34,7 +35,7 @@ export const ProfileContent: NextPage = () => {
   function toggleModal() {
     setIsOpen(!isOpen);
   }
-  console.log("fffffffffff", user?.followers, session.id);
+  console.log("fffffffffff", user);
   function editProfile(data: User) {
     setUser({ ...user, ...data });
   }
@@ -56,11 +57,11 @@ export const ProfileContent: NextPage = () => {
         {user ? (
           <>
             <div>
-              <BgImg src={user?.bgImageUrl!} />
+              <BgImg src={user?.bgImage!} />
               <div className="p-4">
                 <div className="relative flex w-full items-center justify-between">
                   <div style={{ marginTop: "-5rem" }}>
-                    <Avatar size={130} />
+                    <Avatar avatarImage={user.profileImage!} size={130} />
                   </div>
                   {username === session.username ? (
                     <EditProfileBtn onClick={toggleModal} />
@@ -73,9 +74,12 @@ export const ProfileContent: NextPage = () => {
                 </div>
                 <div className="mt-3 ml-3 w-full justify-center space-y-1">
                   <div>
-                    <h2 className="text-xl font-bold leading-6 text-white">
-                      {user?.name || username}
-                    </h2>
+                    <div className="flex items-center">
+                      <h2 className="flex w-1/2 items-center text-xl font-bold leading-6 text-white">
+                        {user?.name || username}
+                      </h2>
+                      <PickVerificationIcon color={user.badge!} />
+                    </div>
                     <p className="text-sm font-medium leading-5 text-gray-600">
                       @{username}
                     </p>
@@ -124,14 +128,10 @@ export const ProfileContent: NextPage = () => {
 
 function BgImg({ src }: { src: string }) {
   return (
-    <div
-      className="w-full bg-cover bg-center bg-no-repeat"
-      style={{
-        height: 200,
-        backgroundImage:
-          src ||
-          "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
-      }}
-    ></div>
+    <img
+      className="w-full bg-cover object-cover"
+      style={{ height: 200 }}
+      src={src}
+    />
   );
 }

@@ -26,13 +26,13 @@ export function PageHead({
           </div>
         )}
         <div className="flex flex-col -space-y-1">
-          <p className="text-primary text-xl font-medium tracking-wide">
+          <h1 className="text-primary text-xl font-medium tracking-wide">
             {name}
-          </p>
+          </h1>
           {profile && (
-            <p className="text-secondary ml-0.5 text-sm font-medium tracking-wide">
+            <h2 className="text-secondary ml-0.5 text-sm font-medium tracking-wide">
               @{username}
-            </p>
+            </h2>
           )}
         </div>
       </div>

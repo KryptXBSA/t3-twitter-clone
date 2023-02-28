@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import { z } from "zod";
 import { followUser } from "./followUser";
 import { getUserFollowers } from "./getUserFollowers";
+import { updateImg } from "./updateImg";
+import { updateBadge } from "./updateBadge";
 
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
@@ -11,7 +13,7 @@ export const userRouter = t.router({
     .input(
       z
         .object({
-          username: z.string(),
+          // username: z.string(),
           name: z.string().nullish(),
           bio: z.string().nullish(),
           website: z.string().nullish(),
@@ -66,7 +68,6 @@ export const userRouter = t.router({
           },
         },
       });
-      console.log("returned user", user);
       return { success: true, user };
     }),
   createUser: publicProcedure
@@ -198,5 +199,8 @@ export const userRouter = t.router({
 
       return { success: true, data: "no" };
     }),
-  followUser,getUserFollowers
+  followUser,
+  getUserFollowers,
+  updateImg,
+  updateBadge,
 });
