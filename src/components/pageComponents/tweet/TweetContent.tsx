@@ -20,7 +20,7 @@ export default function TweetContent({ tweetId }: { tweetId: string }) {
     <div className="main-border mcz h-screen border-b border-l border-r">
       <PageHead backBtn name="Tweet" />
       {data?.tweet ? (
-          <TweetDetails tweet={data?.tweet!} />
+          <TweetDetails  tweet={data?.tweet!} />
       ) : (
         <Spinner />
       )}

@@ -82,7 +82,7 @@ export function TweetInput({ onPost }: { onPost?: any }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="order-b main-border w-full "
+      className="border-b main-border w-full "
     >
       <div className="flex  flex-shrink-0 p-4 pb-0">
         <div className="">

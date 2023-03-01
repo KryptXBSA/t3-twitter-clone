@@ -18,6 +18,7 @@ export let navItems: NavItemProps[] = [
     {
         href: "/explore",
         text: "Explore",
+        diabled:true,
         icon: (
             <svg fill="currentColor" viewBox="0 0 24 24" className="h-6 w-6">
                 <path
@@ -47,6 +48,7 @@ export let navItems: NavItemProps[] = [
     {
         href: "/messages",
         text: "Messages",
+        diabled:true,
         icon: (
             <svg fill="currentColor" viewBox="0 0 24 24" className="h-6 w-6">
                 <path
@@ -61,6 +63,7 @@ export let navItems: NavItemProps[] = [
     {
         href: "/bookmarks",
         text: "Bookmarks",
+        diabled:true,
         icon: (
             <svg fill="currentColor" viewBox="0 0 24 24" className="h-6 w-6">
                 <path
@@ -75,6 +78,7 @@ export let navItems: NavItemProps[] = [
     {
         href: "/settings",
         text: "Settings",
+        diabled:true,
         icon: (
             <svg
                 xmlns="http://www.w3.org/2000/svg"

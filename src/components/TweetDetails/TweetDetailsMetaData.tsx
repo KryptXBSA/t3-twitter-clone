@@ -21,7 +21,7 @@ export function TweetDetailsMetaData({
             </div>
             <div className="flex w-full flex-col">
                 <NextLink href={`/${tweet.user.username}`}>
-                    <TweetMetadata {...tweet} />
+                    <TweetMetadata color={tweet.user.badge} {...tweet} />
                 </NextLink>
             </div>
         </div>

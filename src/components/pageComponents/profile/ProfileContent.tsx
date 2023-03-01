@@ -35,8 +35,8 @@ export const ProfileContent: NextPage = () => {
   function toggleModal() {
     setIsOpen(!isOpen);
   }
-  console.log("fffffffffff", user);
   function editProfile(data: User) {
+    //  @ts-ignore
     setUser({ ...user, ...data });
   }
   async function follow() {
@@ -63,7 +63,7 @@ export const ProfileContent: NextPage = () => {
                   <div style={{ marginTop: "-5rem" }}>
                     <Avatar avatarImage={user.profileImage!} size={130} />
                   </div>
-                  {username === session.username ? (
+                  {user.id === session.id ? (
                     <EditProfileBtn onClick={toggleModal} />
                   ) : (
                     <MainButton
@@ -75,9 +75,10 @@ export const ProfileContent: NextPage = () => {
                 <div className="mt-3 ml-3 w-full justify-center space-y-1">
                   <div>
                     <div className="flex items-center">
-                      <h2 className="flex w-1/2 items-center text-xl font-bold leading-6 text-white">
+                      <h2 className="flex items-center text-xl font-bold leading-6 text-white">
                         {user?.name || username}
                       </h2>
+                      {/* @ts-ignore */}
                       <PickVerificationIcon color={user.badge!} />
                     </div>
                     <p className="text-sm font-medium leading-5 text-gray-600">

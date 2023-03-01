@@ -1,5 +1,5 @@
 import { getUserSession } from "@hooks/getUserSession";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@components/Avatar";
 import { NavItem } from "./NavItem";
 import { navItems } from "./navItems";
@@ -11,6 +11,7 @@ import { signOut } from "next-auth/react";
 import NextLink from "@components/NextLink";
 import { BlueVerified } from "@icons/verified";
 import { PickVerificationIcon } from "@components/PickVerificationIcon";
+import { trpc } from "@utils/trpc";
 
 export default function SidebarLeft({ active }: { active?: number }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,23 +61,29 @@ export default function SidebarLeft({ active }: { active?: number }) {
 
 function User() {
   let session = getUserSession();
+  let getUser = trpc.user.getUser.useQuery({ id: session.id });
+  const [user, setUser] = useState(getUser?.data?.user);
   function logout() {
     signOut();
   }
+  useEffect(() => {
+    setUser(getUser?.data?.user);
+  }, [getUser.data]);
+  if (!user) return <></>;
   return (
     <div
       className="mx-auto mt-auto mb-5 flex w-14 cursor-pointer flex-row items-center 
-            justify-between rounded-full p-3 px-4 transition duration-150 ease-in-out xl:w-full"
+            justify-between rounded-full p-3 transition duration-150 ease-in-out xl:w-full"
     >
-      <NextLink href={"/" + session.username}>
+      <NextLink href={"/" + user.username}>
         <div className="flex flex-row items-center">
-          <Avatar avatarImage={session.imageUrl} />
+          <Avatar avatarImage={user.profileImage!} />
           <div className="ml-2 hidden xl:block">
             <h1 className="flex text-sm font-bold text-gray-800 dark:text-white">
-              <span> {session.name}</span>
-              <PickVerificationIcon color="red" />
+              <span className="truncate text-ellipsis "> {user.name }</span>
+              <PickVerificationIcon color={user.badge!} />
             </h1>
-            <p className="text-sm text-gray-400">@{session.username}</p>
+            <p className="text-sm text-gray-400">@{user.username}</p>
           </div>
         </div>
       </NextLink>

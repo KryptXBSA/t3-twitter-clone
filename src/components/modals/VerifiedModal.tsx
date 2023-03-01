@@ -60,7 +60,7 @@ export default function VerifiedModal({
                             >
                                 <Dialog.Panel className="flex w-[100%] max-w-xl transform flex-col content-center items-center  gap-4 overflow-hidden rounded-2xl bg-white p-2 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white md:p-6">
                                     <Dialog.Title
-                                        className="text-3xl font-semibold leading-6  text-black dark:text-white "
+                                        className="text-3xl font-semibold leading-6 py-2  text-black dark:text-white "
                                     >
                                         Choose your badge
                                     </Dialog.Title>

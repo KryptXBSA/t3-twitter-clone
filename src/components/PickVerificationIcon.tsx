@@ -1,5 +1,5 @@
 import React from "react";
-export type ColorType = { color?: "red" | "blue" | "gold" | "gray" };
+export type ColorType = { color?: "red" | "blue" | "gold" | "gray"|string };
 import {
   BlueVerified,
   GoldVerified,

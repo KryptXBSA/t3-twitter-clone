@@ -9,13 +9,12 @@ import MainTweet from "@components/MainTweet";
 export default function HomeContent() {
   let allTweets = trpc.tweet.getAllTweets.useQuery({ id: "anysddssdss" });
   const [tweets, setTweets] = useState(allTweets.data?.tweets);
-  console.log("tweetssss", tweets, allTweets.data);
   useEffect(() => {
     setTweets(allTweets.data?.tweets);
   }, [allTweets.data]);
 
   function onPost(data: any) {
-    console.log("onPostData", data);
+    //@ts-ignore
     data && setTweets([data, ...tweets]);
   }
   return (
@@ -23,7 +22,9 @@ export default function HomeContent() {
       <div className="main-border mcz border-b border-l border-r ">
         <PageHead name="Home" />
         <TweetInput onPost={onPost} />
-        <NewTweets />
+
+        {/* 
+         <NewTweets /> */}
         {tweets?.map((t) => (
           <MainTweet key={t.id} tweet={t} />
         ))}
