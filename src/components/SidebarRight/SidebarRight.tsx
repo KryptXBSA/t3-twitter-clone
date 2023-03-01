@@ -1,16 +1,15 @@
 import Avatar from "@components/Avatar";
 import MainButton from "@components/MainButton";
 import NextLink from "@components/NextLink";
-import React from "react";
+import { trpc } from "@utils/trpc";
+import React, { useEffect, useState } from "react";
 
 export default function SidebarRight() {
   return (
     <div className="hidden h-screen w-[290px] lg:block lg:w-[350px]">
       <div className="fixed flex h-screen w-[290px] flex-col overflow-y-auto lg:w-[350px]">
         <SearchBar />
-        <TrendsForYou />
         <WhoToFollow />
-        <Loader />
       </div>
     </div>
   );
@@ -35,7 +34,8 @@ function SearchBar() {
         </svg>
       </div>
       <input
-        className=" flex h-9 w-full items-center rounded-full bg-[#202327] p-6 pl-12 text-sm font-normal text-gray-100 "
+        disabled
+        className=" flex  h-9 w-full cursor-not-allowed items-center rounded-full bg-[#202327] p-6 pl-12 text-sm font-normal text-gray-100 "
         placeholder="Search Twitter"
       />
     </div>
@@ -64,11 +64,11 @@ const TrendingTopic = ({
 const TwitterAccount = ({
   name,
   username,
-  imgUrl,
+  profileImage,
 }: {
   name: string;
   username: string;
-  imgUrl: string;
+  profileImage: string;
 }) => {
   return (
     <NextLink href={"/" + username}>
@@ -77,10 +77,10 @@ const TwitterAccount = ({
       >
         <div className="flex flex-row justify-between p-2">
           <div className="flex flex-row">
-            <Avatar size={48} />
+            <Avatar avatarImage={profileImage} size={48} />
             <div className="ml-2 flex flex-col">
-              <h1 className="text-sm font-bold text-gray-900 dark:text-white">
-                {name}
+              <h1 className="max-w-[100px] truncate  text-sm font-bold text-gray-900 dark:text-white">
+                {name || username}
               </h1>
               <p className="text-sm text-gray-400">@{username}</p>
             </div>
@@ -89,8 +89,8 @@ const TwitterAccount = ({
             onClick={(event) => {
               event.preventDefault();
             }}
-            className="w-10 bg-slate-700"
-            text="Follow"
+            className="bg-slate-700"
+            text="Profile"
           />
         </div>
       </div>
@@ -125,14 +125,19 @@ const TrendsForYou = () => {
 };
 
 const WhoToFollow = () => {
+  let getTopUsers = trpc.user.topUsers.useQuery();
+  const [topUsers, setTopUsers] = useState(getTopUsers.data?.users);
+  useEffect(() => {
+    setTopUsers(getTopUsers.data?.users);
+  }, [getTopUsers.data]);
   return (
     <div className={`sidebar-bg m-2 rounded-2xl`}>
       <h1 className="p-3  text-lg font-bold text-gray-900 dark:text-white">
         Who to follow
       </h1>
-      <TwitterAccount name="Aland Sleman" username="AlandSleman" />
-      <TwitterAccount name="Jane" />
-      <TwitterAccount name="John" />
+      {topUsers?.map((u, i) => (
+        <TwitterAccount key={i} {...u} />
+      ))}
     </div>
   );
 };

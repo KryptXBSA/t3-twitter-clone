@@ -49,7 +49,7 @@ export default function TweetOptions({ id }: { id: string }) {
                     <button
                       onClick={bookmarkTweet}
                       className={`  ${
-                        active ? "  bg-secondary-hover" : ""
+                        active ? "  cursor-not-allowed  bg-secondary-hover" : ""
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm text-white`}
                     >
                       {bookmarked ? (
@@ -72,7 +72,7 @@ export default function TweetOptions({ id }: { id: string }) {
                     <button
                       onClick={deleteTweet}
                       className={`  ${
-                        active ? "  bg-secondary-hover" : ""
+                        active ? " cursor-not-allowed  bg-secondary-hover" : ""
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm text-white`}
                     >
                       <DeleteIcon

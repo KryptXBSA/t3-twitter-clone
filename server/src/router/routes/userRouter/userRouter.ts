@@ -203,4 +203,12 @@ export const userRouter = t.router({
   getUserFollowers,
   updateImg,
   updateBadge,
+  topUsers: protectedProcedure.query(async ({ ctx }) => {
+
+    let users = await ctx.prisma.user.findMany({
+      orderBy: { followersCount:"desc" },
+      take: 3,
+    });
+    return { success: true, users };
+  }),
 });
