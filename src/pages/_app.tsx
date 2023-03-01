@@ -23,7 +23,7 @@ const MyApp: AppType = ({
       transformer: superjson,
       links: [
         httpBatchLink({
-          url: "http://localhost:7019/api/trpc",
+          url:"http://localhost:7019/api/trpc",
           headers() {
             return {
               authorization: Cookies.get("token"),
@@ -38,12 +38,10 @@ const MyApp: AppType = ({
       <ThemeProvider attribute="class">
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <QueryClientProvider client={queryClient}>
-            <EventProvider>
               <Auth>
                 <Component {...pageProps} />
                 <Toaster />
               </Auth>
-            </EventProvider>
           </QueryClientProvider>
         </trpc.Provider>
       </ThemeProvider>

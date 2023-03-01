@@ -35,6 +35,5 @@ export const getUserFollowers = protectedProcedure
         },
       },
     });
-    console.log("userFollowers", userFollowers);
     return { success: true, userFollowers };
   });

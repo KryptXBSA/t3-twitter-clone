@@ -1,6 +1,7 @@
 import Avatar from "@components/Avatar";
 import MainButton from "@components/MainButton";
 import NextLink from "@components/NextLink";
+import { PickVerificationIcon } from "@components/PickVerificationIcon";
 import { trpc } from "@utils/trpc";
 import React, { useEffect, useState } from "react";
 
@@ -65,10 +66,12 @@ const TwitterAccount = ({
   name,
   username,
   profileImage,
+  badge,
 }: {
   name: string;
   username: string;
   profileImage: string;
+  badge: string;
 }) => {
   return (
     <NextLink href={"/" + username}>
@@ -84,6 +87,7 @@ const TwitterAccount = ({
               </h1>
               <p className="text-sm text-gray-400">@{username}</p>
             </div>
+            <PickVerificationIcon color={badge} />
           </div>
           <MainButton
             onClick={(event) => {

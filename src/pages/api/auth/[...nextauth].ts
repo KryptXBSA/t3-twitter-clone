@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -117,6 +118,10 @@ function getProviders() {
       // @ts-ignore
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+  DiscordProvider({
+    clientId: process.env.DISCORD_CLIENT_ID,
+    clientSecret: process.env.DISCORD_CLIENT_SECRET
+  }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       id: "credentials",

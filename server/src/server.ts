@@ -36,7 +36,7 @@ app.use(
 app.use("/", swaggerUi.serve);
 app.get("/", swaggerUi.setup(openApiDocument));
 
-let port = 7019;
+let port = process.env.SERVER_PORT;
 app.listen(port, () => {
   console.log("Server started on http://localhost:" + port);
 });

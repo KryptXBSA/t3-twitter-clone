@@ -52,8 +52,6 @@ const Auth = ({ children }: { children: ReactNode }) => {
 export default Auth;
 
 function SignIn() {
-    let user = trpc.user.getUser.useQuery("hi");
-    console.log("datauser", user.data);
     let [isOpen, setIsOpen] = useState(false);
     function closeModal() {
         setIsOpen(false);

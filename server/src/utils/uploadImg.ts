@@ -8,7 +8,7 @@ export function uploadImg(imageURI: string):string {
     image.indexOf(";base64")
   );
   const imageName = uuidv4() + "." + extension;
-  imageUrl = "http://localhost:7019/images/" + imageName;
+  imageUrl = process.env.IMAGE_SERVER + imageName;
   fs.writeFile(
     "./images/" + imageName,
     image.replace(/^data:image\/\w+;base64,/, ""),
