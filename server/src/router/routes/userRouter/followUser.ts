@@ -4,7 +4,6 @@ import { protectedProcedure } from "../../../trpc/trpc";
 export const followUser = protectedProcedure
   .input(z.object({ id: z.string().uuid() }))
   .mutation(async ({ ctx, input }) => {
-    console.log("input",input.id,"ses",ctx.session.id)
     const existingFollow = await ctx.prisma.userFollow.findFirst({
       where: {
         AND: [
@@ -16,7 +15,6 @@ export const followUser = protectedProcedure
     let updatedUser;
 
     if (!existingFollow) {
-        console.log("incccccccccc")
       // User is not following, add new row in UserFollow and increment following count of the user and increment the followers count of the other user
       let createRecord = await ctx.prisma.userFollow.create({
         data: {
@@ -48,7 +46,6 @@ export const followUser = protectedProcedure
       let deleteRecord = await ctx.prisma.userFollow.delete({
         where: { id: existingFollow.id },
       });
-        console.log("del",deleteRecord,existingFollow.id)
       updatedUser = await ctx.prisma.user.update({
         where: { id: ctx.session.id },
         data: {

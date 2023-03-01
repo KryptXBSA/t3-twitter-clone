@@ -4,21 +4,12 @@ import { OpenApiMeta } from "trpc-openapi";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/prisma";
+import { User } from "@prisma/client";
 
-type UserData = {
-  id: string;
-  username: string;
-  name: string;
-  email: string;
-  provider: string;
-  password: string;
-  imageUrl: string;
-  createdAt: string;
-};
 type Token = {
   iat: number;
   sub: string;
-} & UserData;
+} & User;
 
 type CreateContextOptions = {
   session: Token;
@@ -76,7 +67,6 @@ export const publicProcedure = t.procedure;
  * procedure.
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  console.log("middleware");
   if (!ctx.session || !ctx.session?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }

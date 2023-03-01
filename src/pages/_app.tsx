@@ -8,7 +8,6 @@ import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import Cookies from "js-cookie";
 import superjson from "superjson";
-import { EventProvider } from "@context/EventContext";
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.css";
 
@@ -23,7 +22,7 @@ const MyApp: AppType = ({
       transformer: superjson,
       links: [
         httpBatchLink({
-          url:"http://localhost:7019/api/trpc",
+          url: "http://localhost:7019/api/trpc",
           headers() {
             return {
               authorization: Cookies.get("token"),
@@ -35,13 +34,13 @@ const MyApp: AppType = ({
   );
   return (
     <SessionProvider session={session}>
-      <ThemeProvider attribute="class">
+      <ThemeProvider forcedTheme="dark" defaultTheme="dark" attribute="class">
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <QueryClientProvider client={queryClient}>
-              <Auth>
-                <Component {...pageProps} />
-                <Toaster />
-              </Auth>
+            <Auth>
+              <Component {...pageProps} />
+              <Toaster />
+            </Auth>
           </QueryClientProvider>
         </trpc.Provider>
       </ThemeProvider>

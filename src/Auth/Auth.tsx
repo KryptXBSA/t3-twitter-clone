@@ -5,11 +5,9 @@ import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import SigninModal from "@components/modals/SigninModal";
 import TwitterIcon from "@icons/social/twitter";
-import { trpc } from "../utils/trpc";
 
 const Auth = ({ children }: { children: ReactNode }) => {
     const { data: session, status } = useSession();
-    const { theme, setTheme } = useTheme();
 
     if (status === "loading") {
         return (
@@ -27,13 +25,12 @@ const Auth = ({ children }: { children: ReactNode }) => {
         return (
             <>
                 <Head>
-                    <title>Login</title>
+                    <title>SignIn</title>
                     <meta name="description" content="Twitter Clone" />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
                 <div
                     className="flex h-[100vh] flex-col gap-9 lg:flex-row lg:justify-between"
-                    onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 >
                     <div className="flex h-full w-full items-center justify-center bg-[#15406A] lg:w-[50%]  ">
                         <TwitterIcon className=" h-full w-[90%] fill-[#1d9bf0] p-2 lg:p-14" />

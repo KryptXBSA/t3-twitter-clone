@@ -17,7 +17,6 @@ export const userRouter = t.router({
           name: z.string().nullish(),
           bio: z.string().nullish(),
           website: z.string().nullish(),
-          password: z.string().nullish(),
           bgImage: z.string().nullish(),
           profileImage: z.string().nullish(),
         })
@@ -144,6 +143,7 @@ export const userRouter = t.router({
       // if no user and it's not credentials just sign up via provider
       if (input.provider !== "credentials" && !existingUser) {
         let user = await ctx.prisma.user.create({
+          // @ts-ignore
           data: {
             ...input,
           },
@@ -158,6 +158,7 @@ export const userRouter = t.router({
       if (!existingUser && input.provider === "credentials") {
         // Create a new user
         let user = await ctx.prisma.user.create({
+          // @ts-ignore the input is already validated above no worries
           data: {
             ...input,
             password: bcrypt.hashSync(input.password!, 10), // hash the password
@@ -204,9 +205,8 @@ export const userRouter = t.router({
   updateImg,
   updateBadge,
   topUsers: protectedProcedure.query(async ({ ctx }) => {
-
     let users = await ctx.prisma.user.findMany({
-      orderBy: { followersCount:"desc" },
+      orderBy: { followersCount: "desc" },
       take: 3,
     });
     return { success: true, users };

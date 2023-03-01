@@ -20,16 +20,13 @@ export function TweetActions(props: TweetProps) {
   let reTweet0 = trpc.tweet.reTweet.useMutation();
   function like() {
     let result = likeTweet.mutate({ id: props.id });
-    console.log("like", result);
   }
   function reply() {
     setIsOpen(!isOpen);
     // let result = replyTweet.mutate({ id: props.id, body: "test" });
-    // console.log("reply", result);
   }
   function reTweet() {
     let result = reTweet0.mutate({ id: props.id });
-    console.log("reTweet", result);
   }
   const [interactionState, setInteractionState] = useState({
     liked: false,
@@ -43,7 +40,6 @@ export function TweetActions(props: TweetProps) {
       (r) => r.userId === data?.userData.id
     );
     const isReplied = props.replies.some((r) => r.userId === data?.userData.id);
-    console.log("isr", isReplied);
 
     setInteractionState({
       liked: isLiked,

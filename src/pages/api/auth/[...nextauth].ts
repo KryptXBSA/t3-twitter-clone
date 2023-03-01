@@ -8,7 +8,6 @@ import jwt from "jsonwebtoken";
 import axios from "axios";
 import { UserData } from "@types";
 
-
 declare module "next-auth" {
   interface Session {
     userData: UserData;
@@ -42,7 +41,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     callbacks: {
       async signIn(p) {
         let success = false;
-        console.log("signin from", p);
         let body = {};
         if (!p.credentials) {
           let provider = p.account?.provider;
@@ -61,20 +59,15 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             password: p.credentials.password,
           };
         }
-        console.log("bodyyyy", body);
         try {
           const { data } = await axios.post(
             process.env.API_URL + "/auth/login",
             body
           );
-          console.log("success SIGNIN", data);
           success = data.success;
           let userData = JSON.parse(data.data);
-          console.log("userData", userData);
           p.user.userData = userData;
-        } catch (e: any) {
-          console.log("error", e);
-        }
+        } catch (e: any) {}
         return success;
       },
 
@@ -107,41 +100,31 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 function getProviders() {
   return [
     GithubProvider({
-      // @ts-ignore
       clientId: process.env.GITHUB_ID,
-      // @ts-ignore
       clientSecret: process.env.GITHUB_SECRET,
     }),
     GoogleProvider({
-      // @ts-ignore
       clientId: process.env.GOOGLE_CLIENT_ID,
-      // @ts-ignore
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-  DiscordProvider({
-    clientId: process.env.DISCORD_CLIENT_ID,
-    clientSecret: process.env.DISCORD_CLIENT_SECRET
-  }),
+    DiscordProvider({
+      clientId: process.env.DISCORD_CLIENT_ID,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    }),
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       id: "credentials",
       name: "credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         username: {
           label: "Username",
           type: "text",
-          placeholder: "jsmith",
+          placeholder: "Username",
         },
         password: { label: "Password", type: "password" },
       },
+      //ignore this
       authorize: async (credentials, req) => {
-        console.log("body", req.body);
-        console.log("header", req.headers);
-        return { user: "aland" };
+        return {};
         const user = await fetch(
           `${process.env.NEXTAUTH_URL}/api/user/check-credentials`,
           {

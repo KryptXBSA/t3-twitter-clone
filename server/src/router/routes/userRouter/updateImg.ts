@@ -20,7 +20,6 @@ export const updateImg = protectedProcedure
     } else {
       profileImage = currentUser?.profileImage!;
     }
-    console.log("imgs",profileImage,bgImage)
     let user = await ctx.prisma.user.update({
       where: { id: ctx.session.id },
       data: {

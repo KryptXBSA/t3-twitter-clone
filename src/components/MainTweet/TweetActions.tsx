@@ -1,5 +1,4 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import CountUp from "react-countup";
 import cn from "clsx";
 import { trpc } from "@utils/trpc";
 import { useSession } from "next-auth/react";
@@ -83,14 +82,10 @@ export function TweetActions({
   function like() {
     let result = likeTweet.mutate({ id: props.id });
     let toInteract: ToInteract = "like";
-    console.log("btnsss", buttons);
     let inc = buttons.find((b) => b.id === "like");
-    console.log("incccc", inc?.active);
     interact(toInteract, !inc?.active);
-    // console.log("like", result);
   }
   function reply(body: string) {
-    console.log("replly", body);
     let toInteract: ToInteract = "reply";
     interact(toInteract, true);
     toggleModal();
