@@ -1,18 +1,10 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { OpenApiMeta } from "trpc-openapi";
-import * as trpcExpress from "@trpc/server/adapters/express";
-import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/prisma";
 import { User } from "@prisma/client";
 
-type Token = {
-  iat: number;
-  sub: string;
-} & User;
-
 type CreateContextOptions = {
-  session: Token;
+  session: User;
 };
 
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
@@ -22,35 +14,18 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-export const createContext = async (
-  opts: trpcExpress.CreateExpressContextOptions
-) => {
-  const { req } = opts;
-
-  let session: Token;
-  // if (!req.headers.authorization) session = { id: "2" };
-  try {
-    let decoded: any = jwt.verify(
-      req.headers.authorization!,
-      process.env.JWT_SECRET!
-    );
-    session = {
-      iat: decoded.iat,
-      sub: decoded.sub,
-      ...decoded.userData,
-    };
-  } catch (e) {
-    // console.log("jwt_decode err", e);
-  }
-
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { getServerAuthSession } from "pages/api/auth/[...nextauth]";
+export const createContext = async (opts: CreateNextContextOptions) => {
+  const { req, res } = opts;
+  const session = await getServerAuthSession({ req, res });
   return createInnerTRPCContext({
-    session: session!,
+    session: session?.userData,
   });
 };
 
 export const t = initTRPC
   .context<typeof createContext>()
-  .meta<OpenApiMeta>()
   .create({
     transformer: superjson,
     errorFormatter({ shape }) {

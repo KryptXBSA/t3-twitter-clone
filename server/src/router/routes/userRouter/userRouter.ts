@@ -112,21 +112,6 @@ export const userRouter = t.router({
           return true;
         })
     )
-    .output(
-      z.object({
-        success: z.boolean(),
-        data: z.string(),
-        token: z.string().nullish(),
-        code: z.number().nullish(),
-      })
-    )
-    .meta({
-      openapi: {
-        method: "POST",
-        path: "/auth/login",
-        tags: ["auth"],
-      },
-    })
     .mutation(async ({ ctx, input }) => {
       // credentials are only username and password
       // if (input.provider === "credentials" && input.email)
@@ -150,7 +135,7 @@ export const userRouter = t.router({
         });
         return {
           success: true,
-          data: JSON.stringify(user),
+          data: user,
         };
       }
 
@@ -170,7 +155,7 @@ export const userRouter = t.router({
 
         return {
           success: true,
-          data: JSON.stringify(user),
+          data: user,
         };
       }
       if (existingUser) {
@@ -178,7 +163,7 @@ export const userRouter = t.router({
         if (input.provider !== "credentials") {
           return {
             success: true,
-            data: JSON.stringify(existingUser),
+            data: existingUser,
           };
         }
         if (
@@ -191,7 +176,7 @@ export const userRouter = t.router({
           // return { success: true, data: JSON.stringify(session) };
           return {
             success: true,
-            data: JSON.stringify(existingUser),
+            data: existingUser,
           };
         } else {
           return { success: false, data: "Invalid password" };

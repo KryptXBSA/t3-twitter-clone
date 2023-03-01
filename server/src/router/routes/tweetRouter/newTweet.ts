@@ -1,6 +1,4 @@
 import { z } from "zod";
-import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
 import { protectedProcedure } from "../../../trpc/trpc";
 import { uploadImg } from "../../../utils/uploadImg";
 
