@@ -19,6 +19,7 @@
         "nodemon": "^2.0.20",
         "swagger-ui-express": "^4.6.0",
         "trpc-openapi": "^1.1.2",
+        "superjson": "1.9.1",
         "uuid": "^9.0.0",
         "zod": "^3.20.2"
     },
