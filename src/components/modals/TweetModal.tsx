@@ -61,7 +61,7 @@ export default function TweetModal({
                                 leaveTo="opacity-0 scale-95"
                             >
                                 <Dialog.Panel className="flex w-[100%] max-w-xl  transform flex-col content-center items-center justify-center gap-9 overflow-hidden rounded-2xl bg-white p-2 text-left align-middle text-white shadow-xl transition-all dark:bg-black dark:text-white md:p-6">
-                                    <TweetInput onPost={() => null} />
+                                    <TweetInput onPost={() => closeModal()} />
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>

@@ -7,12 +7,16 @@ import { trpc } from "@utils/trpc";
 import { OtherIcons } from "./OtherIcons";
 import { FilePreview } from "./FilePreview";
 import { compressFile } from "@utils/comporessImage";
+import { getUserSession } from "@hooks/getUserSession";
 
 type Inputs = {
   body: string;
 };
 export function TweetInput({ onPost }: { onPost?: any }) {
   const [isPosting, setIsPosting] = useState(false);
+  let session = getUserSession();
+  let getUser = trpc.user.getUser.useQuery({ id: session.id });
+  const [user, setUser] = useState(getUser?.data?.user);
   const {
     register,
     handleSubmit,
@@ -35,17 +39,6 @@ export function TweetInput({ onPost }: { onPost?: any }) {
     clearInputs();
   };
 
-  useEffect(() => {
-    if (
-      isPosting &&
-      !newTweet.isLoading &&
-      !newTweet.isError &&
-      newTweet.data?.tweet
-    ) {
-      onPost(newTweet.data.tweet);
-      setIsPosting(false);
-    }
-  }, [isPosting, newTweet, onPost]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleImageUploadClick() {
@@ -79,6 +72,22 @@ export function TweetInput({ onPost }: { onPost?: any }) {
       fileInputRef.current.value = "";
     }
   }
+
+  useEffect(() => {
+    if (
+      isPosting &&
+      !newTweet.isLoading &&
+      !newTweet.isError &&
+      newTweet.data?.tweet
+    ) {
+      onPost(newTweet.data.tweet);
+      setIsPosting(false);
+    }
+  }, [isPosting, newTweet, onPost]);
+  useEffect(() => {
+    setUser(getUser?.data?.user);
+  }, [getUser.data]);
+  if (!user) return <></>;
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -86,7 +95,7 @@ export function TweetInput({ onPost }: { onPost?: any }) {
     >
       <div className="flex  flex-shrink-0 p-4 pb-0">
         <div className="">
-          <Avatar avatarImage={data?.userData.imageUrl!} />
+          <Avatar avatarImage={user.profileImage!} />
         </div>
         <div className="w-full p-2">
           <ReactTextareaAutosize

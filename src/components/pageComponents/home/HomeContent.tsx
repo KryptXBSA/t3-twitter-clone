@@ -5,13 +5,32 @@ import { Spinner } from "@components/Spinner";
 import { NewTweets } from "@components/NewTweets";
 import { PageHead } from "@components/PageHead";
 import MainTweet from "@components/MainTweet";
+import { useInView } from "react-intersection-observer";
 
 export default function HomeContent() {
-  let allTweets = trpc.tweet.getAllTweets.useQuery({ id: "anysddssdss" });
-  const [tweets, setTweets] = useState(allTweets.data?.tweets);
+  let getTweets = trpc.tweet.getAllTweets.useMutation();
+  const [tweets, setTweets] = useState(getTweets.data?.tweets);
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0,
+  });
+  async function fetchTweets() {
+    const newTweets = await getTweets.mutateAsync({
+      skip: tweets?.length || 0,
+    });
+    setTweets((prevTweets) => [...(prevTweets || []), ...newTweets.tweets]);
+  }
   useEffect(() => {
-    setTweets(allTweets.data?.tweets);
-  }, [allTweets.data]);
+    fetchTweets();
+  }, []);
+
+  // Refetch tweets when inView and not loading
+  useEffect(() => {
+    if (inView && !getTweets.isLoading) {
+      getTweets.mutate({ skip: tweets?.length || 0 });
+      fetchTweets();
+    }
+  }, [getTweets.isLoading, inView, tweets]);
 
   function onPost(data: any) {
     //@ts-ignore
@@ -25,10 +44,12 @@ export default function HomeContent() {
 
         {/* 
          <NewTweets /> */}
-        {tweets?.map((t) => (
-          <MainTweet key={t.id} tweet={t} />
+        {tweets?.map((t, i) => (
+          <MainTweet key={i} tweet={t} />
         ))}
-        <Spinner />
+        <div ref={ref}>
+          <Spinner />
+        </div>
       </div>
     </div>
   );

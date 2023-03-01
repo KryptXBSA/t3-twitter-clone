@@ -27,7 +27,7 @@ export function MainTweet({
       <div className="tweet-hover main-border border-b p-4 ">
         <div className="fade-in flex   cursor-pointer space-x-2  transition-all  ease-in-out">
           <div className=" flex min-h-full flex-col items-center ">
-            <Avatar avatarImage={tweet.user.imageUrl!} />
+            <Avatar avatarImage={tweet.user.profileImage!} />
             {reply && (
               <div className="hover-animation  bg-line-reply dark:bg-dark-line-reply  h-[80%] w-0.5"></div>
             )}

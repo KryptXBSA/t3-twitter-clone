@@ -2,8 +2,8 @@ import { z } from "zod";
 import { publicProcedure } from "../../../trpc/trpc";
 
 export const getAllTweets = publicProcedure
-  .input(z.object({ id: z.string() }))
-  .query(async ({ ctx, input }) => {
+  .input(z.object({  skip: z.number().nullish() }))
+  .mutation(async ({ ctx, input }) => {
     let tweet = await ctx.prisma.tweet.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -12,6 +12,8 @@ export const getAllTweets = publicProcedure
         replies: true,
         retweets: true,
       },
+      take: 10,
+      skip: input.skip || 0,
     });
     return { success: true, tweets: tweet };
   });
