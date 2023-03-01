@@ -25,7 +25,7 @@ const Auth = ({ children }: { children: ReactNode }) => {
         return (
             <>
                 <Head>
-                    <title>SignIn</title>
+                    <title>Sign In</title>
                     <meta name="description" content="Twitter Clone" />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
