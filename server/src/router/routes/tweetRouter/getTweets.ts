@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { publicProcedure } from "../../../trpc/trpc";
+import { protectedProcedure, publicProcedure } from "../../../trpc/trpc";
 
-export const getAllTweets = publicProcedure
-  .input(z.object({  skip: z.number().nullish() }))
+export const getAllTweets = protectedProcedure
+  .input(z.object({ skip: z.number().nullish() }))
   .mutation(async ({ ctx, input }) => {
-    let tweet = await ctx.prisma.tweet.findMany({
+    const pageSize = 10;
+    let tweets = await ctx.prisma.tweet.findMany({
       orderBy: { createdAt: "desc" },
       include: {
         user: true,
@@ -12,10 +13,14 @@ export const getAllTweets = publicProcedure
         replies: true,
         retweets: true,
       },
-      take: 10,
+      take: pageSize + 1, // fetch one more tweet than needed
       skip: input.skip || 0,
     });
-    return { success: true, tweets: tweet };
+    const hasMore = tweets.length > pageSize;
+    if (hasMore) {
+      tweets.pop();
+    }
+    return { success: true, tweets, hasMore };
   });
 export const getTweet = publicProcedure
   .input(z.object({ id: z.string().uuid() }))

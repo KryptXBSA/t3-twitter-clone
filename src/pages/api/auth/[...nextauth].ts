@@ -3,7 +3,11 @@ import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { GetServerSidePropsContext } from "next";
+import {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 import jwt from "jsonwebtoken";
 import superjson from "superjson";
 import { UserData } from "@types";
@@ -14,6 +18,11 @@ const client = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: "http://localhost:3000/api/trpc",
+      headers() {
+        return {
+          pass: "rew",
+        };
+      },
     }),
   ],
 });
@@ -33,78 +42,83 @@ declare module "next-auth/jwt" {
   }
 }
 
-export const authOptions: NextAuthOptions = {
-  callbacks: {
-    async signIn(p) {
-      console.log("signin callback");
-      let success = false;
-      let body = {};
-      if (!p.credentials) {
-        let provider = p.account?.provider;
-        let username = p.user.name;
-        let email = p.user.email;
-        body = {
-          provider,
-          username,
-          name: username,
-          email,
-        };
-      } else {
-        body = {
-          provider: "credentials",
-          username: p.credentials.username,
-          password: p.credentials.password,
-        };
-      }
-      try {
-        // @ts-ignore
-        let createUser = await client.user.createUser.mutate({ ...body });
-        console.log("createUser", createUser);
-        success = createUser.success;
-        let userData = createUser.data;
-        if (typeof createUser.data === "string") {
-          throw new Error(createUser.data);
+export function authOptions(update?: boolean): NextAuthOptions {
+  return {
+    callbacks: {
+      async signIn(p) {
+        let success = false;
+        let body = {};
+        if (!p.credentials) {
+          let provider = p.account?.provider;
+          let username = p.user.name;
+          let email = p.user.email;
+          body = {
+            provider,
+            username,
+            name: username,
+            email,
+          };
+        } else {
+          body = {
+            provider: "credentials",
+            username: p.credentials.username,
+            password: p.credentials.password,
+          };
         }
-        // @ts-ignore
-        p.user.userData = userData;
-      } catch (e: any) {}
-      return success;
-    },
+        try {
+          // @ts-ignore
+          let createUser = await client.user.createUser.mutate({ ...body });
+          success = createUser.success;
+          let userData = createUser.data;
+          if (typeof createUser.data === "string") {
+            throw new Error(createUser.data);
+          }
+          // @ts-ignore
+          p.user.userData = userData;
+        } catch (e: any) {}
+        return success;
+      },
 
-    async jwt(p) {
-      console.log("jwt callback");
-      p.token.userData = p.user?.userData || p.token.userData;
-
-      // params.token.customData = params.user?.customData || params.token.customData;
-      return p.token;
+      async jwt(p) {
+        if (update) {
+          console.log("updateee", p.token.userData);
+          let { user } = await client.user.getUser.query({
+            id: p.token.userData.id,
+          });
+          console.log("user", user);
+          //@ts-ignore
+          p.token.userData = user;
+        } else {
+          p.token.userData = p.user?.userData || p.token.userData;
+        }
+        // params.token.customData = params.user?.customData || params.token.customData;
+        return p.token;
+      },
+      async session(p) {
+        p.session.userData = p.token.userData;
+        return p.session;
+      },
     },
-    async session(p) {
-      console.log("session callback");
-      p.session.userData = p.token.userData;
-      return p.session;
-    },
-  },
-  providers: getProviders(),
-  jwt: {
-    async encode(p) {
-      console.log("jwt encode callback");
-      let token = jwt.sign(p.token!, p.secret);
-      return token;
-    },
-    // @ts-ignore
-    async decode(p) {
-      console.log("jwt decode callback");
+    providers: getProviders(),
+    jwt: {
+      async encode(p) {
+        let token = jwt.sign(p.token!, p.secret);
+        return token;
+      },
       // @ts-ignore
-      let decoded = jwt.verify(p.token, p.secret);
-      return decoded;
+      async decode(p) {
+        // @ts-ignore
+        let decoded = jwt.verify(p.token, p.secret);
+        return decoded;
+      },
     },
-  },
-};
+  };
+}
 export const getServerAuthSession = (ctx: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
 }) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
+  return getServerSession(ctx.req, ctx.res, authOptions());
 };
 function getProviders() {
   return [
@@ -132,7 +146,6 @@ function getProviders() {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-      console.log("auth callback");
         let body = {};
         if (!credentials) {
           throw new Error("Invalid login");
@@ -143,9 +156,9 @@ function getProviders() {
             password: credentials.password,
           };
         }
-      console.log("2222222 callback");
+        // @ts-ignore
         let createUser = await client.user.createUser.mutate({ ...body });
-        console.log("createUser", createUser);
+        // @ts-ignore
         let userData: User = { userData: createUser.data };
         if (typeof createUser.data === "string") {
           throw new Error(createUser.data);
@@ -155,4 +168,9 @@ function getProviders() {
     }),
   ];
 }
-export default NextAuth(authOptions);
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log("query", req.query);
+  return await NextAuth(req, res, authOptions(req?.query?.update));
+};
+export default handler;

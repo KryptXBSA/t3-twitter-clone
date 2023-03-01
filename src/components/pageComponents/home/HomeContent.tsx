@@ -6,10 +6,12 @@ import { NewTweets } from "@components/NewTweets";
 import { PageHead } from "@components/PageHead";
 import MainTweet from "@components/MainTweet";
 import { useInView } from "react-intersection-observer";
+import { newTweet } from "../../../../server/src/router/routes/tweetRouter/newTweet";
 
 export default function HomeContent() {
   let getTweets = trpc.tweet.getAllTweets.useMutation();
   const [tweets, setTweets] = useState(getTweets.data?.tweets);
+  const [hasMore, setHasMore] = useState(false);
 
   const { ref, inView, entry } = useInView({
     threshold: 0,
@@ -19,18 +21,19 @@ export default function HomeContent() {
       skip: tweets?.length || 0,
     });
     setTweets((prevTweets) => [...(prevTweets || []), ...newTweets.tweets]);
+    setHasMore(newTweets.hasMore); // Update the hasMore state
   }
+
   useEffect(() => {
     fetchTweets();
   }, []);
 
   // Refetch tweets when inView and not loading
   useEffect(() => {
-    if (inView && !getTweets.isLoading) {
-      getTweets.mutate({ skip: tweets?.length || 0 });
+    if (inView && !getTweets.isLoading && hasMore) {
       fetchTweets();
     }
-  }, [getTweets.isLoading, inView, tweets]);
+  }, [getTweets.isLoading, inView, tweets, hasMore]);
 
   function onPost(data: any) {
     //@ts-ignore
@@ -48,7 +51,8 @@ export default function HomeContent() {
           <MainTweet key={i} tweet={t} />
         ))}
         <div ref={ref}>
-          <Spinner />
+          {hasMore && <Spinner />}
+          {getTweets.isLoading && <Spinner />}
         </div>
       </div>
     </div>
