@@ -85,6 +85,7 @@ export function authOptions(update?: boolean): NextAuthOptions {
           let { user } = await client.user.getUser.query({
             id: p.token.userData.id,
           });
+                    console.error("user",user)
           //@ts-ignore
           p.token.userData = user;
         } else {
@@ -98,6 +99,7 @@ export function authOptions(update?: boolean): NextAuthOptions {
           let { user } = await client.user.getUser.query({
             id: p.token.userData.id,
           });
+                    console.error("user",user)
           //@ts-ignore
           p.session.userData = user;
         } else {
