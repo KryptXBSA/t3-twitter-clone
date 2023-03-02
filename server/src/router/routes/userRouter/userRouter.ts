@@ -58,6 +58,7 @@ export const userRouter = t.router({
           followers: true,
           following: true,
           tweets: {
+            orderBy: { createdAt: "desc" },
             include: {
               user: true,
               likes: true,

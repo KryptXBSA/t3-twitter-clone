@@ -3,6 +3,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { trpc } from "@utils/trpc";
 import Avatar from "@components/Avatar";
+import { getUserSession } from "@hooks/getUserSession";
 
 type Inputs = {
   body: string;
@@ -25,6 +26,7 @@ export function ReplyInput({ onReply, hideAvatar, minH = 80 }: InputProps) {
     onReply(data.body);
     reset();
   };
+    let session = getUserSession()
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col ">
       <div className="flex gap-2 ">
@@ -33,7 +35,7 @@ export function ReplyInput({ onReply, hideAvatar, minH = 80 }: InputProps) {
         ) : (
           <div className="min-w-fit">
             {" "}
-            <Avatar avatarImage="" size={avatarSize} />
+            <Avatar avatarImage={session.profileImage!} size={avatarSize} />
           </div>
         )}
         <div style={{ minHeight: minH }} className="  mt-2 w-full ">

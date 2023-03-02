@@ -12,6 +12,7 @@ import { TweetMetrics } from "./TweetMetrics";
 import { TweetActions } from "@components/MainTweet/TweetActions";
 import TweetDetailsReply from "./TweetDetailsReply";
 import { trpc } from "@utils/trpc";
+import { getUserSession } from "@hooks/getUserSession";
 
 type Inputs = {
   body: string;
@@ -37,10 +38,11 @@ export function TweetDetails({
   const { register, handleSubmit, watch, reset } = useForm<Inputs>();
   let replyTweet = trpc.tweet.replyTweet.useMutation();
   const [tweetReplies, setTweetReplies] = useState(tweet.replies);
+  let session = getUserSession();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     let res = await replyTweet.mutateAsync({ id: tweet.id, body: data.body });
-    setTweetReplies([res.reply,...tweetReplies]);
+    setTweetReplies([res.reply, ...tweetReplies]);
     reset();
   };
   return (
@@ -58,7 +60,7 @@ export function TweetDetails({
 
         <div className="main-border flex items-center gap-6 border-b pb-5 ">
           <div className="">
-            <Avatar avatarImage="" />
+            <Avatar avatarImage={session.profileImage!} />
           </div>
           <form
             onSubmit={handleSubmit(onSubmit)}
