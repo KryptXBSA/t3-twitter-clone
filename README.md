@@ -1,9 +1,16 @@
+This is an open source Twitter clone project bult with T3 Stack + NextAuth + Postgres(Supabase), It's a simple clone and may not be secure, So it's not recommended for production use.
 
-**Twitter Clone Project**
+**Requirements**
 
-This is an open source Twitter clone project  T3 Stack + NextAuth + Postgres(Supabase). It's a simple clone and may not be secure, so it's not recommended for production use. Pull requests are welcome!
-** Requirements
+Postgres Database: I recommend Supabase, Register a supabase account > Create a new project > Create a new database.
+
+Supabase Storage: Your project > Create a new Bucket > Add this policy to be able upload images via our backend:
+
+`CREATE POLICY "<policy name>" ON storage.objects FOR INSERT TO public WITH CHECK (bucket_id = '<bucket-name>');`
+
+
 **How to Run Locally**
+
 To run the project locally, follow these steps:
 
 * Clone the project `git clone https://github.com/AlandSleman/t3-twitter-clone`
@@ -12,6 +19,6 @@ To run the project locally, follow these steps:
 * Build the project `npm run build`.
 * Start the project `npm start`.
 
-If you want to use Express.js for the backend instead of Next.js, check the other branch with-express.
+If you want to use Express.js for the backend instead of Next.js, Check the other branch `with-express`
 
 
