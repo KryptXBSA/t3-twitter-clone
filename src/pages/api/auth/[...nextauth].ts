@@ -46,7 +46,6 @@ export function authOptions(update?: boolean): NextAuthOptions {
   return {
     callbacks: {
       async signIn(p) {
-        console.info("sign in", p);
         let success = false;
         let body = {};
         if (!p.credentials) {
@@ -85,7 +84,6 @@ export function authOptions(update?: boolean): NextAuthOptions {
           let { user } = await client.user.getUser.query({
             id: p.token.userData.id,
           });
-                    console.error("user",user)
           //@ts-ignore
           p.token.userData = user;
         } else {
@@ -99,7 +97,6 @@ export function authOptions(update?: boolean): NextAuthOptions {
           let { user } = await client.user.getUser.query({
             id: p.token.userData.id,
           });
-                    console.error("user",user)
           //@ts-ignore
           p.session.userData = user;
         } else {
@@ -155,7 +152,6 @@ function getProviders() {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        console.info("authorize", credentials);
         let body = {};
         if (!credentials) {
           throw new Error("Invalid login");

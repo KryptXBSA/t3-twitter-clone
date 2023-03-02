@@ -1,8 +1,6 @@
-import { useFormattedDate } from "@hooks/useFormattedDate";
 import { formatDate } from "@utils/date";
 
 export function Joined({ date }: { date: Date }) {
-    console.log("joinedd", date)
     let formattedDate = formatDate(date)
     return (
         <span className="mr-2 flex">

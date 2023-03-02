@@ -28,8 +28,8 @@ export default function SidebarLeft({ active }: { active?: number }) {
     <>
       <TweetModal isOpen={isOpen} closeModal={toggleModal} />
       <VerifiedModal isOpen={isOpen2} closeModal={toggleModal2} />
-      <div className="hidden h-screen xs:w-[88px] lg:block xl:w-[275px]">
-        <div className="fixed flex h-screen w-[68px] flex-col overflow-y-auto xs:w-[88px] xl:w-[275px] xl:pr-3">
+      <div className="h-screen xs:w-[88px] block xl:w-[275px]">
+        <div className="fixed flex h-screen w-[68px] flex-col overflow-y-auto xs:w-[88px] xl:w-[275px]">
           <Logo />
           <nav className="mt-5 ">
             {navItems.map((item, index) => (

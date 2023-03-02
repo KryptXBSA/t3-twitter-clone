@@ -28,7 +28,6 @@ export default function SigninModal({
     } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log("cred data", data);
         signIn("credentials", { ...data });
         reset();
     };
