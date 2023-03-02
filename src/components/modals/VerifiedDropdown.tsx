@@ -32,7 +32,7 @@ const VerifiedDropdown = ({ closeModal }: { closeModal: any }) => {
         <Menubar.Menu>
           <Menubar.Trigger className="outline-none">
             <div className="flex items-center gap-2">
-              <Avatar  avatarImage={session.profileImage!}/>
+              <Avatar avatarImage={session.profileImage!} />
               <TweetMetadata color={radioSelection!} user={{ ...session }} />
             </div>
           </Menubar.Trigger>
@@ -56,7 +56,7 @@ const VerifiedDropdown = ({ closeModal }: { closeModal: any }) => {
                   >
                     <div className="flex cursor-pointer items-center gap-2 rounded-lg p-2 duration-200  hover:bg-gray-700">
                       <div className="">
-                        <Avatar />
+                        <Avatar avatarImage={session.profileImage!} />
                       </div>
                       <TweetMetadata color={item} user={{ ...session }} />
                     </div>
