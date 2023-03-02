@@ -20,12 +20,11 @@ export default function HomeContent() {
     const newTweets = await getTweets.mutateAsync({
       skip: tweets?.length || 0,
     });
-    if (Array.isArray(newTweets.tweets)) {
+        console.log("dateee",newTweets.tweets)
       setTweets((prevTweets) => [
         ...(prevTweets || []),
         ...(newTweets?.tweets || []),
       ]);
-    }else{console.log("not arr",newTweets.tweets)}
     setHasMore(newTweets.hasMore); // Update the hasMore state
   }
 

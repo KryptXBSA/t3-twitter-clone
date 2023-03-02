@@ -2,8 +2,8 @@ import { TO_REMOVE } from "./TO_REMOVE";
 
 export function removeProperties<T>(obj: T, toRemove?: string[]): T {
   if (!toRemove) toRemove = TO_REMOVE;
-  if (typeof obj !== "object" || obj === null) {
-    return obj;
+  if (obj instanceof Date||typeof obj !== "object" || obj === null) {
+    return obj as T;
   }
 
   const newObj: any = Array.isArray(obj) ? [] : {};
@@ -16,5 +16,5 @@ export function removeProperties<T>(obj: T, toRemove?: string[]): T {
     newObj[key] = removeProperties(value, toRemove);
   }
 
-  return newObj;
+  return newObj as T;
 }
