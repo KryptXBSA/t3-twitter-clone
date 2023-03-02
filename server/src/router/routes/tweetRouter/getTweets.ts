@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure } from "../../../trpc/trpc";
+import _ from "lodash";
+import { TO_REMOVE } from "../../../utils/TO_REMOVE";
 
 export const getAllTweets = protectedProcedure
   .input(z.object({ skip: z.number().nullish() }))
@@ -20,7 +22,10 @@ export const getAllTweets = protectedProcedure
     if (hasMore) {
       tweets.pop();
     }
-    return { success: true, tweets, hasMore };
+
+    let filteredTweets = _.omit(tweets, TO_REMOVE);
+
+    return { success: true, tweets: filteredTweets, hasMore };
   });
 export const getTweet = publicProcedure
   .input(z.object({ id: z.string().uuid() }))

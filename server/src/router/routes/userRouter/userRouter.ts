@@ -5,6 +5,8 @@ import { followUser } from "./followUser";
 import { getUserFollowers } from "./getUserFollowers";
 import { updateImg } from "./updateImg";
 import { updateBadge } from "./updateBadge";
+import { TO_REMOVE } from "../../../utils/TO_REMOVE";
+import _ from "lodash";
 
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
@@ -68,7 +70,9 @@ export const userRouter = t.router({
           },
         },
       });
-      return { success: true, user };
+
+      let filteredUser = _.omit(user, TO_REMOVE);
+      return { success: true, user: filteredUser };
     }),
   createUser: publicProcedure
     .input(
