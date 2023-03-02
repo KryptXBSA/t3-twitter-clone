@@ -23,7 +23,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
   const session = await getServerAuthSession({ req, res });
   return createInnerTRPCContext({
     session: session?.userData,
-    isServer: req?.headers?.pass === "rew",
+    isServer: req?.headers?.pass === process.env.SERVER_SECRET,
   });
 };
 

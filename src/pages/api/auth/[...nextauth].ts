@@ -17,10 +17,10 @@ const client = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: "http://localhost:3000/api/trpc",
+      url: process.env.NEXTAUTH_URL+"api/trpc",
       headers() {
         return {
-          pass: "rew",
+          pass: process.env.SERVER_SECRET,
         };
       },
     }),
