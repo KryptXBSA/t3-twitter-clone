@@ -1,4 +1,5 @@
 import { type AppType } from "next/app";
+import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider } from "next-auth/react";
 import Auth from "../Auth/Auth";
 import { ThemeProvider } from "next-themes";
@@ -13,10 +14,11 @@ const MyApp: AppType = ({
   return (
     <SessionProvider session={session}>
       <ThemeProvider forcedTheme="dark" defaultTheme="dark" attribute="class">
-            <Auth>
-              <Component {...pageProps} />
-              <Toaster />
-            </Auth>
+        <Auth>
+          <Component {...pageProps} />
+          <Analytics />
+          <Toaster />
+        </Auth>
       </ThemeProvider>
     </SessionProvider>
   );
