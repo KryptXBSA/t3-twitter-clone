@@ -9,7 +9,7 @@ export function Url({website}:{website:string}) {
         </g>
       </svg>{" "}
       <a
-        href="https://ricardoribeirodev.com/personal/"
+        href={website}
         target="#"
         className="ml-1 leading-5 text-blue-400"
       >
