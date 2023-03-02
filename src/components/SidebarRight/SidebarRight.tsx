@@ -90,9 +90,6 @@ const TwitterAccount = ({
             <PickVerificationIcon color={badge} />
           </div>
           <MainButton
-            onClick={(event) => {
-              event.preventDefault();
-            }}
             className="bg-slate-700"
             text="Profile"
           />
