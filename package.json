@@ -29,7 +29,6 @@
         "image-conversion": "^2.1.1",
         "js-cookie": "^3.0.1",
         "jsonwebtoken": "^9.0.0",
-        "loadash": "^1.0.0",
         "moment": "^2.29.4",
         "next": "13.1.6",
         "next-auth": "^4.19.2",

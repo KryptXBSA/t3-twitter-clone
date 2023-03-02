@@ -7,6 +7,7 @@ import { updateImg } from "./updateImg";
 import { updateBadge } from "./updateBadge";
 import { TO_REMOVE } from "../../../utils/TO_REMOVE";
 import _ from "lodash";
+import { removeProperties } from "../../../utils/removeProperties";
 
 const Provider = z.enum(["credentials", "google", "github", "discord"]);
 
@@ -71,8 +72,7 @@ export const userRouter = t.router({
         },
       });
 
-      let filteredUser = _.omit(user, TO_REMOVE);
-      return { success: true, user: filteredUser };
+      return { success: true, user: removeProperties(user) };
     }),
   createUser: publicProcedure
     .input(
