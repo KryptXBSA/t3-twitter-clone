@@ -46,6 +46,7 @@ export function authOptions(update?: boolean): NextAuthOptions {
   return {
     callbacks: {
       async signIn(p) {
+        console.info("sign in", p);
         let success = false;
         let body = {};
         if (!p.credentials) {
@@ -152,6 +153,7 @@ function getProviders() {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
+        console.info("authorize", credentials);
         let body = {};
         if (!credentials) {
           throw new Error("Invalid login");
@@ -176,7 +178,7 @@ function getProviders() {
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    // @ts-ignore
+  // @ts-ignore
   return await NextAuth(req, res, authOptions(req?.query?.update));
 };
 export default handler;
