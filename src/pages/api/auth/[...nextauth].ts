@@ -176,6 +176,7 @@ function getProviders() {
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    // @ts-ignore
   return await NextAuth(req, res, authOptions(req?.query?.update));
 };
 export default handler;

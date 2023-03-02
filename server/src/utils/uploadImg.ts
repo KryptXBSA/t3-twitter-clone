@@ -11,20 +11,15 @@ const supabase = createClient(
 export async function uploadImg(imageURI: string) {
   let imageUrl = "";
   const image = imageURI;
-  const extension = image.substring(
-    "data:image/".length,
-    image.indexOf(";base64")
-  );
-  const imageName = uuidv4() + "." + extension;
+  const imageName = uuidv4() 
   const imageData = image.replace(/^data:image\/\w+;base64,/, "");
   const imageBuffer = Buffer.from(imageData, "base64");
   imageUrl = process.env.IMAGE_SERVER + imageName;
 
   const { data, error } = await supabase.storage
-    .from("twitter-clone")
+    .from(process.env.SUPABASE_BUCKET!)
     .upload(imageName, imageBuffer, {
       cacheControl: "999999999",
     });
-  console.log("data:", data, "error:", error);
   return imageUrl;
 }
