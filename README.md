@@ -1,4 +1,4 @@
-This is an open source Twitter clone project bult with T3 Stack + NextAuth + Postgres(Supabase) + Prisma, It's a simple clone and may not be secure, So it's not recommended for production use.
+This is an open source Twitter clone, Built with T3 Stack + NextAuth + Postgres(Supabase) + Prisma, It's a simple clone and may not be secure, So it's not recommended for production use.
 
 **Requirements**
 
