@@ -12,7 +12,7 @@ export const newTweet = protectedProcedure
   .mutation(async ({ ctx, input }) => {
     let imageUrl = "";
     if (input.image) {
-      imageUrl = uploadImg(input.image);
+      imageUrl = await uploadImg(input.image);
     }
     let newTweet = await ctx.prisma.tweet.create({
       data: {

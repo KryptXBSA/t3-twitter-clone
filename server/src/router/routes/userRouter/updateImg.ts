@@ -10,13 +10,13 @@ export const updateImg = protectedProcedure
     });
     let bgImage = "";
     if (input.bgImg) {
-      bgImage = uploadImg(input.bgImg);
+      bgImage = await uploadImg(input.bgImg);
     } else {
       bgImage = currentUser?.bgImage!;
     }
     let profileImage = "";
     if (input.profileImg) {
-      profileImage = uploadImg(input.profileImg);
+      profileImage = await uploadImg(input.profileImg);
     } else {
       profileImage = currentUser?.profileImage!;
     }

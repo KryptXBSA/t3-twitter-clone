@@ -130,8 +130,8 @@ export const ProfileContent: NextPage = () => {
 function BgImg({ src }: { src: string }) {
   return (
     <img
-      className="w-full bg-cover object-cover"
-      style={{ height: 200 }}
+      className="w-full  bg-cover object-cover"
+      style={{ height: 200, visibility: src ? "visible" : "hidden" }}
       src={src}
     />
   );

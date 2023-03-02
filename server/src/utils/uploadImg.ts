@@ -1,6 +1,14 @@
-import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
-export function uploadImg(imageURI: string):string {
+
+import { createClient } from "@supabase/supabase-js";
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_KEY!
+);
+
+export async function uploadImg(imageURI: string) {
   let imageUrl = "";
   const image = imageURI;
   const extension = image.substring(
@@ -8,15 +16,15 @@ export function uploadImg(imageURI: string):string {
     image.indexOf(";base64")
   );
   const imageName = uuidv4() + "." + extension;
+  const imageData = image.replace(/^data:image\/\w+;base64,/, "");
+  const imageBuffer = Buffer.from(imageData, "base64");
   imageUrl = process.env.IMAGE_SERVER + imageName;
-  fs.writeFile(
-    "./images/" + imageName,
-    image.replace(/^data:image\/\w+;base64,/, ""),
-    { encoding: "base64" },
-    (err) => {
-      if (err) throw err;
-      console.log("Image saved successfully");
-    }
-  );
-    return imageUrl
+
+  const { data, error } = await supabase.storage
+    .from("twitter-clone")
+    .upload(imageName, imageBuffer, {
+      cacheControl: "999999999",
+    });
+  console.log("data:", data, "error:", error);
+  return imageUrl;
 }

@@ -61,14 +61,10 @@ export default function SidebarLeft({ active }: { active?: number }) {
 
 function User() {
   let session = getUserSession();
-  let getUser = trpc.user.getUser.useQuery({ id: session.id });
-  const [user, setUser] = useState(getUser?.data?.user);
+  const [user, setUser] = useState(session);
   function logout() {
     signOut();
   }
-  useEffect(() => {
-    setUser(getUser?.data?.user);
-  }, [getUser.data]);
   if (!user) return <></>;
   return (
     <div
@@ -80,7 +76,10 @@ function User() {
           <Avatar avatarImage={user.profileImage!} />
           <div className="ml-2 hidden xl:block">
             <h1 className="flex text-sm font-bold text-gray-800 dark:text-white">
-              <span className="truncate text-ellipsis "> {user.name }</span>
+              <span className="truncate text-ellipsis ">
+                {" "}
+                {user.name||user.username}
+              </span>
               <PickVerificationIcon color={user.badge!} />
             </h1>
             <p className="text-sm text-gray-400">@{user.username}</p>

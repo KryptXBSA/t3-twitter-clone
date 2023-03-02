@@ -81,11 +81,9 @@ export function authOptions(update?: boolean): NextAuthOptions {
 
       async jwt(p) {
         if (update) {
-          console.log("updateee", p.token.userData);
           let { user } = await client.user.getUser.query({
             id: p.token.userData.id,
           });
-          console.log("user", user);
           //@ts-ignore
           p.token.userData = user;
         } else {
@@ -95,7 +93,15 @@ export function authOptions(update?: boolean): NextAuthOptions {
         return p.token;
       },
       async session(p) {
-        p.session.userData = p.token.userData;
+        if (update) {
+          let { user } = await client.user.getUser.query({
+            id: p.token.userData.id,
+          });
+          //@ts-ignore
+          p.session.userData = user;
+        } else {
+          p.session.userData = p.token.userData;
+        }
         return p.session;
       },
     },
@@ -170,7 +176,6 @@ function getProviders() {
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log("query", req.query);
   return await NextAuth(req, res, authOptions(req?.query?.update));
 };
 export default handler;

@@ -7,6 +7,7 @@ export const likeTweet = protectedProcedure
     const existingLike = await ctx.prisma.like.findFirst({
       where: {
         userId: ctx.session.id,
+        tweetId: input.id,
       },
     });
     let updatedTweet;

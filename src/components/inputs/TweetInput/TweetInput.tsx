@@ -15,8 +15,7 @@ type Inputs = {
 export function TweetInput({ onPost }: { onPost?: any }) {
   const [isPosting, setIsPosting] = useState(false);
   let session = getUserSession();
-  let getUser = trpc.user.getUser.useQuery({ id: session.id });
-  const [user, setUser] = useState(getUser?.data?.user);
+  const [user, setUser] = useState(session);
   const {
     register,
     handleSubmit,
@@ -84,9 +83,6 @@ export function TweetInput({ onPost }: { onPost?: any }) {
       setIsPosting(false);
     }
   }, [isPosting, newTweet, onPost]);
-  useEffect(() => {
-    setUser(getUser?.data?.user);
-  }, [getUser.data]);
   if (!user) return <></>;
   return (
     <form

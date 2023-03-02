@@ -10,15 +10,19 @@ import { getUserSession } from "@hooks/getUserSession";
 import Avatar from "@components/Avatar";
 import MainButton from "@components/MainButton";
 import { trpc } from "@utils/trpc";
+import updateSession from "@utils/updateSession";
 
 const COLORS: any[] = ["blue", "red", "gold", "gray"];
 
 const VerifiedDropdown = ({ closeModal }: { closeModal: any }) => {
-  const [radioSelection, setRadioSelection] = React.useState<any>("");
   let session = getUserSession();
+  const [radioSelection, setRadioSelection] = React.useState<any>(
+    session.badge
+  );
   let updateBadge = trpc.user.updateBadge.useMutation();
   async function update() {
     updateBadge.mutateAsync({ badge: radioSelection });
+    updateSession();
     closeModal();
   }
 
@@ -63,7 +67,7 @@ const VerifiedDropdown = ({ closeModal }: { closeModal: any }) => {
           </Menubar.Portal>
         </Menubar.Menu>
       </Menubar.Root>
-      <MainButton text="Save"  onClick={update}/>
+      <MainButton text="Save" onClick={update} />
     </>
   );
 };

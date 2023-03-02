@@ -11,6 +11,7 @@ import { trpc } from "@utils/trpc";
 import { getUserSession } from "@hooks/getUserSession";
 import { User } from "@prisma/client";
 import { compressFile } from "@utils/comporessImage";
+import updateSession from "@utils/updateSession";
 
 type Inputs = {
   bio: string;
@@ -96,6 +97,7 @@ export default function EditProfileModal({
     let res = await updateProfile.mutateAsync({ ...data });
     let resImg = await updateProfileImg.mutateAsync({ bgImg, profileImg });
     onSave(res.user);
+    await updateSession();
     closeModal();
   };
   return (
@@ -160,7 +162,10 @@ export default function EditProfileModal({
                         className="absolute z-10 rounded-full border-none object-cover outline-none  "
                         src={profileImg!}
                       />
-                      <Avatar className="absolute" />
+                      <Avatar
+                        avatarImage={user.profileImage!}
+                        className="absolute"
+                      />
                       <div
                         className="z-50 mt-2 ml-2 h-fit w-fit  cursor-pointer rounded-full bg-gray-900 p-2 
                                             opacity-60 transition-colors duration-150  dark:hover:bg-gray-800"

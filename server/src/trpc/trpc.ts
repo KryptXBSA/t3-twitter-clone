@@ -20,7 +20,6 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { getServerAuthSession } from "pages/api/auth/[...nextauth]";
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
-  console.log("cookies", req.headers.pass);
   const session = await getServerAuthSession({ req, res });
   return createInnerTRPCContext({
     session: session?.userData,
