@@ -183,7 +183,7 @@ export default function EditProfileModal({
 
                     <input
                       {...register("name", {
-                        required: true,
+                        required: false,
                         value: user.name!,
                       })}
                       type="text"
@@ -202,7 +202,7 @@ export default function EditProfileModal({
                       placeholder="Username"
                     />*/}
                     <ReactTextareaAutosize
-                      {...register("bio", { required: true, value: user.bio! })}
+                      {...register("bio", { required: false, value: user.bio! })}
                       maxRows={9}
                       minRows={2}
                       placeholder="Bio"
@@ -211,7 +211,7 @@ export default function EditProfileModal({
                     />
                     <input
                       {...register("website", {
-                        required: true,
+                        required: false,
                         value: user.website!,
                       })}
                       type="text"

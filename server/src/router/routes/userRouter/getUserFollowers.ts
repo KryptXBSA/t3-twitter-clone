@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { protectedProcedure } from "../../../trpc/trpc";
+import { removeProperties } from "../../../utils/removeProperties";
 
 export const getUserFollowers = protectedProcedure
   .input(z.object({ username: z.string() }))
@@ -35,5 +36,5 @@ export const getUserFollowers = protectedProcedure
         },
       },
     });
-    return { success: true, userFollowers };
+    return { success: true, userFollowers:removeProperties(userFollowers) };
   });

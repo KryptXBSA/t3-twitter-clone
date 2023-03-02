@@ -23,8 +23,6 @@ export const getAllTweets = protectedProcedure
     if (hasMore) {
       tweets.pop();
     }
-
-
     return { success: true, tweets:removeProperties(tweets) , hasMore };
   });
 export const getTweet = publicProcedure
@@ -39,5 +37,5 @@ export const getTweet = publicProcedure
         retweets: true,
       },
     });
-    return { success: true, tweet };
+    return { success: true, tweet:removeProperties(tweet) };
   });
