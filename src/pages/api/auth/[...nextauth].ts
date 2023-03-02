@@ -17,7 +17,7 @@ const client = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: process.env.NEXTAUTH_URL+"api/trpc",
+      url: process.env.NEXTAUTH_URL+"/api/trpc",
       headers() {
         return {
           pass: process.env.SERVER_SECRET,
