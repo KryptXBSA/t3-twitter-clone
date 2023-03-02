@@ -2,6 +2,7 @@ import Avatar from "@components/Avatar";
 import MainButton from "@components/MainButton";
 import NextLink from "@components/NextLink";
 import { PickVerificationIcon } from "@components/PickVerificationIcon";
+import GithubIcon from "@icons/social/github";
 import { trpc } from "@utils/trpc";
 import React, { useEffect, useState } from "react";
 
@@ -11,6 +12,17 @@ export default function SidebarRight() {
       <div className="fixed flex h-screen w-[290px] flex-col overflow-y-auto lg:w-[350px]">
         <SearchBar />
         <WhoToFollow />
+        <div className="flex items-center ml-3">
+          <GithubIcon className="h-6 w-6 fill-white mr-1 " /> Made by{" "}
+          <a
+            href="https://github.com/AlandSleman/t3-twitter-clone"
+                        className="ml-1 text-blue-500"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            AlandSleman
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -89,10 +101,7 @@ const TwitterAccount = ({
             </div>
             <PickVerificationIcon color={badge} />
           </div>
-          <MainButton
-            className="bg-slate-700"
-            text="Profile"
-          />
+          <MainButton className="bg-slate-700" text="Profile" />
         </div>
       </div>
     </NextLink>
