@@ -17,15 +17,26 @@ export default function HomeContent() {
     threshold: 0,
   });
   async function fetchTweets() {
-    const newTweets = await getTweets.mutateAsync({
-      skip: tweets?.length || 0,
+    const skip = tweets?.length || 0;
+    const newTweets = await getTweets.mutateAsync({ skip });
+    const uniqueTweets = removeDuplicates([
+      ...(tweets || []),
+      ...(newTweets?.tweets || []),
+    ]);
+    setTweets(uniqueTweets);
+    setHasMore(newTweets.hasMore);
+  }
+
+  function removeDuplicates(tweets:any) {
+    const tweetSet = new Set();
+    return tweets.filter((tweet) => {
+      if (tweetSet.has(tweet.id)) {
+        return false;
+      } else {
+        tweetSet.add(tweet.id);
+        return true;
+      }
     });
-        console.log("dateee",newTweets.tweets)
-      setTweets((prevTweets) => [
-        ...(prevTweets || []),
-        ...(newTweets?.tweets || []),
-      ]);
-    setHasMore(newTweets.hasMore); // Update the hasMore state
   }
 
   useEffect(() => {

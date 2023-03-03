@@ -5,7 +5,7 @@ import { uploadImg } from "../../../utils/uploadImg";
 export const newTweet = protectedProcedure
   .input(
     z.object({
-      body: z.string().min(1),
+      body: z.string().trim().min(3),
       image: z.string().nullish(),
     })
   )

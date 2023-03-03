@@ -17,7 +17,7 @@ export const userRouter = t.router({
       z
         .object({
           // username: z.string(),
-          name: z.string().nullish(),
+          name: z.string().trim().min(3).nullish(),
           bio: z.string().nullish(),
           website: z.string().nullish(),
           bgImage: z.string().nullish(),
@@ -78,8 +78,8 @@ export const userRouter = t.router({
     .input(
       z
         .object({
-          name: z.string().min(3).nullish(),
-          username: z.string(),
+          name: z.string().trim().min(3).nullish(),
+          username: z.string().trim().min(3),
           password: z.string().nullish(),
           provider: Provider,
           email: z.string().nullish(),
