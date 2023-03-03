@@ -17,7 +17,7 @@ const client = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: process.env.NEXTAUTH_URL+"/api/trpc",
+      url: process.env.NEXTAUTH_URL + "/api/trpc",
       headers() {
         return {
           pass: process.env.SERVER_SECRET,
@@ -50,7 +50,7 @@ export function authOptions(update?: boolean): NextAuthOptions {
         let body = {};
         if (!p.credentials) {
           let provider = p.account?.provider;
-          let username = p.user.name;
+          let username = p.user.name?.replace(/\s/g, "")
           let email = p.user.email;
           body = {
             provider,
