@@ -36,5 +36,6 @@ export const getUserFollowers = protectedProcedure
         },
       },
     });
+
     return { success: true, userFollowers:removeProperties(userFollowers) };
   });

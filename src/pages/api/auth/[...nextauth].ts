@@ -13,6 +13,7 @@ import superjson from "superjson";
 import { UserData } from "@types";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import { AppRouter } from "../../../../server/src/router/root";
+
 const client = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
@@ -26,6 +27,7 @@ const client = createTRPCProxyClient<AppRouter>({
     }),
   ],
 });
+
 declare module "next-auth" {
   interface Session {
     userData: UserData;

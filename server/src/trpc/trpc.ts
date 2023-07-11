@@ -2,6 +2,8 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { prisma } from "../prisma/prisma";
 import { User } from "@prisma/client";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { getServerAuthSession } from "pages/api/auth/[...nextauth]";
 
 type CreateContextOptions = {
   session: User;
@@ -16,13 +18,12 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { getServerAuthSession } from "pages/api/auth/[...nextauth]";
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
+
   const session = await getServerAuthSession({ req, res });
   return createInnerTRPCContext({
-    session: session?.userData,
+    session: session?.userData!,
     isServer: req?.headers?.pass === process.env.SERVER_SECRET,
   });
 };
@@ -51,7 +52,7 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
       },
     });
   }
-  if (!ctx.session || !ctx.session?.id ) {
+  if (!ctx.session || !ctx.session?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

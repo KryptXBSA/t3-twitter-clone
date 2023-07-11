@@ -29,6 +29,7 @@ export const newTweet = protectedProcedure
     });
     return { success: true, tweet: newTweet };
   });
+
 function limitTextLines(text: string) {
   const newText = text.replace(/(\n{3,})/g, "\n\n");
   return newText;

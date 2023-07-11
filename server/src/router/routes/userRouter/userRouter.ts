@@ -5,7 +5,6 @@ import { followUser } from "./followUser";
 import { getUserFollowers } from "./getUserFollowers";
 import { updateImg } from "./updateImg";
 import { updateBadge } from "./updateBadge";
-import { TO_REMOVE } from "../../../utils/TO_REMOVE";
 import _ from "lodash";
 import { removeProperties } from "../../../utils/removeProperties";
 

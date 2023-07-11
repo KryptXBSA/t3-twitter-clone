@@ -19,10 +19,12 @@ export const getAllTweets = protectedProcedure
       take: pageSize + 1, // fetch one more tweet than needed
       skip: input.skip || 0,
     });
+
     const hasMore = tweets.length > pageSize;
     if (hasMore) {
       tweets.pop();
     }
+
     return { success: true, tweets:removeProperties(tweets) , hasMore };
   });
 export const getTweet = publicProcedure
@@ -37,5 +39,6 @@ export const getTweet = publicProcedure
         retweets: true,
       },
     });
+
     return { success: true, tweet:removeProperties(tweet) };
   });
